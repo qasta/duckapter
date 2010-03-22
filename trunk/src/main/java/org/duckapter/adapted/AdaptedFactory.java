@@ -12,6 +12,10 @@ public final class AdaptedFactory {
 		// prevents instance creation and subtyping
 	}
 
+	public static void clearCache(){
+		cache.clear();
+	}
+	
 	public static Adapted adapt(Object original, Class<?> originalClass,
 			Class<?> duckInterface) {
 		return new AdaptedImpl(original, findAdaptedClass(new Pair(

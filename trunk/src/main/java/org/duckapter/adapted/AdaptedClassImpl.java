@@ -41,16 +41,6 @@ final class AdaptedClassImpl implements AdaptedClass {
 	}
 
 	private final void init() {
-		// now we can only duck interface!
-		if (!duckInterface.isInterface()) {
-			canAdaptClass = false;
-			canAdaptInstance = false;
-			for (Method m : duckInterface.getMethods()) {
-				adapters.put(m, NullAdapter.INSTANCE);
-			}
-			return;
-		}
-
 		AdaptationViolation vio = doCheck(originalClass, duckInterface,
 				collectCheckers(duckInterface));
 		if (vio!= null) {
@@ -68,7 +58,7 @@ final class AdaptedClassImpl implements AdaptedClass {
 		}
 	}
 
-	private Collection<AdaptationViolation> checkDuckMethod(Method duckMethod) {
+	private final Collection<AdaptationViolation> checkDuckMethod(Method duckMethod) {
 		boolean okForClass = false;
 		boolean okForInstance = false;
 
@@ -100,7 +90,7 @@ final class AdaptedClassImpl implements AdaptedClass {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static AdaptationViolation doCheck(AnnotatedElement original,
+	private static final AdaptationViolation doCheck(AnnotatedElement original,
 			AnnotatedElement duck, Set<Checker<?>> theCheckers) {
 
 		Set<Checker<?>> checkers = new HashSet<Checker<?>>(theCheckers);
