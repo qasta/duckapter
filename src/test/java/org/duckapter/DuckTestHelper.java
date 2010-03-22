@@ -3,6 +3,7 @@ package org.duckapter;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.duckapter.adapted.AdaptedFactory;
 import org.junit.Assert;
 
 public final class DuckTestHelper {
@@ -23,21 +24,21 @@ public final class DuckTestHelper {
 	 */
 	public static final void assertCanAdaptInstance(Class<?> testedInterface,
 			Class<?> toPass, Class<?> toFail) {
-
+		AdaptedFactory.clearCache();
 		Assert.assertNotNull(testedInterface);
 		Assert.assertTrue(testedInterface.isInterface());
 		Assert.assertNotNull(toPass);
 		Assert.assertNotNull(toFail);
 
 		try {
-			assertFalse(Duckapter.canAdaptInstance(toFail.newInstance(),
-					testedInterface));
 			try {
 				Duckapter.adaptInstance(toFail.newInstance(), testedInterface);
 				Assert.fail();
 			} catch (IllegalArgumentException e) {
 				// ok
 			}
+			assertFalse(Duckapter.canAdaptInstance(toFail.newInstance(),
+					testedInterface));
 		} catch (InstantiationException e) {
 			// ok
 		} catch (IllegalAccessException e) {
@@ -45,13 +46,11 @@ public final class DuckTestHelper {
 		}
 
 		try {
-			assertTrue(Duckapter.canAdaptInstance(toPass.newInstance(),
-					testedInterface));
 			try {
 				Duckapter.adaptInstance(toPass.newInstance(), testedInterface);
 				// ok
 			} catch (IllegalArgumentException e) {
-				Assert.fail();
+				Assert.fail(e.getMessage());
 			}
 		} catch (InstantiationException e) {
 			// ok

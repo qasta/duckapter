@@ -19,7 +19,8 @@ public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
 			AnnotatedElement duck) {
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
-			if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())) {
+			if (duckMethod.getDeclaringClass().isAssignableFrom(
+					duckMethod.getReturnType())) {
 				return true;
 			}
 		}
@@ -35,8 +36,14 @@ public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
 		if (void.class.equals(duckMethod.getReturnType())) {
 			return true;
 		}
+		if (Object.class.equals(duckMethod.getReturnType())) {
+			return true;
+		}
 		if (duckMethod.getReturnType().isAssignableFrom(returnType)) {
 			return true;
+		}
+		if (!duckMethod.getReturnType().isInterface()) {
+			return false;
 		}
 		return Duckapter.canAdaptInstanceOf(returnType, duckMethod
 				.getReturnType());

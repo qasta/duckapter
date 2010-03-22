@@ -21,6 +21,7 @@ public abstract class DefaultChecker<T extends Annotation> implements
 	}
 
 	static {
+		defaultCheckers.add(new InterfaceChecker<Annotation>());
 		defaultCheckers.add(new AnnotationsChecker<Annotation>());
 		defaultCheckers.add(new ExceptionsChecker<Annotation>());
 		defaultCheckers.add(new NameChecker<Annotation>());
