@@ -3,7 +3,7 @@ package org.duckapter.adapted;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-class ConstructorAdapter extends DefaultMethodAdapter implements MethodAdapter {
+public class ConstructorAdapter extends DefaultMethodAdapter implements MethodAdapter {
 
 	private final Constructor<?> constructor;
 
@@ -24,7 +24,7 @@ class ConstructorAdapter extends DefaultMethodAdapter implements MethodAdapter {
 	}
 	
 	@Override
-	public int priority() {
+	public int getPriority() {
 		return -2000;
 	}
 
@@ -53,9 +53,6 @@ class ConstructorAdapter extends DefaultMethodAdapter implements MethodAdapter {
 			return false;
 		return true;
 	}
-
-	@Override
-	public void replaces(MethodAdapter adapter) {}
 	
 	
 

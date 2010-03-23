@@ -9,6 +9,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.duckapter.adapted.AllMethodAdapter;
+import org.duckapter.adapted.MethodAdapter;
+import org.duckapter.adapted.MethodAdapters;
 import org.duckapter.annotation.All;
 import org.duckapter.checker.DefaultChecker;
 import org.duckapter.checker.ExceptionsChecker;
@@ -42,44 +45,44 @@ public class AllChecker extends DefaultChecker<All> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean check(All anno, AnnotatedElement original,
+	public MethodAdapter check(All anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (original instanceof Class) {
-			return true;
+			return MethodAdapters.OK;
 		}
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
 			return checkReturnType(anno, original, duckMethod.getReturnType());
 
 		}
-		return true;
+		return MethodAdapters.NULL;
 	}
 
-	private boolean checkReturnType(All anno, AnnotatedElement original, Class<?> retType) {
+	private MethodAdapter checkReturnType(All anno, AnnotatedElement original, Class<?> retType) {
 		if (!retType.isArray()) {
-			return false;
+			return MethodAdapters.NULL;
 		}
 		return checkMethodsType(anno, original, (Class<?>) retType.getComponentType());
 	}
 
-	private boolean checkMethodsType(All anno, AnnotatedElement original,
+	private MethodAdapter checkMethodsType(All anno, AnnotatedElement original,
 			Class<?> methodsType) {
 		if (!methodsType.isInterface() || methodsType.getMethods().length != 1) {
-			return false;
+			return MethodAdapters.NULL;
 		}
 		
 		return checkMethodInterface(anno, original, methodsType.getMethods()[0]);
 	}
 
-	private boolean checkMethodInterface(All anno, AnnotatedElement original,
+	private MethodAdapter checkMethodInterface(All anno, AnnotatedElement original,
 			final Method returnTypeOnlyMethod) {
 		for (DefaultChecker<Annotation> ch : SUPPRESSED_CHECKERS) {
 			if (ch.doesCheck(anno, original)
-					&& !ch.check(anno, original, returnTypeOnlyMethod)) {
-				return false;
+					&& MethodAdapters.isNull(ch.check(anno, original, returnTypeOnlyMethod))) {
+				return MethodAdapters.NULL;
 			}
 		}
-		return true;
+		return new AllMethodAdapter(original, returnTypeOnlyMethod);
 	}
 
 	@SuppressWarnings("unchecked")

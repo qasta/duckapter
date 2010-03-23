@@ -11,9 +11,9 @@ public class NameChecker<T extends Annotation> extends DefaultChecker<T> {
 		return false;
 	};
 
-	@Override
-	protected boolean doesCheckConstructor(T anno) {
-		return false;
+	protected boolean checkConstructor(T anno,
+			java.lang.reflect.Constructor<?> constructor, Method duckMethod) {
+		return checkFieldName(duckMethod.getName(), constructor.getName());
 	};
 
 	@Override
@@ -24,8 +24,8 @@ public class NameChecker<T extends Annotation> extends DefaultChecker<T> {
 	protected boolean checkFieldName(final String duckName,
 			final String fieldName) {
 		return normalize(duckName).equals(normalize(fieldName))
-		|| normalize(duckName).equals("is" + normalize(fieldName))		
-		|| normalize(duckName).equals("get" + normalize(fieldName))
+				|| normalize(duckName).equals("is" + normalize(fieldName))
+				|| normalize(duckName).equals("get" + normalize(fieldName))
 				|| normalize(duckName).equals("set" + normalize(fieldName));
 	};
 

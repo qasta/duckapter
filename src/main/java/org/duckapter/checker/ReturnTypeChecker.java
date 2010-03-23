@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.duckapter.Duckapter;
+import org.duckapter.adapted.MethodAdapter;
+import org.duckapter.adapted.MethodAdapters;
 
 public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
 
@@ -15,13 +17,13 @@ public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
 		return false;
 	};
 
-	public boolean check(T anno, AnnotatedElement original,
+	public MethodAdapter check(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
 			if (duckMethod.getDeclaringClass().isAssignableFrom(
 					duckMethod.getReturnType())) {
-				return true;
+				return MethodAdapters.OK;
 			}
 		}
 		return super.check(anno, original, duck);

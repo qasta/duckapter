@@ -2,7 +2,7 @@ package org.duckapter.adapted;
 
 import java.lang.reflect.Method;
 
-class MethodCallAdapter extends DefaultMethodAdapter implements MethodAdapter {
+public class MethodCallAdapter extends DefaultMethodAdapter implements MethodAdapter {
 
 	private final Method method;
 
@@ -23,12 +23,10 @@ class MethodCallAdapter extends DefaultMethodAdapter implements MethodAdapter {
 	}
 	
 	@Override
-	public int priority() {
-		return 0;
+	public int getPriority() {
+		return -10;
 	}
 
-	@Override
-	public void replaces(MethodAdapter adapter) {}
 	
 	@Override
 	public int hashCode() {

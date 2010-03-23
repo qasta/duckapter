@@ -3,7 +3,7 @@ package org.duckapter.adapted;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-class SetFieldAdapter extends DefaultMethodAdapter implements MethodAdapter {
+public class SetFieldAdapter extends DefaultMethodAdapter implements MethodAdapter {
 
 	private final Field field;
 
@@ -25,12 +25,10 @@ class SetFieldAdapter extends DefaultMethodAdapter implements MethodAdapter {
 	}
 
 	@Override
-	public int priority() {
+	public int getPriority() {
 		return -1000;
 	}
 	
-	@Override
-	public void replaces(MethodAdapter adapter) {}
 
 	@Override
 	public int hashCode() {

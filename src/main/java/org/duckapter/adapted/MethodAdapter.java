@@ -1,11 +1,11 @@
 package org.duckapter.adapted;
 
-interface MethodAdapter {
+public interface MethodAdapter {
 
 	Object invoke(Object obj, Object[] args) throws Throwable;
 	
-	int priority();
+	int getPriority();
 	
-	void replaces(MethodAdapter adapter);
+	MethodAdapter mergeWith(MethodAdapter other);
 
 }
