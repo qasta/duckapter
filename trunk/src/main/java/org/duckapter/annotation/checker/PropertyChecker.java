@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import org.duckapter.adapted.MethodAdapter;
+import org.duckapter.adapted.MethodAdapters;
+import org.duckapter.adapted.MethodCallAdapter;
 import org.duckapter.annotation.Property;
 import org.duckapter.checker.DefaultChecker;
 import org.duckapter.checker.MethodsOnlyChecker;
@@ -20,15 +23,18 @@ public class PropertyChecker extends DefaultChecker<Property> {
 	}
 
 	@Override
-	protected boolean checkField(Property anno, Field field, Method duckMethod) {
-		return checker.checkField(null, field, duckMethod);
+	protected MethodAdapter adaptField(Property anno, Field field, Method duckMethod) {
+		return checker.check(null, field, duckMethod);
 	}
 
 	@Override
-	protected boolean checkMethod(Property anno, Method method,
+	protected MethodAdapter adaptMethod(Property anno, Method method,
 			Method duckMethod) {
-		return duckMethod.getParameterTypes().length == 0
-				|| duckMethod.getParameterTypes().length == 1;
+		if( duckMethod.getParameterTypes().length == 0
+				|| duckMethod.getParameterTypes().length == 1) {
+			return new MethodCallAdapter(duckMethod, method);
+		}
+		return MethodAdapters.NULL;
 	}
 
 	@SuppressWarnings("unchecked")

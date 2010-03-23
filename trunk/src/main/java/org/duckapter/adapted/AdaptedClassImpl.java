@@ -1,7 +1,5 @@
 package org.duckapter.adapted;
 
-import static org.duckapter.adapted.MethodAdapterFactory.createMethodAdapter;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
@@ -11,7 +9,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,84 +38,88 @@ final class AdaptedClassImpl implements AdaptedClass {
 	}
 
 	private final void init() {
-		AdaptationViolation vio = doCheck(originalClass, duckInterface,
+		MethodAdapter adapter = doCheck(originalClass, duckInterface,
 				collectCheckers(duckInterface));
-		if (vio!= null) {
-			adaptationViolations.add(vio);
-			canAdaptClass = false;
-			canAdaptInstance = false;
-		} else {
-			// default is true
-			canAdaptClass = true;
-			canAdaptInstance = true;
-		}
+		canAdaptClass = MethodAdapters.notNull(adapter);
+		canAdaptInstance = MethodAdapters.notNull(adapter);
 
 		for (Method duckMethod : duckInterface.getMethods()) {
-			adaptationViolations.addAll(checkDuckMethod(duckMethod));
+			checkDuckMethod(duckMethod);
 		}
 	}
 
-	private final Collection<AdaptationViolation> checkDuckMethod(Method duckMethod) {
+	private final void checkDuckMethod(
+			Method duckMethod) {
 		boolean okForClass = false;
 		boolean okForInstance = false;
 
 		Set<Checker<?>> methodCheckers = collectCheckers(duckMethod);
-		Collection<AdaptationViolation> vios = new ArrayList<AdaptationViolation>();
-		
+
 		for (AnnotatedElement element : getRelevantElements()) {
-			AdaptationViolation vio = doCheck(element, duckMethod, methodCheckers);
-			if (vio == null) {
-				adapters.put(duckMethod, createMethodAdapter(duckMethod,
-						element));
+			final MethodAdapter adapter = doCheck(element, duckMethod,
+					methodCheckers);
+			MethodAdapter old = MethodAdapters.safe(adapters.get(duckMethod));
+			adapters.put(duckMethod,adapter.mergeWith(old));
+			
+			if (MethodAdapters.notNull(adapter)) {
 				okForInstance |= true;
 				okForClass |= isStatic(element);
-			} else {
-				vios.add(vio);
 			}
 		}
 
-		if (!adapters.containsKey(duckMethod)) {
-			adapters.put(duckMethod, NullAdapter.INSTANCE);
+		if (MethodAdapters.isNull(adapters.get(duckMethod))) {
 			canAdaptClass = false;
 			canAdaptInstance = false;
-			return vios;
+			return;
 		}
 		canAdaptClass &= okForClass;
 		canAdaptInstance &= okForInstance;
-		return Collections.emptyList();
-		
 	}
 
 	@SuppressWarnings("unchecked")
-	private static final AdaptationViolation doCheck(AnnotatedElement original,
+	private final MethodAdapter doCheck(AnnotatedElement original,
 			AnnotatedElement duck, Set<Checker<?>> theCheckers) {
-
+		AdaptationViolation vio = null;
 		Set<Checker<?>> checkers = new HashSet<Checker<?>>(theCheckers);
-
+		MethodAdapter ret = MethodAdapters.safe(adapters.get(duck));
 		for (Annotation anno : duck.getAnnotations()) {
 			if (anno.annotationType().isAnnotationPresent(DuckAnnotation.class)) {
 				Checker ch = getCheckerInstance(anno.annotationType()
 						.getAnnotation(DuckAnnotation.class).value());
 				if (checkers.contains(ch) && ch.doesCheck(anno, original)) {
-					if (!ch.check(anno, original, duck)) {
-						return new AdaptationViolation(duck, original, ch
+					final MethodAdapter adapter = ch
+							.check(anno, original, duck);
+					if (MethodAdapters.isNull(adapter)) {
+						vio = new AdaptationViolation(duck, original, ch
 								.getClass());
+						break;
 					}
+					ret = ret.mergeWith(adapter);
 					checkers.remove(ch);
 				}
 			}
 		}
-
+		if (vio != null) {
+			adaptationViolations.add(vio);
+			return MethodAdapters.NULL;
+		}
 		for (Checker<?> checker : checkers) {
 			if (checkers.contains(checker) && checker.doesCheck(null, original)) {
-				if (!checker.check(null, original, duck)) {
-					return new AdaptationViolation(duck, original, checker
+				final MethodAdapter adapter = checker.check(null, original,
+						duck);
+				ret = ret.mergeWith(adapter);
+				if (MethodAdapters.isNull(adapter)) {
+					vio = new AdaptationViolation(duck, original, checker
 							.getClass());
+					break;
 				}
 			}
 		}
-
-		return null;
+		if (vio != null) {
+			adaptationViolations.add(vio);
+			return MethodAdapters.NULL;
+		}
+		return ret;
 	}
 
 	private Collection<AnnotatedElement> getRelevantElements() {
@@ -222,7 +223,7 @@ final class AdaptedClassImpl implements AdaptedClass {
 	public Class<?> getOriginalClass() {
 		return originalClass;
 	}
-	
+
 	@Override
 	public Collection<AdaptationViolation> getAdaptationViolations() {
 		return new ArrayList<AdaptationViolation>(adaptationViolations);

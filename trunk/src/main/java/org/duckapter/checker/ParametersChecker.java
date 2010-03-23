@@ -54,7 +54,6 @@ public class ParametersChecker<T extends Annotation> extends DefaultChecker<T> {
 		if (desired.isAssignableFrom(actual)) {
 			return true;
 		}
-		// TODO: pokusit se nejak vyresit problem s primitivnimi datovymi typy
 		return Duckapter.canAdaptInstanceOf(actual, desired);
 	};
 }

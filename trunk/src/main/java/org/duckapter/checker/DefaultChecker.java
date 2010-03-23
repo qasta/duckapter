@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.duckapter.Checker;
+import org.duckapter.adapted.MethodAdapter;
+import org.duckapter.adapted.MethodAdapters;
 
 public abstract class DefaultChecker<T extends Annotation> implements
 		Checker<T> {
@@ -21,14 +23,14 @@ public abstract class DefaultChecker<T extends Annotation> implements
 	}
 
 	static {
-		defaultCheckers.add(new InterfaceChecker<Annotation>());
 		defaultCheckers.add(new AnnotationsChecker<Annotation>());
 		defaultCheckers.add(new ExceptionsChecker<Annotation>());
 		defaultCheckers.add(new NameChecker<Annotation>());
-		defaultCheckers.add(new ParametersChecker<Annotation>());
-		defaultCheckers.add(new ReturnTypeChecker<Annotation>());
 		defaultCheckers.add(new MethodsOnlyChecker<Annotation>());
 		defaultCheckers.add(new PublicOnlyChecker<Annotation>());
+		// dva nejproblematictejsi, protoze obsahuji rekuzni volani
+		defaultCheckers.add(new ParametersChecker<Annotation>());
+		defaultCheckers.add(new ReturnTypeChecker<Annotation>());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,28 +54,30 @@ public abstract class DefaultChecker<T extends Annotation> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean check(T anno, AnnotatedElement original,
+	public MethodAdapter check(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		// setAccessible(original);
 		// setAccessible(duck);
 		if (original instanceof Class && duck instanceof Class) {
-			return checkClass(anno, (Class) original, (Class) duck);
+			return adaptClass(anno, (Class) original, (Class) duck);
 		}
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
 			if (original instanceof Field) {
-				return checkField(anno, (Field) original, duckMethod);
+				return adaptField(anno, (Field) original, duckMethod);
 			}
 			if (original instanceof Method) {
-				return checkMethod(anno, (Method) original, duckMethod);
+				return adaptMethod(anno, (Method) original, duckMethod);
 			}
 			if (original instanceof Constructor) {
-				return checkConstructor(anno, (Constructor) original,
+				return adaptConstructor(anno, (Constructor) original,
 						duckMethod);
 			}
 		}
-		return false;
+		return MethodAdapters.NULL;
 	}
+	
+	
 
 	// private void setAccessible(AnnotatedElement original) {
 	// if (original instanceof AccessibleObject) {
@@ -82,6 +86,23 @@ public abstract class DefaultChecker<T extends Annotation> implements
 	// }
 	// };
 
+	protected MethodAdapter adaptClass(T anno, Class<?> clazz, Class<?> duckInterface) {
+		return toMethodAdapter(checkClass(anno, clazz, duckInterface));
+	}
+
+	protected MethodAdapter adaptField(T anno, Field field, Method duckMethod) {
+		return toMethodAdapter(checkField(anno, field, duckMethod));
+	}
+
+	protected MethodAdapter adaptMethod(T anno, Method method, Method duckMethod) {
+		return toMethodAdapter(checkMethod(anno, method, duckMethod));
+	}
+
+	protected MethodAdapter adaptConstructor(T anno, Constructor<?> constructor,
+			Method duckMethod) {
+		return toMethodAdapter(checkConstructor(anno, constructor, duckMethod));
+	};
+	
 	protected boolean checkClass(T anno, Class<?> clazz, Class<?> duckInterface) {
 		return false;
 	}
@@ -115,6 +136,14 @@ public abstract class DefaultChecker<T extends Annotation> implements
 		return true;
 	};
 
+	protected MethodAdapter toMethodAdapter(boolean b){
+		return booleanToMethodAdapter(b, MethodAdapters.OK);
+	}
+	
+	protected MethodAdapter booleanToMethodAdapter(boolean b, MethodAdapter okAdapter){
+		return b ? okAdapter : MethodAdapters.NULL;
+	}
+	
 	@Override
 	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
 			AnnotatedElement duckMethod) {

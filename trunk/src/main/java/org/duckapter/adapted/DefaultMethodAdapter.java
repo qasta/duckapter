@@ -52,6 +52,11 @@ abstract class DefaultMethodAdapter implements MethodAdapter {
 		throw new IllegalArgumentException("Wrong object to return!");
 	}
 
+	@Override
+	public MethodAdapter mergeWith(MethodAdapter other) {
+		return MethodAdapters.withHighestPriority(this, other);
+	}
+	
 	private Object handlePrimitive(Object ret, Class<?> duckType) {
 		return ret;
 	}

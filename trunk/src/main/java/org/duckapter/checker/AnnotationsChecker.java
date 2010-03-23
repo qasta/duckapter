@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.duckapter.Checker;
 import org.duckapter.DuckAnnotation;
+import org.duckapter.adapted.MethodAdapter;
+import org.duckapter.adapted.MethodAdapters;
 
 public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 
@@ -18,14 +20,14 @@ public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 		return true;
 	};
 
-	public boolean check(T anno, AnnotatedElement original,
+	public MethodAdapter check(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		Collection<Annotation> fromDuck = collectAnnotations(duck);
 		Collection<Annotation> fromOriginal = collectAnnotations(original);
 		if (fromDuck.equals(fromOriginal)) {
-			return true;
+			return MethodAdapters.OK;
 		}
-		return false;
+		return MethodAdapters.NULL;
 	}
 
 	private Collection<Annotation> collectAnnotations(AnnotatedElement duck) {

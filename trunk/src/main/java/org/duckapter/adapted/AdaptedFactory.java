@@ -18,6 +18,10 @@ public final class AdaptedFactory {
 	
 	public static Adapted adapt(Object original, Class<?> originalClass,
 			Class<?> duckInterface) {
+		if (!duckInterface.isInterface()) {
+			return new EmptyAdapted(original, findAdaptedClass(new Pair(
+					originalClass, duckInterface)));
+		}
 		return new AdaptedImpl(original, findAdaptedClass(new Pair(
 				originalClass, duckInterface)));
 	}
@@ -32,7 +36,12 @@ public final class AdaptedFactory {
 	private static AdaptedClass findAdaptedClass(Pair p) {
 		AdaptedClass ac = cache.get(p);
 		if (ac == null) {
-			ac = new AdaptedClassImpl(p.original, p.duck);
+			if (p.duck.isInterface()) {
+				ac = new AdaptedClassImpl(p.original, p.duck);
+			} else {
+				ac = new EmptyAdaptedClass(p.original, p.duck);
+			}
+			
 			cache.put(p, ac);
 		}
 		return ac;
