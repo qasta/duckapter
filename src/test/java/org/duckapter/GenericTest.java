@@ -1,6 +1,5 @@
 package org.duckapter;
 
-import org.duckapter.Duckapter;
 import org.duckapter.modifier.Static;
 import org.junit.Test;
 

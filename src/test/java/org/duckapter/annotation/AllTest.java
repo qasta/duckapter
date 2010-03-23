@@ -6,10 +6,9 @@ import static org.duckapter.Duckapter.adaptInstance;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore public class AllTest {
+public class AllTest {
 
 	public static interface TestMethod {
 		void test() throws Exception;
@@ -48,16 +47,6 @@ import org.junit.Test;
 		}
 	}
 
-	public static class EmptyTestCase {
-		@Before
-		public void setUp() {
-		}
-
-		@After
-		public void tearDown() {
-		}
-	}
-
 	public static class FailClass {
 
 	}
@@ -76,15 +65,6 @@ import org.junit.Test;
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Test
-	public void testEmptyTestCase() {
-		assertCanAdaptInstance(TestCase.class, EmptyTestCase.class,
-				FailClass.class);
-		TestMethod[] testMethods = adaptInstance(new EmptyTestCase(),
-				TestCase.class).testMethods();
-		Assert.assertEquals(0, testMethods.length);
 	}
 
 }
