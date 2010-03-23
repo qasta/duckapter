@@ -2,7 +2,6 @@ package org.duckapter;
 
 import static org.junit.Assert.assertEquals;
 
-import org.duckapter.Duckapter;
 import org.duckapter.annotation.Alias;
 import org.duckapter.annotation.Factory;
 import org.duckapter.annotation.Property;

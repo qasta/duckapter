@@ -3,7 +3,6 @@ package org.duckapter;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.duckapter.Duckapter;
 import org.duckapter.annotation.Alias;
 import org.duckapter.annotation.Property;
 import org.duckapter.modifier.Static;
