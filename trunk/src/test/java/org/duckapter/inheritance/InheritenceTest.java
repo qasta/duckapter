@@ -17,6 +17,14 @@ public class InheritenceTest {
 
 	}
 	
+	public static class Super {
+		public void testInstance(){}
+	}
+	
+	public static class Inheritence2 extends Super {
+		public static void testStatic(){}
+	}
+	
 	public static interface InheritanceInstance extends InheritanceClass {
 		void testInstance();
 	}
@@ -42,6 +50,25 @@ public class InheritenceTest {
 	@Test
 	public void testInheritance() throws Exception {
 		InheritanceClass iclass = Duckapter.adaptClass(Inheritance.class,
+				InheritanceClass.class);
+		iclass.testStatic();
+		InheritanceInstance iinstance = iclass.instance();
+		iinstance.testStatic();
+		iinstance.testInstance();
+
+	}
+	
+	@Test public void testInheritance2(){
+		Duckapter.adaptInstance(new Inheritence2(), InheritanceClass.class);
+	}
+	
+	@Test public void testInheritance3(){
+		Duckapter.adaptInstance(new Inheritence2(), InheritanceInstance.class);
+	}
+	
+	@Test
+	public void testSuper() throws Exception {
+		InheritanceClass iclass = Duckapter.adaptClass(Inheritence2.class,
 				InheritanceClass.class);
 		iclass.testStatic();
 		InheritanceInstance iinstance = iclass.instance();
