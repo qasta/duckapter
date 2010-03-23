@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,8 +50,7 @@ final class AdaptedClassImpl implements AdaptedClass {
 		}
 	}
 
-	private final void checkDuckMethod(
-			Method duckMethod) {
+	private final void checkDuckMethod(Method duckMethod) {
 		boolean okForClass = false;
 		boolean okForInstance = false;
 
@@ -59,8 +60,8 @@ final class AdaptedClassImpl implements AdaptedClass {
 			final MethodAdapter adapter = doCheck(element, duckMethod,
 					methodCheckers);
 			MethodAdapter old = MethodAdapters.safe(adapters.get(duckMethod));
-			adapters.put(duckMethod,adapter.mergeWith(old));
-			
+			adapters.put(duckMethod, adapter.mergeWith(old));
+
 			if (MethodAdapters.notNull(adapter)) {
 				okForInstance |= true;
 				okForClass |= isStatic(element);
@@ -145,20 +146,82 @@ final class AdaptedClassImpl implements AdaptedClass {
 
 	}
 
-	private static Collection<Method> getRelevantMethods(Class<?> original) {
-		// TODO: vymyslet, jak dedit
-		return Arrays.asList(original.getDeclaredMethods());
+	private static List<Class<?>> getSuperClasses(Class<?> clazz) {
+		List<Class<?>> ret = new ArrayList<Class<?>>();
+		if (clazz.getSuperclass() != null) {
+			ret.addAll(getSuperClasses(clazz.getSuperclass()));
+			ret.add(clazz.getSuperclass());
+		}
+		return ret;
 	}
 
-	private static Collection<java.lang.reflect.Constructor<?>> getRelevantConstructors(
-			Class<?> original) {
-		// TODO: vymyslet, jak dedit
-		return Arrays.asList(original.getDeclaredConstructors());
+	private static Collection<Method> getRelevantMethods(Class<?> original) {
+		Map<MethodSignature, Method> methods = new LinkedHashMap<MethodSignature, Method>();
+		for (Class<?> c : getSuperClasses(original)) {
+			methods.putAll(getMethods(c, true));
+		}
+		for (Method m : original.getDeclaredMethods()) {
+			methods.put(
+					new MethodSignature(m.getParameterTypes(), m.getName()), m);
+		}
+		return methods.values();
+	}
+
+	private static Map<MethodSignature, Method> getMethods(Class<?> clazz,
+			boolean exceptPrivate) {
+		Map<MethodSignature, Method> ret = new LinkedHashMap<MethodSignature, Method>();
+		for (Method m : clazz.getDeclaredMethods()) {
+			if (!exceptPrivate || !Modifier.isPrivate(m.getModifiers())) {
+				ret
+						.put(new MethodSignature(m.getParameterTypes(), m
+								.getName()), m);
+			}
+		}
+		return ret;
+	}
+
+	private static Map<Class<?>[], Constructor<?>> getConstructors(Class<?> clazz,
+			boolean exceptPrivate) {
+		Map<Class<?>[], Constructor<?>> ret = new LinkedHashMap<Class<?>[], Constructor<?>>();
+		for (Constructor<?> c : clazz.getDeclaredConstructors()) {
+			if (!exceptPrivate || !Modifier.isPrivate(c.getModifiers())) {
+				ret.put(c.getParameterTypes(), c);
+			}
+		}
+		return ret;
+	}
+
+	private static Collection<Constructor<?>> getRelevantConstructors(Class<?> original) {
+		Map<Class<?>[], Constructor<?>> cons = new LinkedHashMap<Class<?>[], Constructor<?>>();
+		for (Class<?> c : getSuperClasses(original)) {
+			cons.putAll(getConstructors(c, true));
+		}
+		for (Constructor<?> c : original.getDeclaredConstructors()) {
+			cons.put(c.getParameterTypes(), c);
+		}
+		return cons.values();
+	}
+	
+	private static Map<String, Field> getFields(Class<?> clazz,
+			boolean exceptPrivate) {
+		Map<String, Field> ret = new LinkedHashMap<String, Field>();
+		for (Field f : clazz.getDeclaredFields()) {
+			if (!exceptPrivate || !Modifier.isPrivate(f.getModifiers())) {
+				ret.put(f.getName(), f);
+			}
+		}
+		return ret;
 	}
 
 	private static Collection<Field> getRelevantFields(Class<?> original) {
-		// TODO: vymyslet, jak dedit
-		return Arrays.asList(original.getDeclaredFields());
+		Map<String, Field> fields = new LinkedHashMap<String, Field>();
+		for (Class<?> c : getSuperClasses(original)) {
+			fields.putAll(getFields(c, true));
+		}
+		for (Field f : original.getDeclaredFields()) {
+			fields.put(f.getName(), f);
+		}
+		return fields.values();
 	}
 
 	private static Set<Checker<?>> collectCheckers(AnnotatedElement m) {
@@ -233,6 +296,45 @@ final class AdaptedClassImpl implements AdaptedClass {
 	public Object invoke(Object originalInstance, Method duckMethod,
 			Object[] args) throws Throwable {
 		return adapters.get(duckMethod).invoke(originalInstance, args);
+	}
+
+	private static class MethodSignature {
+		private final Class<?>[] parameterTypes;
+		private final String name;
+
+		public MethodSignature(Class<?>[] parameterTypes, String name) {
+			this.parameterTypes = parameterTypes;
+			this.name = name;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((name == null) ? 0 : name.hashCode());
+			result = prime * result + Arrays.hashCode(parameterTypes);
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			MethodSignature other = (MethodSignature) obj;
+			if (name == null) {
+				if (other.name != null)
+					return false;
+			} else if (!name.equals(other.name))
+				return false;
+			if (!Arrays.equals(parameterTypes, other.parameterTypes))
+				return false;
+			return true;
+		}
+
 	}
 
 }

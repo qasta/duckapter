@@ -6,16 +6,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 
 public class AllMethodAdapter implements MethodAdapter {
-
-	private static int counter = 100;
-	
-	private final int priority;
 	
 	private final Method returnsTypeMethod;
 	
@@ -23,20 +18,16 @@ public class AllMethodAdapter implements MethodAdapter {
 	private Collection<MethodAdapter> adapters = new LinkedHashSet<MethodAdapter>();
 
 	public AllMethodAdapter(AnnotatedElement element, Method returnsTypeMethod) {
-		System.out.println("AMA --- element: " + element + ", rtm: "
-				+ returnsTypeMethod);
-		priority = ++ counter;
 		this.returnsTypeMethod = returnsTypeMethod;
 	}
 
 	@Override
 	public int getPriority() {
-		return priority;
+		return Integer.MAX_VALUE;
 	}
 
 	@Override
 	public MethodAdapter mergeWith(MethodAdapter other) {
-		System.out.println("AMA --- merge adapter " + other);
 		if (!(other instanceof AllMethodAdapter) && !(other instanceof MethodAdapters) ) {
 			adapters.add(other);
 		}
@@ -45,8 +36,6 @@ public class AllMethodAdapter implements MethodAdapter {
 
 	@Override
 	public Object invoke(Object obj, Object[] args) throws Throwable {
-		System.out.println("AMA --- invoke obj: " + obj + ", args: "
-				+ Arrays.toString(args));
 		return collectProxiesArray(obj, returnsTypeMethod.getDeclaringClass());
 	}
 	
