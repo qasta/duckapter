@@ -7,8 +7,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.duckapter.Duckapter;
-import org.duckapter.adapted.MethodAdapter;
-import org.duckapter.adapted.MethodAdapters;
+import org.duckapter.MethodAdapter;
+import org.duckapter.adapter.MethodAdapters;
 
 public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
 

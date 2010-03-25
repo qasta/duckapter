@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.DuckAnnotation;
-import org.duckapter.annotation.checker.MatchingChecker;
+import org.duckapter.checker.MatchingChecker;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

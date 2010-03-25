@@ -11,14 +11,12 @@ public interface AdaptedClass {
 			throws Throwable;
 
 	Class<?> getOriginalClass();
-
 	Class<?> getDuckInterface();
 
 	/* nesmi mit zadny staticky/konstruktory */
 	boolean canAdaptInstance();
-
 	boolean canAdaptClass();
 
-	Collection<AdaptationViolation> getAdaptationViolations();
-
+	Collection<Method> getUnimplementedForInstance();
+	Collection<Method> getUnimplementedForClass();
 }

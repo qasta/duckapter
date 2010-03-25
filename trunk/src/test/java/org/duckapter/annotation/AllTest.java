@@ -46,6 +46,16 @@ public class AllTest {
 		public void tearDown() {
 		}
 	}
+	
+	public static class EmptyTestCase {
+		@Before
+		public void setUp() {
+		}
+
+		@After
+		public void tearDown() {
+		}
+	}
 
 	public static class FailClass {
 
@@ -65,6 +75,15 @@ public class AllTest {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Test
+	public void testEmptyTestCase() {
+		assertCanAdaptInstance(TestCase.class, EmptyTestCase.class,
+				FailClass.class);
+		TestMethod[] testMethods = adaptInstance(new EmptyTestCase(),
+				TestCase.class).testMethods();
+		Assert.assertEquals(0, testMethods.length);
 	}
 
 }

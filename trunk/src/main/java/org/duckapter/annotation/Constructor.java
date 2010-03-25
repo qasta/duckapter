@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.DuckAnnotation;
-import org.duckapter.annotation.checker.ConstructorChecker;
+import org.duckapter.checker.ConstructorChecker;
 
 /**
  * Declares that annotated method will be constructor for given class.

@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.duckapter.Checker;
 import org.duckapter.DuckAnnotation;
-import org.duckapter.adapted.MethodAdapter;
-import org.duckapter.adapted.MethodAdapters;
+import org.duckapter.MethodAdapter;
+import org.duckapter.adapter.MethodAdapters;
 
 public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 

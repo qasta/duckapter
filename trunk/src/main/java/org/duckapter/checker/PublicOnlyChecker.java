@@ -5,7 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.duckapter.modifier.Visibility;
+import org.duckapter.annotation.Visibility;
 
 public class PublicOnlyChecker<T extends Annotation> extends DefaultChecker<T> {
 	@Override

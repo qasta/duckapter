@@ -3,7 +3,7 @@ package org.duckapter.duck.itest;
 import org.duckapter.annotation.Constructor;
 import org.duckapter.annotation.Factory;
 import org.duckapter.annotation.Property;
-import org.duckapter.modifier.Static;
+import org.duckapter.annotation.Static;
 
 public interface IDuckClass {
 	@Factory

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import org.duckapter.DuckAnnotation;
 import org.duckapter.Duckapter;
-import org.duckapter.annotation.checker.PropertyChecker;
+import org.duckapter.checker.PropertyChecker;
 
 /**
  * Declares that method is property getter/setter. Annotated methods should use

@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.DuckAnnotation;
-import org.duckapter.annotation.checker.FieldChecker;
+import org.duckapter.checker.FieldChecker;
 
 @Documented
 @DuckAnnotation(FieldChecker.class)

@@ -3,9 +3,9 @@ package org.duckapter.checker;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import org.duckapter.adapted.MethodAdapter;
-import org.duckapter.adapted.MethodAdapters;
-import org.duckapter.adapted.MethodCallAdapter;
+import org.duckapter.MethodAdapter;
+import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.adapter.MethodCallAdapter;
 
 public class MethodsOnlyChecker<T extends Annotation> extends DefaultChecker<T> {
 
