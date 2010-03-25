@@ -151,13 +151,8 @@ public class Duckapter {
 
 	public static boolean canAdaptInstanceOf(Class<?> classOfOriginal,
 			Class<?> duckInterface) {
-		System.out.printf("===canAdaptInstanceOf=== original: %s, duck:%s%n",
-				classOfOriginal, duckInterface);
 		final boolean canAdaptInstance = AdaptedFactory.adapt(classOfOriginal,
 				duckInterface).canAdaptInstance();
-		System.out.printf(
-				"===canAdaptInstanceOf=== !!!%s!!!original: %s, duck:%s%n",
-				canAdaptInstance, classOfOriginal, duckInterface);
 		return canAdaptInstance;
 	}
 
