@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import org.duckapter.DuckAnnotation;
 import org.duckapter.Duckapter;
-import org.duckapter.annotation.checker.AliasChecker;
+import org.duckapter.checker.AliasChecker;
 
 /**
  * Allows annotated method or property to has more potential names. <br/>

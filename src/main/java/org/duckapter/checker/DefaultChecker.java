@@ -10,8 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.duckapter.Checker;
-import org.duckapter.adapted.MethodAdapter;
-import org.duckapter.adapted.MethodAdapters;
+import org.duckapter.MethodAdapter;
+import org.duckapter.adapter.MethodAdapters;
 
 public abstract class DefaultChecker<T extends Annotation> implements
 		Checker<T> {
@@ -28,6 +28,7 @@ public abstract class DefaultChecker<T extends Annotation> implements
 		defaultCheckers.add(new NameChecker<Annotation>());
 		defaultCheckers.add(new MethodsOnlyChecker<Annotation>());
 		defaultCheckers.add(new PublicOnlyChecker<Annotation>());
+		defaultCheckers.add(new ConcreteMethodsChecker<Annotation>());
 		// dva nejproblematictejsi, protoze obsahuji rekuzni volani
 		defaultCheckers.add(new ParametersChecker<Annotation>());
 		defaultCheckers.add(new ReturnTypeChecker<Annotation>());

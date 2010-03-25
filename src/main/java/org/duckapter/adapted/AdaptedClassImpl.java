@@ -9,20 +9,23 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
-import org.duckapter.AdaptationViolation;
 import org.duckapter.AdaptedClass;
 import org.duckapter.Checker;
 import org.duckapter.DuckAnnotation;
+import org.duckapter.MethodAdapter;
+import org.duckapter.adapter.MethodAdapters;
 import org.duckapter.checker.DefaultChecker;
 
-final class AdaptedClassImpl implements AdaptedClass {
+final class AdaptedClassImpl extends AbstractAdaptedClass implements AdaptedClass {
 
 	private static class MethodSignature {
 		private final String name;
@@ -62,6 +65,7 @@ final class AdaptedClassImpl implements AdaptedClass {
 		}
 
 	}
+
 	private static Map<Class<?>, Checker<?>> checkerClassToInstanceMap = new HashMap<Class<?>, Checker<?>>();
 
 	private static Set<Checker<?>> collectCheckers(AnnotatedElement m) {
@@ -82,20 +86,11 @@ final class AdaptedClassImpl implements AdaptedClass {
 		methodCheckers.removeAll(suppressedMethodChecker);
 		return methodCheckers;
 	}
-	private static Map<Class<?>[], Constructor<?>> getConstructors(Class<?> clazz,
-			boolean exceptPrivate) {
-		Map<Class<?>[], Constructor<?>> ret = new LinkedHashMap<Class<?>[], Constructor<?>>();
-		for (Constructor<?> c : clazz.getDeclaredConstructors()) {
-			if (!exceptPrivate || !Modifier.isPrivate(c.getModifiers())) {
-				ret.put(c.getParameterTypes(), c);
-			}
-		}
-		return ret;
-	}
 
 	private static Collection<? extends Checker<?>> getDefaultCheckers() {
 		return DefaultChecker.getDefaultCheckers();
 	}
+
 	private static Map<String, Field> getFields(Class<?> clazz,
 			boolean exceptPrivate) {
 		Map<String, Field> ret = new LinkedHashMap<String, Field>();
@@ -138,7 +133,8 @@ final class AdaptedClassImpl implements AdaptedClass {
 		return ret;
 	}
 
-	private static Collection<Constructor<?>> getRelevantConstructors(Class<?> original) {
+	private static Collection<Constructor<?>> getRelevantConstructors(
+			Class<?> original) {
 		return Arrays.asList(original.getDeclaredConstructors());
 	}
 
@@ -174,47 +170,11 @@ final class AdaptedClassImpl implements AdaptedClass {
 		return ret;
 	}
 
-	private final Collection<AdaptationViolation> adaptationViolations = new ArrayList<AdaptationViolation>();
-
 	private final Map<Method, MethodAdapter> adapters = new HashMap<Method, MethodAdapter>();
 
-	private boolean canAdaptClass;
-
-	private boolean canAdaptInstance;
-
-	private final Class<?> duckInterface;
-	
-	private final Class<?> originalClass;
-
 	AdaptedClassImpl(Class<?> originalClass, Class<?> duckInterface) {
-		this.originalClass = originalClass;
-		this.duckInterface = duckInterface;
+		super(duckInterface, originalClass);
 		init();
-	}
-
-	@Override
-	public boolean canAdaptClass() {
-		return canAdaptClass;
-	}
-
-	@Override
-	public boolean canAdaptInstance() {
-		return canAdaptInstance;
-	}
-
-	@Override
-	public Collection<AdaptationViolation> getAdaptationViolations() {
-		return new ArrayList<AdaptationViolation>(adaptationViolations);
-	}
-
-	@Override
-	public Class<?> getDuckInterface() {
-		return duckInterface;
-	}
-
-	@Override
-	public Class<?> getOriginalClass() {
-		return originalClass;
 	}
 
 	@Override
@@ -226,47 +186,41 @@ final class AdaptedClassImpl implements AdaptedClass {
 	@SuppressWarnings("unchecked")
 	private final MethodAdapter doCheck(AnnotatedElement original,
 			AnnotatedElement duck, Set<Checker<?>> theCheckers) {
-		AdaptationViolation vio = null;
 		Set<Checker<?>> checkers = new HashSet<Checker<?>>(theCheckers);
-		MethodAdapter ret = MethodAdapters.safe(adapters.get(duck));
+		MethodAdapter ret = MethodAdapters.MAX;
 		for (Annotation anno : duck.getAnnotations()) {
-			if (anno.annotationType().isAnnotationPresent(DuckAnnotation.class)) {
-				Checker ch = getCheckerInstance(anno.annotationType()
-						.getAnnotation(DuckAnnotation.class).value());
-				if (checkers.contains(ch) && ch.doesCheck(anno, original)) {
-					final MethodAdapter adapter = ch
-							.check(anno, original, duck);
-					if (MethodAdapters.isNull(adapter)) {
-						vio = new AdaptationViolation(duck, original, ch
-								.getClass());
-						break;
-					}
-					ret = ret.mergeWith(adapter);
-					checkers.remove(ch);
-				}
+			Checker ch = getChecker(anno);
+			if (ch == null) {
+				continue;
 			}
-		}
-		if (vio != null) {
-			adaptationViolations.add(vio);
-			return MethodAdapters.NULL;
+			if (checkers.contains(ch) && ch.doesCheck(anno, original)) {
+				final MethodAdapter adapter = ch.check(anno, original, duck);
+				ret = ret.andMerge(adapter);
+				checkers.remove(ch);
+			}
 		}
 		for (Checker<?> checker : checkers) {
 			if (checkers.contains(checker) && checker.doesCheck(null, original)) {
 				final MethodAdapter adapter = checker.check(null, original,
 						duck);
-				ret = ret.mergeWith(adapter);
-				if (MethodAdapters.isNull(adapter)) {
-					vio = new AdaptationViolation(duck, original, checker
-							.getClass());
-					break;
-				}
+				ret = ret.andMerge(adapter);
 			}
 		}
-		if (vio != null) {
-			adaptationViolations.add(vio);
-			return MethodAdapters.NULL;
-		}
 		return ret;
+	}
+
+	private boolean isDuckAnnotation(Annotation anno) {
+		return anno.annotationType().isAnnotationPresent(DuckAnnotation.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Checker getChecker(Annotation anno) {
+		if (!isDuckAnnotation(anno)) {
+			return null;
+		}
+		Checker ch = getCheckerInstance(anno.annotationType().getAnnotation(
+				DuckAnnotation.class).value());
+		return ch;
 	}
 
 	private Collection<AnnotatedElement> getRelevantElements() {
@@ -277,57 +231,50 @@ final class AdaptedClassImpl implements AdaptedClass {
 		return elements;
 	}
 
-	private final void checkDuckMethod(Method duckMethod) {
-		boolean okForClass = false;
-		boolean okForInstance = false;
-
-		Set<Checker<?>> methodCheckers = collectCheckers(duckMethod);
-
-		for (AnnotatedElement element : getRelevantElements()) {
-			final MethodAdapter adapter = doCheck(element, duckMethod,
-					methodCheckers);
-			MethodAdapter old = MethodAdapters.safe(adapters.get(duckMethod));
-			adapters.put(duckMethod, adapter.mergeWith(old));
-
-			if (MethodAdapters.notNull(adapter)) {
-				okForInstance |= true;
-				okForClass |= isStatic(element);
-			}
-		}
-
-		if (MethodAdapters.isNull(adapters.get(duckMethod))) {
-			canAdaptClass = false;
-			canAdaptInstance = false;
-			return;
-		}
-		canAdaptClass &= okForClass;
-		canAdaptInstance &= okForInstance;
-	}
-
-	private final void init() {
+	private void init() {
 		MethodAdapter adapter = doCheck(originalClass, duckInterface,
 				collectCheckers(duckInterface));
 		canAdaptClass = MethodAdapters.notNull(adapter);
 		canAdaptInstance = MethodAdapters.notNull(adapter);
 
 		for (Method duckMethod : duckInterface.getMethods()) {
-			checkDuckMethod(duckMethod);
+			MethodAdapter old = checkDuckMethod(duckMethod);
+
+			canAdaptClass &= old.isInvocableOnClass();
+			canAdaptInstance &= old.isInvocableOnInstance();
+			adapters.put(duckMethod, old);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private boolean isStatic(AnnotatedElement element) {
-		if (element instanceof Constructor) {
-			return true;
+	private MethodAdapter checkDuckMethod(Method duckMethod) {
+		Set<Checker<?>> methodCheckers = collectCheckers(duckMethod);
+		MethodAdapter adapter = MethodAdapters.MIN;
+		for (AnnotatedElement element : getRelevantElements()) {
+			adapter = doCheck(element, duckMethod, methodCheckers).orMerge(
+					adapter);
 		}
-		if (element instanceof Method) {
-			return Modifier.isStatic(((Method) element).getModifiers());
-		}
-		if (element instanceof Field) {
-			return Modifier.isStatic(((Field) element).getModifiers());
-		}
-		return false;
-
+		return adapter;
 	}
 
+	@Override
+	public Collection<Method> getUnimplementedForClass() {
+		Collection<Method> methods = new ArrayList<Method>();
+		for (Entry<Method, MethodAdapter> entry : adapters.entrySet()) {
+			if (!entry.getValue().isInvocableOnClass()) {
+				methods.add(entry.getKey());
+			}
+		}
+		return Collections.unmodifiableCollection(methods);
+	}
+
+	@Override
+	public Collection<Method> getUnimplementedForInstance() {
+		Collection<Method> methods = new ArrayList<Method>();
+		for (Entry<Method, MethodAdapter> entry : adapters.entrySet()) {
+			if (!entry.getValue().isInvocableOnInstance()) {
+				methods.add(entry.getKey());
+			}
+		}
+		return Collections.unmodifiableCollection(methods);
+	}
 }

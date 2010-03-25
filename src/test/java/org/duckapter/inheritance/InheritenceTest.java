@@ -2,7 +2,7 @@ package org.duckapter.inheritance;
 
 import org.duckapter.Duckapter;
 import org.duckapter.annotation.Factory;
-import org.duckapter.modifier.Static;
+import org.duckapter.annotation.Static;
 import org.junit.Test;
 
 public class InheritenceTest {

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import org.duckapter.DuckAnnotation;
 import org.duckapter.Duckapter;
-import org.duckapter.annotation.checker.FactoryChecker;
+import org.duckapter.checker.FactoryChecker;
 
 /**
  * Declares that annotated method will be factory class or constructor for given

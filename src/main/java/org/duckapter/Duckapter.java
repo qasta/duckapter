@@ -5,7 +5,8 @@ import java.lang.reflect.Proxy;
 import org.duckapter.adapted.AdaptedFactory;
 import org.duckapter.annotation.Constructor;
 import org.duckapter.annotation.Factory;
-import org.duckapter.modifier.Static;
+import org.duckapter.annotation.Optional;
+import org.duckapter.annotation.Static;
 
 /**
  * Duckapter brings support for duck typing into the java programming language.<br />
@@ -150,10 +151,15 @@ public class Duckapter {
 
 	public static boolean canAdaptInstanceOf(Class<?> classOfOriginal,
 			Class<?> duckInterface) {
-		return AdaptedFactory.adapt(classOfOriginal, duckInterface)
-				.canAdaptInstance();
+		System.out.printf("===canAdaptInstanceOf=== original: %s, duck:%s%n",
+				classOfOriginal, duckInterface);
+		final boolean canAdaptInstance = AdaptedFactory.adapt(classOfOriginal,
+				duckInterface).canAdaptInstance();
+		System.out.printf(
+				"===canAdaptInstanceOf=== !!!%s!!!original: %s, duck:%s%n",
+				canAdaptInstance, classOfOriginal, duckInterface);
+		return canAdaptInstance;
 	}
-
 
 	private static boolean canAdapt(Class<?> original, Class<?> duck,
 			boolean onlyStaticAllowed) {
@@ -169,7 +175,7 @@ public class Duckapter {
 		if (!canAdapt(original, duck, true)) {
 			throw new IllegalArgumentException("Cannot adapt class!"
 					+ AdaptedFactory.adapt(original, duck)
-							.getAdaptationViolations());
+							.getUnimplementedForClass());
 		}
 	}
 
@@ -177,7 +183,7 @@ public class Duckapter {
 		if (!canAdapt(o.getClass(), duck, false)) {
 			throw new IllegalArgumentException("Cannot adapt class!"
 					+ AdaptedFactory.adapt(o.getClass(), duck)
-							.getAdaptationViolations());
+							.getUnimplementedForInstance());
 		}
 	}
 

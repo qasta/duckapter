@@ -1,6 +1,6 @@
 package org.duckapter;
 
-import org.duckapter.modifier.Static;
+import org.duckapter.annotation.Static;
 import org.junit.Test;
 
 public class GenericTest {

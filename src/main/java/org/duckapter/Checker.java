@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
-import org.duckapter.adapted.MethodAdapter;
 
 public interface Checker<T extends Annotation> {
 

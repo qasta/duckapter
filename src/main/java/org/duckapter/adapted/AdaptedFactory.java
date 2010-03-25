@@ -1,21 +1,30 @@
 package org.duckapter.adapted;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.duckapter.Adapted;
 import org.duckapter.AdaptedClass;
 
 public final class AdaptedFactory {
 
+	private static ThreadLocal<Set<Pair>> pending = new ThreadLocal<Set<Pair>>() {
+		@Override
+		protected Set<Pair> initialValue() {
+			return new HashSet<Pair>();
+		}
+	};
+
 	private AdaptedFactory() {
 		// prevents instance creation and subtyping
 	}
 
-	public static void clearCache(){
+	public static void clearCache() {
 		cache.clear();
 	}
-	
+
 	public static Adapted adapt(Object original, Class<?> originalClass,
 			Class<?> duckInterface) {
 		if (!duckInterface.isInterface()) {
@@ -36,13 +45,18 @@ public final class AdaptedFactory {
 	private static AdaptedClass findAdaptedClass(Pair p) {
 		AdaptedClass ac = cache.get(p);
 		if (ac == null) {
-			if (p.duck.isInterface()) {
-				ac = new AdaptedClassImpl(p.original, p.duck);
+			if (pending.get().contains(p)) {
+				ac = new PendingAdaptedClass(p.original, p.duck);
 			} else {
-				ac = new EmptyAdaptedClass(p.original, p.duck);
+				pending.get().add(p);
+				if (p.duck.isInterface()) {
+					ac = new AdaptedClassImpl(p.original, p.duck);
+				} else {
+					ac = new EmptyAdaptedClass(p.original, p.duck);
+				}
+				cache.put(p, ac);
+				pending.get().remove(p);
 			}
-			
-			cache.put(p, ac);
 		}
 		return ac;
 	}

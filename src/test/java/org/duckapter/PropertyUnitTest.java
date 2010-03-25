@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.duckapter.annotation.Alias;
 import org.duckapter.annotation.Factory;
 import org.duckapter.annotation.Property;
-import org.duckapter.modifier.Static;
+import org.duckapter.annotation.Static;
 import org.junit.Test;
 
 public class PropertyUnitTest {
