@@ -7,10 +7,10 @@ import java.util.Collection;
 
 public interface Checker<T extends Annotation> {
 
-	boolean doesCheck(T anno, AnnotatedElement element);
+	boolean canAdapt(T anno, AnnotatedElement element);
 
-	MethodAdapter check(T anno, AnnotatedElement original, AnnotatedElement duck);
+	MethodAdapter adapt(T anno, AnnotatedElement original, AnnotatedElement duck);
 
 	<A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
-			AnnotatedElement duckMethod);
+			T anno, AnnotatedElement element);
 }

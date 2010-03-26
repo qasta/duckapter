@@ -6,13 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.duckapter.DuckAnnotation;
-import org.duckapter.checker.PackageChecker;
+import org.duckapter.CheckerAnnotation;
+import org.duckapter.checker.VisibilityChecker;
 
 @Documented
-@DuckAnnotation(PackageChecker.class)
+@CheckerAnnotation(VisibilityChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.TYPE })
+@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface Package {
 	Visibility value() default Visibility.EXACT;
 }

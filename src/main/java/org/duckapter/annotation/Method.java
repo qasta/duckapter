@@ -7,11 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.checker.OptionalChecker;
+import org.duckapter.checker.MethodChecker;
+
 @Documented
-@CheckerAnnotation(OptionalChecker.class)
+@CheckerAnnotation(MethodChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
-public @interface Optional {
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+public @interface Method {
 
 }

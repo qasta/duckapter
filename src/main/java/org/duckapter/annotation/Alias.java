@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.duckapter.DuckAnnotation;
+import org.duckapter.CheckerAnnotation;
 import org.duckapter.Duckapter;
 import org.duckapter.checker.AliasChecker;
 
@@ -25,9 +25,9 @@ import org.duckapter.checker.AliasChecker;
  * 
  */
 @Documented
-@DuckAnnotation(AliasChecker.class)
+@CheckerAnnotation(AliasChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
 public @interface Alias {
 
 	String[] value();

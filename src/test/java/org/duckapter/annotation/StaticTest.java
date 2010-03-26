@@ -3,7 +3,6 @@ package org.duckapter.annotation;
 import static org.duckapter.DuckTestHelper.assertCanAdaptClass;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.annotation.Static;
 import org.junit.Test;
 
 public class StaticTest {

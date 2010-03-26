@@ -3,8 +3,6 @@ package org.duckapter.annotation;
 import static org.duckapter.DuckTestHelper.assertCanAdaptClass;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.annotation.Field;
-import org.duckapter.annotation.Final;
 import org.junit.Ignore;
 import org.junit.Test;
 

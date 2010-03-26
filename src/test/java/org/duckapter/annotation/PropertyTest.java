@@ -41,14 +41,24 @@ public class PropertyTest {
 		assertCanAdaptInstance(PropertyInterface.class,
 				WithFieldProperty.class, WithFinalProperty.class);
 
-		assertProps(Duckapter.adaptInstance(new WithFieldProperty(),
-				PropertyInterface.class));
+	}
 
-		assertCanAdaptInstance(PropertyInterface.class,
-				WithMethodProperty.class, WithFinalProperty.class);
+	@Test
+	public void testMethodProps() {
 		assertProps(Duckapter.adaptInstance(new WithMethodProperty(),
 				PropertyInterface.class));
+	}
 
+	@Test
+	public void testMethod() {
+		assertCanAdaptInstance(PropertyInterface.class,
+				WithMethodProperty.class, WithFinalProperty.class);
+	}
+
+	@Test
+	public void testFieldProps() {
+		assertProps(Duckapter.adaptInstance(new WithFieldProperty(),
+				PropertyInterface.class));
 	}
 
 	private void assertProps(PropertyInterface pi) {

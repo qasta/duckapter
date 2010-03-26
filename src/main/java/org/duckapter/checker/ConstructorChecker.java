@@ -10,28 +10,29 @@ import org.duckapter.adapter.ConstructorAdapter;
 import org.duckapter.adapter.MethodAdapters;
 import org.duckapter.annotation.Constructor;
 
-public class ConstructorChecker extends DefaultChecker<Constructor> {
+public class ConstructorChecker extends AbstractChecker<Constructor> {
 
 	@Override
-	protected boolean doesCheckClass(Constructor anno) {
-		return false;
-	}
-
-	@Override
-	public MethodAdapter adaptConstructor(Constructor anno,
-			java.lang.reflect.Constructor<?> constructor, Method duckMethod) {
+	public MethodAdapter adapt(Constructor anno, AnnotatedElement original,
+			AnnotatedElement duck) {
+		if (!(original instanceof java.lang.reflect.Constructor<?>)
+				|| !(duck instanceof Method)) {
+			return MethodAdapters.NULL;
+		}
+		java.lang.reflect.Constructor<?> constructor = (java.lang.reflect.Constructor<?>) original;
 		try {
 			constructor.setAccessible(true);
 		} catch (SecurityException e) {
 			return MethodAdapters.NULL;
 		}
-		return new ConstructorAdapter(duckMethod, constructor);
+		return new ConstructorAdapter((Method) duck, constructor);
+
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Class<? extends DefaultChecker>> suppressCheckers(
-			AnnotatedElement duckMethod) {
+	public List<Class<? extends AbstractChecker>> suppressCheckers(
+			Constructor anno, AnnotatedElement duckMethod) {
 		return Arrays.asList(MethodsOnlyChecker.class, NameChecker.class);
 	}
 

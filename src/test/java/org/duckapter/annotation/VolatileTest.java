@@ -2,8 +2,6 @@ package org.duckapter.annotation;
 
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.annotation.Field;
-import org.duckapter.annotation.Volatile;
 import org.junit.Test;
 
 public class VolatileTest {

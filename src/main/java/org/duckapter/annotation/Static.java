@@ -5,9 +5,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.duckapter.DuckAnnotation;
-import org.duckapter.checker.StaticChecker;
+import java.lang.reflect.Modifier;
 
 /**
  * Declares that annotated method or all methods of annotated class must be
@@ -17,9 +15,9 @@ import org.duckapter.checker.StaticChecker;
  * @author Vladimir Orany
  */
 @Documented
-@DuckAnnotation(StaticChecker.class)
+@ModifierMask(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD })
+@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 public @interface Static {
 
 }

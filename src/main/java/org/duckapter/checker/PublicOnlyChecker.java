@@ -1,30 +1,30 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.AnnotatedElement;
+import java.util.Collections;
+import java.util.List;
 
 import org.duckapter.annotation.Visibility;
 
-public class PublicOnlyChecker<T extends Annotation> extends DefaultChecker<T> {
-	@Override
-	public boolean checkClass(T anno, Class<?> clazz, Class<?> duckInterface) {
-		return Visibility.EXACT.checkPublic(clazz.getModifiers());
-	}
+public class PublicOnlyChecker extends VisibilityChecker {
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod) {
-		return Visibility.EXACT.checkPublic(field.getModifiers());
+	protected Visibility getVisibility(Annotation anno) {
+		return Visibility.EXACT;
 	}
+	
+	@Override
+	public List<Class<PublicOnlyChecker>> suppressCheckers(Annotation anno,
+			AnnotatedElement duckMethod) {
+		return Collections.emptyList();
+	}
+	
+	private static final int HASH = Checkers.hashCode(PublicOnlyChecker.class);
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
-		return Visibility.EXACT.checkPublic(method.getModifiers());
+	public int hashCode() {
+		return HASH;
 	}
-
-	@Override
-	public boolean checkConstructor(T anno, Constructor<?> c, Method duckMethod) {
-		return Visibility.EXACT.checkPublic(c.getModifiers());
-	}
+	
 }

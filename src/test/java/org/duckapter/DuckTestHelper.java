@@ -1,7 +1,6 @@
 package org.duckapter;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.duckapter.adapted.AdaptedFactory;
 import org.junit.Assert;
@@ -87,13 +86,11 @@ public final class DuckTestHelper {
 			// ok
 		}
 
-		assertTrue(Duckapter.canAdaptClass(toPass, testedInterface));
-
 		try {
 			Duckapter.adaptClass(toPass, testedInterface);
 
 		} catch (IllegalArgumentException e) {
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 
 	}

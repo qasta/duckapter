@@ -2,8 +2,6 @@ package org.duckapter.annotation;
 
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.annotation.Field;
-import org.duckapter.annotation.Transient;
 import org.junit.Test;
 
 public class TransientTest {
@@ -21,11 +19,21 @@ public class TransientTest {
 	public static class WithoutTransientField {
 		public String field = "";
 	}
+	
+	public static class WithMethodField {
+		public String getField(){ return ""; }
+	}
 
 	@Test
 	public void testTransient() throws Exception {
 		assertCanAdaptInstance(WithTransientFieldInterface.class,
 				WithTransientField.class, WithoutTransientField.class);
+	}
+	
+	@Test
+	public void testTransientMethod() throws Exception {
+		assertCanAdaptInstance(WithTransientFieldInterface.class,
+				WithTransientField.class, WithMethodField.class);
 	}
 
 }
