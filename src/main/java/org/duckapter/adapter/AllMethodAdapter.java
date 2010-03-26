@@ -59,7 +59,7 @@ public class AllMethodAdapter implements MethodAdapter {
 		AllMethodAdapter ama = this;
 		while (ama.previous != null) {
 			if (obj == null && ama.adapter.isInvocableOnClass()) {
-				ret.add(createProxy(ama.adapter, obj, footPrint));
+				ret.add(createProxy(ama.adapter, null, footPrint));
 			}
 			if (obj != null && ama.adapter.isInvocableOnInstance()) {
 				ret.add(createProxy(ama.adapter, obj, footPrint));

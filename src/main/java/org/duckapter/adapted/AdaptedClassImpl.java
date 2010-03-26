@@ -240,8 +240,8 @@ final class AdaptedClassImpl extends AbstractAdaptedClass implements AdaptedClas
 		for (Method duckMethod : duckInterface.getMethods()) {
 			MethodAdapter old = checkDuckMethod(duckMethod);
 
-			canAdaptClass &= old.isInvocableOnClass();
-			canAdaptInstance &= old.isInvocableOnInstance();
+			canAdaptClass = canAdaptClass && old.isInvocableOnClass();
+			canAdaptInstance = canAdaptInstance && old.isInvocableOnInstance();
 			adapters.put(duckMethod, old);
 		}
 	}

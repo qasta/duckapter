@@ -25,6 +25,10 @@ import org.duckapter.annotation.Static;
  * @author vladimir.orany
  */
 public class Duckapter {
+	
+	private Duckapter() {
+		// prevents instance creation and subtyping
+	}
 
 	/**
 	 * Tries to adapt existing instance to the interface given as

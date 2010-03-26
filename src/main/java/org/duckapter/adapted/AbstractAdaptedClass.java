@@ -2,7 +2,7 @@ package org.duckapter.adapted;
 
 import org.duckapter.AdaptedClass;
 
-public abstract class AbstractAdaptedClass implements AdaptedClass {
+abstract class AbstractAdaptedClass implements AdaptedClass {
 
 	protected boolean canAdaptClass;
 	protected boolean canAdaptInstance;
@@ -11,7 +11,7 @@ public abstract class AbstractAdaptedClass implements AdaptedClass {
 
 
 
-	public AbstractAdaptedClass(Class<?> duckInterface, Class<?> originalClass) {
+	public AbstractAdaptedClass(final Class<?> duckInterface, final Class<?> originalClass) {
 		this.duckInterface = duckInterface;
 		this.originalClass = originalClass;
 	}
