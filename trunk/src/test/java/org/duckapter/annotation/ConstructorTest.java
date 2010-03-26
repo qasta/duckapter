@@ -27,7 +27,7 @@ public class ConstructorTest {
 	}
 
 	public static class WithMethod {
-		private WithMethod() {
+		private WithMethod(int integer) {
 		}
 
 		public Object newInstance() {

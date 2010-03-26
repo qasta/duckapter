@@ -2,7 +2,6 @@ package org.duckapter.annotation;
 
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.annotation.StrictFloatingPoint;
 import org.junit.Test;
 
 public class StrictFloatingPointTest {

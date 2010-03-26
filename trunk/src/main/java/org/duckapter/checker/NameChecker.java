@@ -1,15 +1,13 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 
-public class NameChecker<T extends Annotation> extends DefaultChecker<T> {
-
-	@Override
-	protected boolean doesCheckClass(T anno) {
-		return false;
-	};
+public class NameChecker<T extends Annotation> extends BooleanCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno,
 			java.lang.reflect.Constructor<?> constructor, Method duckMethod) {
@@ -44,5 +42,14 @@ public class NameChecker<T extends Annotation> extends DefaultChecker<T> {
 	protected String normalize(String s) {
 		return s.toLowerCase().replace("_", "");
 	}
+
+	@Override
+	protected Collection<ElementType> getTargetElements(T anno) {
+		if (anno != null) {
+			return super.getTargetElements(anno);
+		}
+		return Arrays.asList(new ElementType[] { ElementType.METHOD,
+				ElementType.FIELD, ElementType.CONSTRUCTOR });
+	};
 
 }

@@ -1,33 +1,17 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.duckapter.Duckapter;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
 
-public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
-
-	@Override
-	protected boolean doesCheckClass(T anno) {
-		return false;
-	};
-
-	public MethodAdapter check(T anno, AnnotatedElement original,
-			AnnotatedElement duck) {
-		if (duck instanceof Method) {
-			Method duckMethod = (Method) duck;
-			if (duckMethod.getDeclaringClass().isAssignableFrom(
-					duckMethod.getReturnType())) {
-				return MethodAdapters.OK;
-			}
-		}
-		return super.check(anno, original, duck);
-	};
+public class ReturnTypeChecker<T extends Annotation> extends
+		BooleanCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod) {
@@ -49,6 +33,15 @@ public class ReturnTypeChecker<T extends Annotation> extends DefaultChecker<T> {
 		}
 		return Duckapter.canAdaptInstanceOf(returnType, duckMethod
 				.getReturnType());
+	};
+
+	@Override
+	protected Collection<ElementType> getTargetElements(T anno) {
+		if (anno != null) {
+			return super.getTargetElements(anno);
+		}
+		return Arrays.asList(new ElementType[] { ElementType.METHOD,
+				ElementType.CONSTRUCTOR, ElementType.FIELD });
 	};
 
 	@Override

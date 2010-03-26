@@ -3,8 +3,6 @@ package org.duckapter.annotation;
 import static org.duckapter.DuckTestHelper.assertCanAdaptClass;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.annotation.Abstract;
-import org.duckapter.annotation.Constructor;
 import org.junit.Test;
 
 public class AbstractTest {
@@ -21,9 +19,13 @@ public class AbstractTest {
 
 	@Test
 	public void testAbstractClass() {
-		assertCanAdaptInstance(AbstractInterface.class, AbstractClass.class,
-				NonAbstractClass.class);
 		assertCanAdaptClass(AbstractInterface.class, AbstractClass.class,
+				NonAbstractClass.class);
+	}
+
+	@Test
+	public void testAbstractClassInstance() {
+		assertCanAdaptInstance(AbstractInterface.class, AbstractClass.class,
 				NonAbstractClass.class);
 	}
 

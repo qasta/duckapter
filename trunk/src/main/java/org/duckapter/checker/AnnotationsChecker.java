@@ -2,25 +2,24 @@ package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 import org.duckapter.Checker;
-import org.duckapter.DuckAnnotation;
+import org.duckapter.CheckerAnnotation;
 import org.duckapter.MethodAdapter;
 import org.duckapter.adapter.MethodAdapters;
 
 public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 
 	@Override
-	public boolean doesCheck(T t, AnnotatedElement element) {
+	public boolean canAdapt(T t, AnnotatedElement element) {
 		return true;
 	};
 
-	public MethodAdapter check(T anno, AnnotatedElement original,
+	public MethodAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		Collection<Annotation> fromDuck = collectAnnotations(duck);
 		Collection<Annotation> fromOriginal = collectAnnotations(original);
@@ -33,7 +32,8 @@ public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 	private Collection<Annotation> collectAnnotations(AnnotatedElement duck) {
 		Collection<Annotation> fromDuck = new HashSet<Annotation>();
 		for (Annotation a : duck.getAnnotations()) {
-			if (!a.annotationType().isAnnotationPresent(DuckAnnotation.class)) {
+			CheckerAnnotation dann = Checkers.getCheckerAnnotation(a);
+			if (dann == null) {
 				fromDuck.add(a);
 			}
 		}
@@ -42,34 +42,35 @@ public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Class<NameChecker>> suppressCheckers(AnnotatedElement duckMethod) {
-		if (hasRelevantAnnotations(duckMethod)) {
-			return Arrays.asList(NameChecker.class);
+	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
+			T anno, AnnotatedElement element) {
+		if (hasRelevantAnnotations(element)) {
+			Collection<Class<Ch>> col = new ArrayList<Class<Ch>>();
+			col.add((Class<Ch>) NameChecker.class);
+			return Collections.unmodifiableCollection(col);
 		}
 		return Collections.emptyList();
-	}
+	};
 
 	private boolean hasRelevantAnnotations(AnnotatedElement element) {
 		for (Annotation anno : element.getAnnotations()) {
-			if (!anno.annotationType()
-					.isAnnotationPresent(DuckAnnotation.class)) {
+			if (Checkers.getCheckerAnnotation(anno) == null) {
 				return true;
 			}
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		return obj.getClass().equals(getClass());
+		return Checkers.equals(this, obj);
 	}
+	
+	private static final int HASH = Checkers.hashCode(AnnotationsChecker.class);
 
 	@Override
 	public int hashCode() {
-		return 37 + 37 * getClass().getName().hashCode();
+		return HASH;
 	}
 
 }

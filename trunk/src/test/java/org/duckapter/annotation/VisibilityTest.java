@@ -5,11 +5,6 @@ import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 import static org.duckapter.Duckapter.canAdaptInstanceOf;
 import static org.junit.Assert.assertTrue;
 
-import org.duckapter.annotation.Package;
-import org.duckapter.annotation.Private;
-import org.duckapter.annotation.Protected;
-import org.duckapter.annotation.Public;
-import org.duckapter.annotation.Visibility;
 import org.junit.Test;
 
 public class VisibilityTest {

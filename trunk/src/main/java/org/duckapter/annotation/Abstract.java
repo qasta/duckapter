@@ -5,14 +5,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.duckapter.DuckAnnotation;
-import org.duckapter.checker.AbstractChecker;
+import java.lang.reflect.Modifier;
 
 @Documented
-@DuckAnnotation(AbstractChecker.class)
+@ModifierMask(Modifier.ABSTRACT)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.TYPE })
+@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface Abstract {
 
 }

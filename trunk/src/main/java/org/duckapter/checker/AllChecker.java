@@ -9,25 +9,26 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.duckapter.Checker;
 import org.duckapter.MethodAdapter;
 import org.duckapter.adapter.AllMethodAdapter;
 import org.duckapter.adapter.MethodAdapters;
 import org.duckapter.annotation.All;
 
-public class AllChecker extends DefaultChecker<All> {
+public class AllChecker implements Checker<All> {
 
 	@SuppressWarnings("unchecked")
-	private static final List<Class<? extends DefaultChecker>> SUPPRESSED = Arrays
+	private static final List<Class<? extends BooleanCheckerBase>> SUPPRESSED = Arrays
 			.asList(ReturnTypeChecker.class, ParametersChecker.class,
 					ExceptionsChecker.class);
 	@SuppressWarnings("unchecked")
-	private static final Collection<DefaultChecker> SUPPRESSED_CHECKERS;
+	private static final Collection<BooleanCheckerBase> SUPPRESSED_CHECKERS;
 
 	static {
 		@SuppressWarnings("unchecked")
-		Collection<DefaultChecker> checkers = new ArrayList<DefaultChecker>();
+		Collection<BooleanCheckerBase> checkers = new ArrayList<BooleanCheckerBase>();
 		for (@SuppressWarnings("unchecked")
-		Class<? extends DefaultChecker> checkerClass : SUPPRESSED) {
+		Class<? extends BooleanCheckerBase> checkerClass : SUPPRESSED) {
 			try {
 				checkers.add(checkerClass.newInstance());
 			} catch (InstantiationException e) {
@@ -41,7 +42,7 @@ public class AllChecker extends DefaultChecker<All> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public MethodAdapter check(All anno, AnnotatedElement original,
+	public MethodAdapter adapt(All anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (original instanceof Class) {
 			return MethodAdapters.OK;
@@ -72,9 +73,9 @@ public class AllChecker extends DefaultChecker<All> {
 
 	private MethodAdapter checkMethodInterface(All anno, AnnotatedElement original,
 			final Method returnTypeOnlyMethod) {
-		for (DefaultChecker<Annotation> ch : SUPPRESSED_CHECKERS) {
-			if (ch.doesCheck(anno, original)
-					&& MethodAdapters.isNull(ch.check(anno, original, returnTypeOnlyMethod))) {
+		for (BooleanCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
+			if (ch.canAdapt(anno, original)
+					&& MethodAdapters.isNull(ch.adapt(anno, original, returnTypeOnlyMethod))) {
 				return MethodAdapters.NULL;
 			}
 		}
@@ -83,12 +84,12 @@ public class AllChecker extends DefaultChecker<All> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean doesCheck(All anno, AnnotatedElement element) {
+	public boolean canAdapt(All anno, AnnotatedElement element) {
 		if (element instanceof Class) {
 			return false;
 		}
-		for (DefaultChecker<Annotation> ch : SUPPRESSED_CHECKERS) {
-			if (ch.doesCheck(anno, element)) {
+		for (BooleanCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
+			if (ch.canAdapt(anno, element)) {
 				return true;
 			}
 		}
@@ -97,9 +98,21 @@ public class AllChecker extends DefaultChecker<All> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Class<? extends DefaultChecker>> suppressCheckers(
-			AnnotatedElement duckMethod) {
+	public Collection<Class<? extends BooleanCheckerBase>> suppressCheckers(
+			All anno, AnnotatedElement duckMethod) {
 		return SUPPRESSED;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return Checkers.equals(this, obj);
+	}
+	
+	private static final int HASH = Checkers.hashCode(AllChecker.class);
+
+	@Override
+	public int hashCode() {
+		return HASH;
 	}
 
 }

@@ -28,7 +28,7 @@ public class FactoryTest {
 	}
 
 	public static class WithoutAnyFactoryMethod {
-		private WithoutAnyFactoryMethod() {
+		private WithoutAnyFactoryMethod(int integer) {
 		}
 	}
 

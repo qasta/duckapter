@@ -1,20 +1,14 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 
-public class ExceptionsChecker<T extends Annotation> extends DefaultChecker<T> {
-
-	@Override
-	protected boolean doesCheckClass(T anno) {
-		return false;
-	};
-
-	@Override
-	protected boolean doesCheckField(T anno) {
-		return false;
-	};
+public class ExceptionsChecker<T extends Annotation> extends
+		BooleanCheckerBase<T> {
 
 	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
 		return checkExes(method.getExceptionTypes(), duckMethod
@@ -45,6 +39,15 @@ public class ExceptionsChecker<T extends Annotation> extends DefaultChecker<T> {
 			Method duckMethod) {
 		return checkExes(constructor.getExceptionTypes(), duckMethod
 				.getExceptionTypes());
+	};
+
+	@Override
+	protected Collection<ElementType> getTargetElements(T anno) {
+		if (anno != null) {
+			return super.getTargetElements(anno);
+		}
+		return Arrays.asList(new ElementType[] { ElementType.METHOD,
+				ElementType.CONSTRUCTOR });
 	};
 
 }

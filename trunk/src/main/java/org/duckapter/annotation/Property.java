@@ -6,9 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.duckapter.DuckAnnotation;
 import org.duckapter.Duckapter;
-import org.duckapter.checker.PropertyChecker;
 
 /**
  * Declares that method is property getter/setter. Annotated methods should use
@@ -23,8 +21,9 @@ import org.duckapter.checker.PropertyChecker;
  * @author Vladimir Orany
  */
 @Documented
-@DuckAnnotation(PropertyChecker.class)
+@Stereotype(StereotypeType.OR)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
+@Method @Field
 public @interface Property {
 }

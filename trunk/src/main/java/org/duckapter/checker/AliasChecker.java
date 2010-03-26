@@ -11,16 +11,6 @@ import org.duckapter.annotation.Alias;
 public class AliasChecker extends NameChecker<Alias> {
 
 	@Override
-	protected boolean doesCheckClass(Alias anno) {
-		return false;
-	}
-
-	@Override
-	protected boolean doesCheckConstructor(Alias anno) {
-		return false;
-	}
-
-	@Override
 	protected boolean checkField(Alias anno, Field field, Method duckMethod) {
 		if (super.checkField(anno, field, duckMethod)) {
 			return true;
@@ -51,7 +41,9 @@ public class AliasChecker extends NameChecker<Alias> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Class<NameChecker>> suppressCheckers(AnnotatedElement duckMethod) {
+	public List<Class<NameChecker>> suppressCheckers(Alias anno,
+			AnnotatedElement duckMethod) {
 		return Arrays.asList(NameChecker.class);
 	}
+
 }

@@ -6,13 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.duckapter.DuckAnnotation;
+import org.duckapter.CheckerAnnotation;
 import org.duckapter.checker.FieldChecker;
 
 @Documented
-@DuckAnnotation(FieldChecker.class)
+@CheckerAnnotation(FieldChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD})
 public @interface Field {
 
 }

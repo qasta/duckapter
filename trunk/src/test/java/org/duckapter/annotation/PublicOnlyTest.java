@@ -25,5 +25,7 @@ public class PublicOnlyTest {
 		assertCanAdaptInstance(PublicOnly.class, PublicMethodClass.class,
 				ProtectedMethodClass.class);
 	}
+	
+	
 
 }

@@ -6,13 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.duckapter.DuckAnnotation;
+import org.duckapter.CheckerAnnotation;
 import org.duckapter.checker.MatchingChecker;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.TYPE })
-@DuckAnnotation(MatchingChecker.class)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
+@CheckerAnnotation(MatchingChecker.class)
 public @interface Matching {
 	String value();
 
