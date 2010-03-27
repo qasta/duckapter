@@ -23,7 +23,7 @@ public class FinalPropTest {
 	@Test
 	public void testSetFinal() throws Exception {
 		try {
-			Duckapter.adaptClass(FinalProp.class, FinalSetPropClass.class);
+			Duck.type(FinalProp.class, FinalSetPropClass.class);
 			fail();
 		} catch (AdaptationException e) {
 			// ok

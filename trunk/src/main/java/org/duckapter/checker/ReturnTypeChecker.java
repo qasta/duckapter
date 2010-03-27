@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.duckapter.Duckapter;
+import org.duckapter.adapted.AdaptedFactory;
 
 public class ReturnTypeChecker<T extends Annotation> extends
 		BooleanCheckerBase<T> {
@@ -31,8 +31,9 @@ public class ReturnTypeChecker<T extends Annotation> extends
 		if (!duckMethod.getReturnType().isInterface()) {
 			return false;
 		}
-		return Duckapter.canAdaptInstanceOf(returnType, duckMethod
-				.getReturnType());
+		return AdaptedFactory.adapt(returnType, duckMethod
+				.getReturnType())
+		.canAdaptInstance();
 	};
 
 	@Override

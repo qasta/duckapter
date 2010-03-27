@@ -8,12 +8,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 
 /**
  * Declares that annotated method will be factory class or constructor for given
  * class. Factories are matched as any other methods but if no method matches,
- * {@link Duckapter} will try to match constructor. <br/>
+ * {@link Duck} will try to match constructor. <br/>
  * For example following method will match with all classes which declares
  * method <code>valueOf(String)</code> or have constructor which takes single
  * {@link String} parameter.

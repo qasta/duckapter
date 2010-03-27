@@ -42,9 +42,9 @@ public class AliasTest {
 
 	@Test
 	public void testAlias() throws Exception {
-		assertTrue(Duckapter.canAdaptClass(AliasClass.class, IAlias.class));
+		assertTrue(Duck.test(AliasClass.class, IAlias.class));
 		try {
-			Duckapter.adaptClass(AliasClass.class, IAlias.class);
+			Duck.type(AliasClass.class, IAlias.class);
 		} catch (Exception e) {
 			fail();
 		}

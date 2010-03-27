@@ -1,6 +1,6 @@
 package org.duckapter.annotation;
 
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -17,13 +17,13 @@ public class InterfaceTest {
 
 	@Test
 	public void testAdaptClass() {
-		Assert.assertFalse(Duckapter.canAdaptClass(TheInterface.class,
+		Assert.assertFalse(Duck.test(TheInterface.class,
 				TheClass.class));
 	}
 
 	@Test
 	public void testAdaptInterface() {
-		Assert.assertFalse(Duckapter.canAdaptInstance(TheInterface.class,
+		Assert.assertFalse(Duck.test(TheInterface.class,
 				TheClass.class));
 	}
 	

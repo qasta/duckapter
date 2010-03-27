@@ -31,12 +31,12 @@ public final class DuckTestHelper {
 
 		try {
 			try {
-				Duckapter.adaptInstance(toFail.newInstance(), testedInterface);
+				Duck.type(toFail.newInstance(), testedInterface);
 				Assert.fail();
 			} catch (AdaptationException e) {
 				// ok
 			}
-			assertFalse(Duckapter.canAdaptInstance(toFail.newInstance(),
+			assertFalse(Duck.test(toFail.newInstance(),
 					testedInterface));
 		} catch (InstantiationException e) {
 			// ok
@@ -46,7 +46,7 @@ public final class DuckTestHelper {
 
 		try {
 			try {
-				Duckapter.adaptInstance(toPass.newInstance(), testedInterface);
+				Duck.type(toPass.newInstance(), testedInterface);
 				// ok
 			} catch (AdaptationException e) {
 				Assert.fail(e.getMessage());
@@ -72,7 +72,7 @@ public final class DuckTestHelper {
 	 */
 	public static final void assertCanAdaptClass(Class<?> testedInterface,
 			Class<?> toPass, Class<?> toFail) {
-		assertFalse(Duckapter.canAdaptClass(toFail, testedInterface));
+		assertFalse(Duck.test(toFail, testedInterface));
 
 		Assert.assertNotNull(testedInterface);
 		Assert.assertTrue(testedInterface.isInterface());
@@ -80,14 +80,14 @@ public final class DuckTestHelper {
 		Assert.assertNotNull(toFail);
 
 		try {
-			Duckapter.adaptClass(toFail, testedInterface);
+			Duck.type(toFail, testedInterface);
 			Assert.fail();
 		} catch (AdaptationException e) {
 			// ok
 		}
 
 		try {
-			Duckapter.adaptClass(toPass, testedInterface);
+			Duck.type(toPass, testedInterface);
 
 		} catch (AdaptationException e) {
 			Assert.fail(e.getMessage());

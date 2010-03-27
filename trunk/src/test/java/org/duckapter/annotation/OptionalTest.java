@@ -1,7 +1,7 @@
 package org.duckapter.annotation;
 
 import org.duckapter.DuckTestHelper;
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class OptionalTest {
 
 	@Test
 	public void testMethodCalls() {
-		OptionalInterface opt = Duckapter.adaptInstance(new OptionalClass(), OptionalInterface.class);
+		OptionalInterface opt = Duck.type(new OptionalClass(), OptionalInterface.class);
 		Assert.assertNull(opt.doItOptional());
 		Assert.assertEquals(0, opt.doItOptionalInt());
 		Assert.assertEquals(0, opt.doItOptionalDouble(), 0.1);

@@ -76,7 +76,7 @@ public class PropertyUnitTest {
 	
 	@Test
 	public void testProperty() throws Exception {
-		PropertyTestStatic propStatic = Duckapter.adaptClass(
+		PropertyTestStatic propStatic = Duck.type(
 				PropertyTestClass.class, PropertyTestStatic.class);
 		propStatic.setString("Test");
 		assertEquals("Test", propStatic.getString());
@@ -84,7 +84,7 @@ public class PropertyUnitTest {
 	
 	@Test
 	public void testInstance(){
-		PropertyTest fixure = Duckapter.adaptInstance(new PropertyTestClass(),
+		PropertyTest fixure = Duck.type(new PropertyTestClass(),
 				PropertyTest.class);
 		fixure.setInt(10);
 		assertEquals(10, fixure.getInt());
