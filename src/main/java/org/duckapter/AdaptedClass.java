@@ -5,13 +5,13 @@ import java.util.Collection;
 
 
 
-public interface AdaptedClass {
+public interface AdaptedClass<O,D> {
 
-	Object invoke(Object originalInstance, Method duckMethod, Object[] args)
+	Object invoke(O object, Method duckMethod, Object[] args)
 			throws Throwable;
 
-	Class<?> getOriginalClass();
-	Class<?> getDuckInterface();
+	Class<O> getOriginalClass();
+	Class<D> getDuckInterface();
 
 	/* nesmi mit zadny staticky/konstruktory */
 	boolean canAdaptInstance();
@@ -19,4 +19,6 @@ public interface AdaptedClass {
 
 	Collection<Method> getUnimplementedForInstance();
 	Collection<Method> getUnimplementedForClass();
+
+	
 }

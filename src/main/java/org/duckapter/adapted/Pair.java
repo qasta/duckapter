@@ -1,13 +1,11 @@
-/**
- * 
- */
+
 package org.duckapter.adapted;
 
-final class Pair {
-	final Class<?> original;
-	final Class<?> duck;
+final class Pair<O,D> {
+	final Class<O> original;
+	final Class<D> duck;
 
-	public Pair(Class<?> original, Class<?> duck) {
+	public Pair(Class<O> original, Class<D> duck) {
 		this.original = original;
 		this.duck = duck;
 	}
@@ -22,6 +20,7 @@ final class Pair {
 		return result;
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -30,7 +29,7 @@ final class Pair {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pair other = (Pair) obj;
+		@SuppressWarnings("unchecked") Pair other = (Pair) obj;
 		if (duck == null) {
 			if (other.duck != null)
 				return false;
@@ -43,5 +42,7 @@ final class Pair {
 			return false;
 		return true;
 	}
+
+
 
 }

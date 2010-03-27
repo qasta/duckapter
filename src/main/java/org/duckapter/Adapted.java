@@ -2,10 +2,10 @@ package org.duckapter;
 
 import java.lang.reflect.InvocationHandler;
 
-public interface Adapted extends InvocationHandler {
+public interface Adapted<O,D> extends InvocationHandler {
 
-	Object getOriginalInstance();
+	O getOriginalInstance();
 
-	AdaptedClass getAdaptedClass();
+	AdaptedClass<O,D> getAdaptedClass();
 
 }

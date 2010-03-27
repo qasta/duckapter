@@ -22,7 +22,7 @@ import org.duckapter.MethodAdapter;
 import org.duckapter.adapter.MethodAdapters;
 import org.duckapter.checker.Checkers;
 
-final class AdaptedClassImpl extends AbstractAdaptedClass implements AdaptedClass {
+final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
 
 
 	private static Map<String, Field> getFields(Class<?> clazz,
@@ -90,13 +90,13 @@ final class AdaptedClassImpl extends AbstractAdaptedClass implements AdaptedClas
 
 	private final Map<Method, MethodAdapter> adapters = new HashMap<Method, MethodAdapter>();
 
-	AdaptedClassImpl(Class<?> originalClass, Class<?> duckInterface) {
+	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface) {
 		super(duckInterface, originalClass);
 		init();
 	}
 
 	@Override
-	public Object invoke(Object originalInstance, Method duckMethod,
+	public Object invoke(O originalInstance, Method duckMethod,
 			Object[] args) throws Throwable {
 		return adapters.get(duckMethod).invoke(originalInstance, args);
 	}
@@ -183,4 +183,5 @@ final class AdaptedClassImpl extends AbstractAdaptedClass implements AdaptedClas
 		}
 		return Collections.unmodifiableCollection(methods);
 	}
+	
 }

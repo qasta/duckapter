@@ -3,23 +3,23 @@ package org.duckapter.adapted;
 import org.duckapter.Adapted;
 import org.duckapter.AdaptedClass;
 
-abstract class AbstractAdapted implements Adapted {
+abstract class AbstractAdapted<O,D> implements Adapted<O,D> {
 
-	private final Object original;
-	private final AdaptedClass adaptedClass;
+	private final O original;
+	private final AdaptedClass<O,D> adaptedClass;
 
-	AbstractAdapted(Object original, AdaptedClass adaptedClass) {
+	AbstractAdapted(O original, AdaptedClass<O,D> adaptedClass) {
 		this.original = original;
 		this.adaptedClass = adaptedClass;
 	}
 
 	@Override
-	public AdaptedClass getAdaptedClass() {
+	public AdaptedClass<O,D> getAdaptedClass() {
 		return adaptedClass;
 	}
 
 	@Override
-	public Object getOriginalInstance() {
+	public O getOriginalInstance() {
 		return original;
 	}
 
