@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,10 +29,16 @@ public class StereotypeChecker implements Checker<Annotation> {
 				getCheckers(anno));
 	}
 
-	// TODO: zjistit, jeslti by nepomohlo cacheovani
+	private static final Map<Annotation, Map<Checker<Annotation>, Annotation>> checkersCache = new HashMap<Annotation, Map<Checker<Annotation>, Annotation>>();
+
 	private Map<Checker<Annotation>, Annotation> getCheckers(Annotation anno) {
-		final Map<Checker<Annotation>, Annotation> checkers = Checkers.collectCheckers(anno.annotationType());
+		if (checkersCache.containsKey(anno)) {
+			return checkersCache.get(anno);
+		}
+		final Map<Checker<Annotation>, Annotation> checkers = Checkers
+				.collectCheckers(anno.annotationType());
 		checkers.keySet().removeAll(Checkers.getDefaultCheckers());
+		checkersCache.put(anno, checkers);
 		return checkers;
 	}
 
@@ -40,8 +47,10 @@ public class StereotypeChecker implements Checker<Annotation> {
 	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
 			Annotation anno, AnnotatedElement element) {
 		Collection ret = new HashSet();
-		for (Entry<Checker<Annotation>, Annotation> entry : getCheckers(anno).entrySet()) {
-			ret.addAll(entry.getKey().suppressCheckers(entry.getValue(), element));
+		for (Entry<Checker<Annotation>, Annotation> entry : getCheckers(anno)
+				.entrySet()) {
+			ret.addAll(entry.getKey().suppressCheckers(entry.getValue(),
+					element));
 		}
 		return Collections.unmodifiableCollection(ret);
 	}

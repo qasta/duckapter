@@ -10,19 +10,10 @@ import org.duckapter.duck.itest.IDuck;
 import org.duckapter.duck.itest.IDuckClass;
 import org.junit.Test;
 
-public abstract class AbstractFullDuckTest {
-
-	protected final Class<?> fixure;
+public abstract class AbstractFullDuckTest extends AbstractSimpleDuckTest {
 
 	protected AbstractFullDuckTest(Class<?> fixure) {
-		this.fixure = fixure;
-	}
-
-	@Test
-	public void canDuck() throws Exception {
-		assertTrue(Duck.test(Duck.type(fixure,
-				IDuckClass.class).newDuck(), IDuck.class));
-		assertFalse(Duck.test((Object)fixure, IDuckClass.class));
+		super(fixure);
 	}
 
 	@Test

@@ -5,13 +5,18 @@ import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.duckapter.adapted.AdaptedFactory;
 
 public class ParametersChecker<T extends Annotation> extends
 		BooleanCheckerBase<T> {
+
+	private static final List<ElementType> TARGETS = Arrays.asList(new ElementType[] { ElementType.METHOD,
+					ElementType.CONSTRUCTOR });
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod) {
@@ -24,6 +29,9 @@ public class ParametersChecker<T extends Annotation> extends
 		if (duckMethod.getParameterTypes().length == 0) {
 			return true;
 		}
+		if (Modifier.isFinal(field.getModifiers())) {
+			return false;
+		}
 		if (duckMethod.getParameterTypes().length == 1) {
 			return checkDuck(field.getType(), duckMethod.getParameterTypes()[0]);
 		}
@@ -35,8 +43,7 @@ public class ParametersChecker<T extends Annotation> extends
 		if (anno != null) {
 			return super.getTargetElements(anno);
 		}
-		return Arrays.asList(new ElementType[] { ElementType.METHOD,
-				ElementType.CONSTRUCTOR });
+		return TARGETS;
 	};
 
 	@Override

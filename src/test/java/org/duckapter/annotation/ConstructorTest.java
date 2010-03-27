@@ -36,22 +36,28 @@ public class ConstructorTest {
 	}
 
 	@Test
-	public void testConstructor() throws Exception {
+	public void testConstructor1() throws Exception {
 		assertCanAdaptClass(WithConstructorInterface.class,
 				WithDefinedConstructor.class, WithoutDefinedConstructor.class);
 		assertCanAdaptInstance(WithConstructorInterface.class,
 				WithDefinedConstructor.class, WithoutDefinedConstructor.class);
 
+	}
+	
+	@Test
+	public void testConstructor2() throws Exception {
 		assertCanAdaptClass(WithConstructorInterface.class,
 				WithDefaultConstructor.class, WithoutDefinedConstructor.class);
 		assertCanAdaptInstance(WithConstructorInterface.class,
 				WithDefaultConstructor.class, WithoutDefinedConstructor.class);
-
+	}
+	
+	@Test
+	public void testConstructor3() throws Exception {
 		assertCanAdaptClass(WithConstructorInterface.class,
 				WithDefinedConstructor.class, WithMethod.class);
 		assertCanAdaptInstance(WithConstructorInterface.class,
 				WithDefinedConstructor.class, WithMethod.class);
-
 	}
 
 }

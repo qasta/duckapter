@@ -17,6 +17,7 @@ import org.junit.Test;
 
 public class StereotypeTest {
 
+	
 	@Documented
 	@CheckerAnnotation(StereotypeChecker.class)
 	@Stereotype(OR)
