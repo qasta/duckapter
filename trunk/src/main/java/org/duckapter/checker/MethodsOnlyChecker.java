@@ -7,19 +7,19 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.MethodCallAdapter;
 
 public class MethodsOnlyChecker<T extends Annotation> extends
 		AbstractChecker<T> {
 
-	public MethodAdapter adapt(T anno, AnnotatedElement original,
+	public InvocationAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (original instanceof Method && duck instanceof Method ) {
 			return new MethodCallAdapter((Method) duck, (Method) original);
 		}
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	};
 
 	protected Collection<ElementType> getTargetElements(T anno) {

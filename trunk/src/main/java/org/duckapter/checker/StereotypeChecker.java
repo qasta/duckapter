@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 import org.duckapter.annotation.Stereotype;
 import org.duckapter.annotation.StereotypeType;
 
 public class StereotypeChecker implements Checker<Annotation> {
 
 	@Override
-	public MethodAdapter adapt(Annotation anno, AnnotatedElement original,
+	public InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		return getStereotypeType(anno).adapt(anno, original, duck,
 				getCheckers(anno));

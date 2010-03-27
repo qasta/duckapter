@@ -18,8 +18,8 @@ import java.util.Map.Entry;
 
 import org.duckapter.AdaptedClass;
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.checker.Checkers;
 
 final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
@@ -88,7 +88,7 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 		return ret;
 	}
 
-	private final Map<Method, MethodAdapter> adapters = new HashMap<Method, MethodAdapter>();
+	private final Map<Method, InvocationAdapter> adapters = new HashMap<Method, InvocationAdapter>();
 
 	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface) {
 		super(duckInterface, originalClass);
@@ -102,24 +102,24 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	}
 
 	@SuppressWarnings("unchecked")
-	private final MethodAdapter doCheck(AnnotatedElement original,
+	private final InvocationAdapter doCheck(AnnotatedElement original,
 			AnnotatedElement duck, Map<Checker<Annotation>, Annotation> checkersMap) {
 		Map<Checker<Annotation>, Annotation> checkers = new HashMap<Checker<Annotation>, Annotation>(checkersMap);
-		MethodAdapter ret = MethodAdapters.MAX;
+		InvocationAdapter ret = InvocationAdapters.MAX;
 		for (Annotation anno : duck.getAnnotations()) {
 			Checker ch = Checkers.getChecker(anno);
 			if (ch == null) {
 				continue;
 			}
 			if (checkers.containsKey(ch) && ch.canAdapt(anno, original)) {
-				final MethodAdapter adapter = ch.adapt(anno, original, duck);
+				final InvocationAdapter adapter = ch.adapt(anno, original, duck);
 				ret = ret.andMerge(adapter);
 				checkers.remove(ch);
 			}
 		}
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
 			if (checkers.containsKey(entry.getKey()) && entry.getKey().canAdapt(entry.getValue(), original)) {
-				final MethodAdapter adapter = entry.getKey().adapt(entry.getValue(), original,
+				final InvocationAdapter adapter = entry.getKey().adapt(entry.getValue(), original,
 						duck);
 				ret = ret.andMerge(adapter);
 			}
@@ -138,13 +138,13 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	}
 
 	private void init() {
-		MethodAdapter adapter = doCheck(getOriginalClass(), getDuckInterface(),
+		InvocationAdapter adapter = doCheck(getOriginalClass(), getDuckInterface(),
 				Checkers.collectCheckers(getDuckInterface()));
 		canAdaptClass = adapter.isInvocableOnClass();
 		canAdaptInstance = adapter.isInvocableOnInstance();
 
 		for (Method duckMethod : getDuckInterface().getMethods()) {
-			MethodAdapter old = checkDuckMethod(duckMethod);
+			InvocationAdapter old = checkDuckMethod(duckMethod);
 
 			canAdaptClass = canAdaptClass && old.isInvocableOnClass();
 			canAdaptInstance = canAdaptInstance && old.isInvocableOnInstance();
@@ -152,9 +152,9 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 		}
 	}
 
-	private MethodAdapter checkDuckMethod(Method duckMethod) {
+	private InvocationAdapter checkDuckMethod(Method duckMethod) {
 		Map<Checker<Annotation>, Annotation> methodCheckers = Checkers.collectCheckers(duckMethod);
-		MethodAdapter adapter = MethodAdapters.MIN;
+		InvocationAdapter adapter = InvocationAdapters.MIN;
 		for (AnnotatedElement element : getRelevantElements()) {
 			adapter = doCheck(element, duckMethod, methodCheckers).orMerge(
 					adapter);
@@ -165,7 +165,7 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	@Override
 	public Collection<Method> getUnimplementedForClass() {
 		Collection<Method> methods = new ArrayList<Method>();
-		for (Entry<Method, MethodAdapter> entry : adapters.entrySet()) {
+		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
 			if (!entry.getValue().isInvocableOnClass()) {
 				methods.add(entry.getKey());
 			}
@@ -176,7 +176,7 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	@Override
 	public Collection<Method> getUnimplementedForInstance() {
 		Collection<Method> methods = new ArrayList<Method>();
-		for (Entry<Method, MethodAdapter> entry : adapters.entrySet()) {
+		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
 			if (!entry.getValue().isInvocableOnInstance()) {
 				methods.add(entry.getKey());
 			}

@@ -6,14 +6,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 
 public abstract class CheckerBase<T extends Annotation> extends AbstractChecker<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final MethodAdapter  adapt(T anno, AnnotatedElement original,
+	public final InvocationAdapter  adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (original instanceof Class && duck instanceof Class) {
 			return adaptClass(anno, (Class) original, (Class) duck);
@@ -31,24 +31,24 @@ public abstract class CheckerBase<T extends Annotation> extends AbstractChecker<
 						duckMethod);
 			}
 		}
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	}
 	
-	protected MethodAdapter adaptClass(T anno, Class<?> clazz, Class<?> duckInterface) {
-		return MethodAdapters.NULL;
+	protected InvocationAdapter adaptClass(T anno, Class<?> clazz, Class<?> duckInterface) {
+		return InvocationAdapters.NULL;
 	}
 
-	protected MethodAdapter adaptField(T anno, Field field, Method duckMethod) {
-		return MethodAdapters.NULL;
+	protected InvocationAdapter adaptField(T anno, Field field, Method duckMethod) {
+		return InvocationAdapters.NULL;
 	}
 
-	protected MethodAdapter adaptMethod(T anno, Method method, Method duckMethod) {
-		return MethodAdapters.NULL;
+	protected InvocationAdapter adaptMethod(T anno, Method method, Method duckMethod) {
+		return InvocationAdapters.NULL;
 	}
 
-	protected MethodAdapter adaptConstructor(T anno, Constructor<?> constructor,
+	protected InvocationAdapter adaptConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod) {
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	};
 	
 }

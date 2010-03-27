@@ -8,13 +8,13 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 
-public class AllMethodAdapter implements MethodAdapter {
+public class AllMethodAdapter implements InvocationAdapter {
 
 	private final Method returnsTypeMethod;
 
-	private MethodAdapter adapter = MethodAdapters.MAX;
+	private InvocationAdapter adapter = InvocationAdapters.MAX;
 	private AllMethodAdapter previous = null;
 
 	public AllMethodAdapter(AnnotatedElement element, Method returnsTypeMethod) {
@@ -27,13 +27,13 @@ public class AllMethodAdapter implements MethodAdapter {
 	}
 
 	@Override
-	public MethodAdapter andMerge(MethodAdapter other) {
-		adapter = MethodAdapters.andMerge(adapter, other);
+	public InvocationAdapter andMerge(InvocationAdapter other) {
+		adapter = InvocationAdapters.andMerge(adapter, other);
 		return this;
 	}
 
 	@Override
-	public MethodAdapter orMerge(MethodAdapter theOther) {
+	public InvocationAdapter orMerge(InvocationAdapter theOther) {
 		if (theOther.getPriority() > getPriority()) {
 			return theOther;
 		}
@@ -70,7 +70,7 @@ public class AllMethodAdapter implements MethodAdapter {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T createProxy(final MethodAdapter adapter, final Object obj,
+	private <T> T createProxy(final InvocationAdapter adapter, final Object obj,
 			Class<T> footPrint) {
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
 				new Class<?>[] { footPrint }, new InvocationHandler() {

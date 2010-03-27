@@ -8,16 +8,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.GetFieldAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.SetFieldAdapter;
 import org.duckapter.annotation.Field;
 
 public class FieldChecker extends AbstractChecker<Field> {
 	
 	@Override
-	public MethodAdapter adapt(Field anno, AnnotatedElement original,
+	public InvocationAdapter adapt(Field anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (original instanceof java.lang.reflect.Field && duck instanceof Method) {
 			final Method duckMethod = (Method)duck;
@@ -28,7 +28,7 @@ public class FieldChecker extends AbstractChecker<Field> {
 				return new GetFieldAdapter(duckMethod, field);
 			}
 		}
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	}
 
 	@Override

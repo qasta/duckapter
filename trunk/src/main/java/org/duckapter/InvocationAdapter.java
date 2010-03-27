@@ -1,13 +1,13 @@
 package org.duckapter;
 
-public interface MethodAdapter {
+public interface InvocationAdapter {
 
 	Object invoke(Object obj, Object[] args) throws Throwable;
 	
 	int getPriority();
 	
-	MethodAdapter orMerge(MethodAdapter other);
-	MethodAdapter andMerge(MethodAdapter other);
+	InvocationAdapter orMerge(InvocationAdapter other);
+	InvocationAdapter andMerge(InvocationAdapter other);
 	
 	boolean isInvocableOnInstance();
 	boolean isInvocableOnClass();

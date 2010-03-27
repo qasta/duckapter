@@ -6,44 +6,44 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 
 public enum StereotypeType {
 	OR {
 
-		protected boolean checkPriority(MethodAdapter adapter,
-				MethodAdapter other) {
+		protected boolean checkPriority(InvocationAdapter adapter,
+				InvocationAdapter other) {
 			return other.getPriority() > adapter.getPriority();
 		}
 
-		protected MethodAdapters defaultAdapter() {
-			return MethodAdapters.MIN;
+		protected InvocationAdapters defaultAdapter() {
+			return InvocationAdapters.MIN;
 		}
 
 	},
 	AND {
 
-		protected boolean checkPriority(MethodAdapter adapter,
-				MethodAdapter other) {
+		protected boolean checkPriority(InvocationAdapter adapter,
+				InvocationAdapter other) {
 			return other.getPriority() < adapter.getPriority();
 		}
 
-		protected MethodAdapters defaultAdapter() {
-			return MethodAdapters.MAX;
+		protected InvocationAdapters defaultAdapter() {
+			return InvocationAdapters.MAX;
 		}
 
 
 	};
-	public final <T extends Annotation> MethodAdapter adapt(T anno,
+	public final <T extends Annotation> InvocationAdapter adapt(T anno,
 			AnnotatedElement original, AnnotatedElement duck,
 			Map<Checker<T>, T> checkers) {
-		MethodAdapter adapter = defaultAdapter();
+		InvocationAdapter adapter = defaultAdapter();
 		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
 			if (!entry.getKey().canAdapt(entry.getValue(), original)) {
 				continue;
 			}
-			MethodAdapter other = entry.getKey().adapt(entry.getValue(),
+			InvocationAdapter other = entry.getKey().adapt(entry.getValue(),
 					original, duck);
 			if (checkPriority(adapter, other)) {
 				adapter = other;
@@ -52,10 +52,10 @@ public enum StereotypeType {
 		return adapter;
 	}
 
-	protected abstract MethodAdapter defaultAdapter();
+	protected abstract InvocationAdapter defaultAdapter();
 
-	protected abstract boolean checkPriority(MethodAdapter adapter,
-			MethodAdapter other);
+	protected abstract boolean checkPriority(InvocationAdapter adapter,
+			InvocationAdapter other);
 
 	public final <T extends Annotation> boolean canAdapt(T anno,
 			AnnotatedElement original, Map<Checker<T>, T> checkers) {

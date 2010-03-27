@@ -1,8 +1,8 @@
 package org.duckapter.adapter;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 
-public enum MethodAdapters implements MethodAdapter {
+public enum InvocationAdapters implements InvocationAdapter {
 	OK(MethodAdapterPriorities.DEFAULT){
 		@Override
 		public boolean isInvocableOnClass() {
@@ -28,40 +28,40 @@ public enum MethodAdapters implements MethodAdapter {
 
 	private final int  priority;
 	
-	private MethodAdapters(int priority) {
+	private InvocationAdapters(int priority) {
 		this.priority = priority;
 	}
 	
-	public static boolean isNull(MethodAdapter adapter){
+	public static boolean isNull(InvocationAdapter adapter){
 		return adapter == null || NULL == adapter;
 	}
 	
-	public static boolean notNull(MethodAdapter adapter){
+	public static boolean notNull(InvocationAdapter adapter){
 		return !isNull(adapter);
 	}
 	
-	public static MethodAdapter safe(MethodAdapter adapter, MethodAdapter defaultAdapter){
+	public static InvocationAdapter safe(InvocationAdapter adapter, InvocationAdapter defaultAdapter){
 		if (adapter == null) {
 			return defaultAdapter;
 		}
 		return adapter;
 	}
 	
-	public static MethodAdapter orMerge(MethodAdapter first, MethodAdapter ... others){
-		MethodAdapter highest = first;
-		for (MethodAdapter methodAdapter : others) {
-			if (methodAdapter.getPriority() > highest.getPriority()) {
-				highest = methodAdapter;
+	public static InvocationAdapter orMerge(InvocationAdapter first, InvocationAdapter ... others){
+		InvocationAdapter highest = first;
+		for (InvocationAdapter invocationAdapter : others) {
+			if (invocationAdapter.getPriority() > highest.getPriority()) {
+				highest = invocationAdapter;
 			}
 		}
 		return highest;
 	}
 	
-	public static MethodAdapter andMerge(MethodAdapter first, MethodAdapter ... others){
-		MethodAdapter lowest = first;
-		for (MethodAdapter methodAdapter : others) {
-			if (methodAdapter.getPriority() < lowest.getPriority()) {
-				lowest = methodAdapter;
+	public static InvocationAdapter andMerge(InvocationAdapter first, InvocationAdapter ... others){
+		InvocationAdapter lowest = first;
+		for (InvocationAdapter invocationAdapter : others) {
+			if (invocationAdapter.getPriority() < lowest.getPriority()) {
+				lowest = invocationAdapter;
 			}
 		}
 		return lowest;
@@ -89,12 +89,12 @@ public enum MethodAdapters implements MethodAdapter {
 	}
 	
 	@Override
-	public MethodAdapter orMerge(MethodAdapter other) {
+	public InvocationAdapter orMerge(InvocationAdapter other) {
 		return orMerge(this, other);
 	}
 	
 	@Override
-	public MethodAdapter andMerge(MethodAdapter other) {
+	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return andMerge(this, other);
 	}
 	
