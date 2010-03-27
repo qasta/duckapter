@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.duckapter.checker.AliasChecker;
 
 /**
@@ -16,7 +16,7 @@ import org.duckapter.checker.AliasChecker;
  * 
  * <pre>
  * @code @Alias("otherName") void originalName(); }
- * </pre> {@link Duckapter} will first look whether there is method called
+ * </pre> {@link Duck} will first look whether there is method called
  * <code>originalName</code> and if there isn't it will try to find method
  * called <code>otherName</code>. Both this methods will satisfy demanded method
  * of interface.

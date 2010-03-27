@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.duckapter.Checker;
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.duckapter.MethodAdapter;
 import org.duckapter.adapter.MethodAdapters;
 import org.duckapter.annotation.Visibility;
@@ -35,11 +35,11 @@ public class VisibilityChecker implements Checker<Annotation> {
 
 
 	protected Visibility getVisibility(Annotation anno) {
-		if (!Duckapter.canAdaptInstance(anno, VisibilityAnno.class)) {
+		if (!Duck.test(anno, VisibilityAnno.class)) {
 			throw new IllegalArgumentException("Cannot adapt annotation: "
 					+ anno);
 		}
-		return Duckapter.adaptInstance(anno, VisibilityAnno.class).value();
+		return Duck.type(anno, VisibilityAnno.class).value();
 	}
 
 	@SuppressWarnings("unchecked")

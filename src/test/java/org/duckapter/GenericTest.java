@@ -20,7 +20,7 @@ public class GenericTest {
 	
 	@Test
 	public void testGeneric() throws Exception {
-		GenericClassClass gcc = Duckapter.adaptClass(GenericClass.class,
+		GenericClassClass gcc = Duck.type(GenericClass.class,
 				GenericClassClass.class);
 		gcc.getT(Object.class);
 	}

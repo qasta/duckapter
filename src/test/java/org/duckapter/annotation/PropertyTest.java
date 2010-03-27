@@ -2,7 +2,7 @@ package org.duckapter.annotation;
 
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ public class PropertyTest {
 
 	@Test
 	public void testMethodProps() {
-		assertProps(Duckapter.adaptInstance(new WithMethodProperty(),
+		assertProps(Duck.type(new WithMethodProperty(),
 				PropertyInterface.class));
 	}
 
@@ -57,7 +57,7 @@ public class PropertyTest {
 
 	@Test
 	public void testFieldProps() {
-		assertProps(Duckapter.adaptInstance(new WithFieldProperty(),
+		assertProps(Duck.type(new WithFieldProperty(),
 				PropertyInterface.class));
 	}
 

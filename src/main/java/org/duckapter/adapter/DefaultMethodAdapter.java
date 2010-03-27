@@ -1,7 +1,7 @@
 package org.duckapter.adapter;
 
-import static org.duckapter.Duckapter.adaptInstance;
-import static org.duckapter.Duckapter.canAdaptInstance;
+import static org.duckapter.Duck.type;
+import static org.duckapter.Duck.test;
 
 import org.duckapter.MethodAdapter;
 
@@ -45,8 +45,8 @@ public abstract class DefaultMethodAdapter implements MethodAdapter {
 		if (duckType.isAssignableFrom(ret.getClass())) {
 			return ret;
 		}
-		if (canAdaptInstance(ret, duckType)) {
-			return adaptInstance(ret, duckType);
+		if (test(ret, duckType)) {
+			return type(ret, duckType);
 		}
 		if (duckType.isPrimitive()) {
 			return handlePrimitive(ret, duckType);

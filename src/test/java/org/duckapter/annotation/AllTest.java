@@ -1,7 +1,7 @@
 package org.duckapter.annotation;
 
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
-import static org.duckapter.Duckapter.adaptInstance;
+import static org.duckapter.Duck.type;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -65,7 +65,7 @@ public class AllTest {
 	public void testTestCaseImpl() {
 		assertCanAdaptInstance(TestCase.class, TestCaseImpl.class,
 				FailClass.class);
-		TestMethod[] testMethods = adaptInstance(new TestCaseImpl(),
+		TestMethod[] testMethods = type(new TestCaseImpl(),
 				TestCase.class).testMethods();
 		Assert.assertEquals(3, testMethods.length);
 		for (TestMethod testMethod : testMethods) {
@@ -81,7 +81,7 @@ public class AllTest {
 	public void testEmptyTestCase() {
 		assertCanAdaptInstance(TestCase.class, EmptyTestCase.class,
 				FailClass.class);
-		TestMethod[] testMethods = adaptInstance(new EmptyTestCase(),
+		TestMethod[] testMethods = type(new EmptyTestCase(),
 				TestCase.class).testMethods();
 		Assert.assertEquals(0, testMethods.length);
 	}

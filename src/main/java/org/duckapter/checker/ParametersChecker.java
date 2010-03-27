@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.duckapter.Duckapter;
+import org.duckapter.adapted.AdaptedFactory;
 
 public class ParametersChecker<T extends Annotation> extends
 		BooleanCheckerBase<T> {
@@ -62,6 +62,7 @@ public class ParametersChecker<T extends Annotation> extends
 		if (desired.isAssignableFrom(actual)) {
 			return true;
 		}
-		return Duckapter.canAdaptInstanceOf(actual, desired);
+		return AdaptedFactory.adapt(actual, desired)
+		.canAdaptInstance();
 	};
 }

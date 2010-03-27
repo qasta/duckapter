@@ -1,6 +1,6 @@
 package org.duckapter.inheritance;
 
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.duckapter.annotation.Factory;
 import org.duckapter.annotation.Static;
 import org.junit.Test;
@@ -40,16 +40,16 @@ public class InheritenceTest {
 	}
 	
 	@Test public void testInheritance0(){
-		Duckapter.adaptInstance(new Inheritance(), InheritanceClass.class);
+		Duck.type(new Inheritance(), InheritanceClass.class);
 	}
 	
 	@Test public void testInheritance1(){
-		Duckapter.adaptInstance(new Inheritance(), InheritanceInstance.class);
+		Duck.type(new Inheritance(), InheritanceInstance.class);
 	}
 	
 	@Test
 	public void testInheritance() throws Exception {
-		InheritanceClass iclass = Duckapter.adaptClass(Inheritance.class,
+		InheritanceClass iclass = Duck.type(Inheritance.class,
 				InheritanceClass.class);
 		iclass.testStatic();
 		InheritanceInstance iinstance = iclass.instance();
@@ -59,16 +59,16 @@ public class InheritenceTest {
 	}
 	
 	@Test public void testInheritance2(){
-		Duckapter.adaptInstance(new Inheritence2(), InheritanceClass.class);
+		Duck.type(new Inheritence2(), InheritanceClass.class);
 	}
 	
 	@Test public void testInheritance3(){
-		Duckapter.adaptInstance(new Inheritence2(), InheritanceInstance.class);
+		Duck.type(new Inheritence2(), InheritanceInstance.class);
 	}
 	
 	@Test
 	public void testSuper() throws Exception {
-		InheritanceClass iclass = Duckapter.adaptClass(Inheritence2.class,
+		InheritanceClass iclass = Duck.type(Inheritence2.class,
 				InheritanceClass.class);
 		iclass.testStatic();
 		InheritanceInstance iinstance = iclass.instance();

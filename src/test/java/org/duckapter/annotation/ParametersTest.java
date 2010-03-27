@@ -3,7 +3,7 @@ package org.duckapter.annotation;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 import static org.junit.Assert.assertEquals;
 
-import org.duckapter.Duckapter;
+import org.duckapter.Duck;
 import org.junit.Test;
 
 public class ParametersTest {
@@ -40,7 +40,7 @@ public class ParametersTest {
 		assertCanAdaptInstance(ParametersInterface.class, SameParameters.class,
 				HelperClass.class);
 
-		ParametersInterface pi = Duckapter.adaptInstance(new SameParameters(),
+		ParametersInterface pi = Duck.type(new SameParameters(),
 				ParametersInterface.class);
 		assertEquals("good8doIt", pi.doIt("good", 8, new HelperClass()));
 	}
@@ -50,7 +50,7 @@ public class ParametersTest {
 		assertCanAdaptInstance(ParametersInterface.class,
 				NearlySameParameters.class, HelperClass.class);
 
-		ParametersInterface pi2 = Duckapter.adaptInstance(
+		ParametersInterface pi2 = Duck.type(
 				new NearlySameParameters(), ParametersInterface.class);
 		assertEquals("good8doIt", pi2.doIt("good", 8, new HelperClass()));
 	}
