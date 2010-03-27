@@ -6,8 +6,8 @@ abstract class AbstractAdaptedClass implements AdaptedClass {
 
 	protected boolean canAdaptClass;
 	protected boolean canAdaptInstance;
-	protected final Class<?> duckInterface;
-	protected final Class<?> originalClass;
+	private final Class<?> duckInterface;
+	private final Class<?> originalClass;
 
 
 

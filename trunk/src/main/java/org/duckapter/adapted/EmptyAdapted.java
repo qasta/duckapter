@@ -5,24 +5,10 @@ import java.lang.reflect.Method;
 import org.duckapter.Adapted;
 import org.duckapter.AdaptedClass;
 
-class EmptyAdapted implements Adapted {
+final class EmptyAdapted extends AbstractAdapted implements Adapted {
 
-	private final Object original;
-	private final AdaptedClass adaptedClass;
-	
-	public EmptyAdapted(Object original, AdaptedClass adaptedClass) {
-		this.original = original;
-		this.adaptedClass = adaptedClass;
-	}
-
-	@Override
-	public AdaptedClass getAdaptedClass() {
-		return adaptedClass;
-	}
-
-	@Override
-	public Object getOriginalInstance() {
-		return original;
+	EmptyAdapted(Object original, AdaptedClass adaptedClass) {
+		super(original, adaptedClass);
 	}
 
 	@Override
