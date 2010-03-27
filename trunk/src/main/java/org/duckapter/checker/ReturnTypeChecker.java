@@ -15,6 +15,9 @@ public class ReturnTypeChecker<T extends Annotation> extends
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod) {
+		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())) {
+			return true;
+		}
 		return checkDuck(constructor.getDeclaringClass(), duckMethod);
 	}
 
@@ -22,11 +25,17 @@ public class ReturnTypeChecker<T extends Annotation> extends
 		if (void.class.equals(duckMethod.getReturnType())) {
 			return true;
 		}
+		if (void.class.equals(returnType)) {
+			return false;
+		}
 		if (Object.class.equals(duckMethod.getReturnType())) {
 			return true;
 		}
 		if (duckMethod.getReturnType().isAssignableFrom(returnType)) {
 			return true;
+		}
+		if (duckMethod.getReturnType().isPrimitive() && !returnType.isPrimitive()) {
+			return false;
 		}
 		if (!duckMethod.getReturnType().isInterface()) {
 			return false;
@@ -47,11 +56,21 @@ public class ReturnTypeChecker<T extends Annotation> extends
 
 	@Override
 	protected boolean checkField(T anno, Field field, Method duckMethod) {
+		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())
+				&& field.getDeclaringClass().isAssignableFrom(field.getType())
+		) {
+			return true;
+		}
 		return checkDuck(field.getType(), duckMethod);
 	};
 
 	@Override
 	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())
+				&& method.getDeclaringClass().isAssignableFrom(method.getReturnType())
+		) {
+			return true;
+		}
 		return checkDuck(method.getReturnType(), duckMethod);
 	};
 

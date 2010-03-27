@@ -1,7 +1,7 @@
 package org.duckapter.annotation;
 
-import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 import static org.duckapter.Duck.type;
+import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
 import org.junit.After;
 import org.junit.Assert;

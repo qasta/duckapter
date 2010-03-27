@@ -1,7 +1,7 @@
 package org.duckapter.annotation;
 
-import org.duckapter.DuckTestHelper;
 import org.duckapter.Duck;
+import org.duckapter.DuckTestHelper;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -33,16 +33,26 @@ public class FactoryTest {
 	}
 
 	@Test
-	public void testFactory() {
+	public void testFactoryConstructor() {
 		assertCanAdaptClass(FactoryInterface.class, WithConstructor.class,
 				WithoutAnyFactoryMethod.class);
 		assertCanAdaptInstance(FactoryInterface.class, WithConstructor.class,
 				WithoutAnyFactoryMethod.class);
 
+	}
+
+	@Test
+	public void testFactoryMethod() {
+
 		assertCanAdaptClass(FactoryInterface.class, WithFactory.class,
 				WithoutAnyFactoryMethod.class);
 		assertCanAdaptInstance(FactoryInterface.class, WithFactory.class,
 				WithoutAnyFactoryMethod.class);
+
+	}
+
+	@Test
+	public void testFactoryField() {
 
 		assertCanAdaptClass(FactoryInterface.class, WithField.class,
 				WithoutAnyFactoryMethod.class);
