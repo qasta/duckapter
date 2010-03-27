@@ -1,23 +1,22 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 import org.duckapter.Checker;
-import org.duckapter.CheckerAnnotation;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 
-public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
+public class AnnotationsChecker<T extends Annotation> extends
+		AbstractChecker<T> {
 
-	@Override
-	public boolean canAdapt(T t, AnnotatedElement element) {
-		return true;
-	};
+	protected Collection<ElementType> getTargetElements(T anno) {
+		return ALL_TARGETS;
+	}
 
 	public InvocationAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
@@ -30,10 +29,9 @@ public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 	}
 
 	private Collection<Annotation> collectAnnotations(AnnotatedElement duck) {
-		Collection<Annotation> fromDuck = new HashSet<Annotation>();
+		Collection<Annotation> fromDuck = new ArrayList<Annotation>();
 		for (Annotation a : duck.getAnnotations()) {
-			CheckerAnnotation dann = Checkers.getCheckerAnnotation(a);
-			if (dann == null) {
+			if (!Checkers.isCheckerAnnotation(a)) {
 				fromDuck.add(a);
 			}
 		}
@@ -45,32 +43,28 @@ public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
 			T anno, AnnotatedElement element) {
 		if (hasRelevantAnnotations(element)) {
-			Collection<Class<Ch>> col = new ArrayList<Class<Ch>>();
-			col.add((Class<Ch>) NameChecker.class);
-			return Collections.unmodifiableCollection(col);
+			return (Collection<Class<Ch>>)SUPPRESSED;
 		}
 		return Collections.emptyList();
+	}
+
+	@SuppressWarnings("unchecked")
+	private static final Collection SUPPRESSED = getSuppressed();
+	
+	@SuppressWarnings("unchecked")
+	private static <Ch> Collection<Class<Ch>> getSuppressed() {
+		Collection<Class<Ch>> col = new ArrayList<Class<Ch>>();
+		col.add((Class<Ch>) NameChecker.class);
+		return Collections.unmodifiableCollection(col);
 	};
 
 	private boolean hasRelevantAnnotations(AnnotatedElement element) {
 		for (Annotation anno : element.getAnnotations()) {
-			if (Checkers.getCheckerAnnotation(anno) == null) {
+			if (!Checkers.isCheckerAnnotation(anno)) {
 				return true;
 			}
 		}
 		return false;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return Checkers.equals(this, obj);
-	}
-	
-	private static final int HASH = Checkers.hashCode(AnnotationsChecker.class);
-
-	@Override
-	public int hashCode() {
-		return HASH;
 	}
 
 }

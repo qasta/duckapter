@@ -28,6 +28,7 @@ public class StereotypeChecker implements Checker<Annotation> {
 				getCheckers(anno));
 	}
 
+	// TODO: zjistit, jeslti by nepomohlo cacheovani
 	private Map<Checker<Annotation>, Annotation> getCheckers(Annotation anno) {
 		final Map<Checker<Annotation>, Annotation> checkers = Checkers.collectCheckers(anno.annotationType());
 		checkers.keySet().removeAll(Checkers.getDefaultCheckers());

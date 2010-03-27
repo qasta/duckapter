@@ -1,21 +1,23 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.AllMethodAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.All;
 
-public class AllChecker implements Checker<All> {
+public class AllChecker extends AbstractChecker<All> {
 
 	@SuppressWarnings("unchecked")
 	private static final List<Class<? extends BooleanCheckerBase>> SUPPRESSED = Arrays
@@ -23,6 +25,8 @@ public class AllChecker implements Checker<All> {
 					ExceptionsChecker.class);
 	@SuppressWarnings("unchecked")
 	private static final Collection<BooleanCheckerBase> SUPPRESSED_CHECKERS;
+	
+	private static final Collection<ElementType> TARGETS;
 
 	static {
 		@SuppressWarnings("unchecked")
@@ -38,6 +42,12 @@ public class AllChecker implements Checker<All> {
 			}
 		}
 		SUPPRESSED_CHECKERS = Collections.unmodifiableCollection(checkers);
+		
+		Set<ElementType> targets = new HashSet<ElementType>();
+		for (AbstractChecker<?> ac : SUPPRESSED_CHECKERS) {
+			targets.addAll(ac.getTargetElements(null));
+		}
+		TARGETS = Collections.unmodifiableCollection(targets);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -81,19 +91,10 @@ public class AllChecker implements Checker<All> {
 		}
 		return new AllMethodAdapter(original, returnTypeOnlyMethod);
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public boolean canAdapt(All anno, AnnotatedElement element) {
-		if (element instanceof Class) {
-			return false;
-		}
-		for (BooleanCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
-			if (ch.canAdapt(anno, element)) {
-				return true;
-			}
-		}
-		return false;
+	protected Collection<ElementType> getTargetElements(All anno) {
+		return TARGETS;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -101,18 +102,6 @@ public class AllChecker implements Checker<All> {
 	public Collection<Class<? extends BooleanCheckerBase>> suppressCheckers(
 			All anno, AnnotatedElement duckMethod) {
 		return SUPPRESSED;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return Checkers.equals(this, obj);
-	}
-	
-	private static final int HASH = Checkers.hashCode(AllChecker.class);
-
-	@Override
-	public int hashCode() {
-		return HASH;
 	}
 
 }

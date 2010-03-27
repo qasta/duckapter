@@ -20,11 +20,4 @@ public class PublicOnlyChecker extends VisibilityChecker {
 		return Collections.emptyList();
 	}
 	
-	private static final int HASH = Checkers.hashCode(PublicOnlyChecker.class);
-
-	@Override
-	public int hashCode() {
-		return HASH;
-	}
-	
 }
