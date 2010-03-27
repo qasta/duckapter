@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 import org.duckapter.Adapted;
 import org.duckapter.AdaptedClass;
 
-final class EmptyAdapted extends AbstractAdapted implements Adapted {
+final class EmptyAdapted<O,D> extends AbstractAdapted<O,D> implements Adapted<O,D> {
 
-	EmptyAdapted(Object original, AdaptedClass adaptedClass) {
+	EmptyAdapted(O original, AdaptedClass<O,D> adaptedClass) {
 		super(original, adaptedClass);
 	}
 

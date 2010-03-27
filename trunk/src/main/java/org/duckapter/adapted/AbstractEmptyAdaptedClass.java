@@ -6,12 +6,12 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-abstract class AbstractEmptyAdaptedClass extends AbstractAdaptedClass {
+abstract class AbstractEmptyAdaptedClass<O,D> extends AbstractAdaptedClass<O,D> {
 
 	protected final Collection<Method> unimplMethods = new ArrayList<Method>();
 
-	AbstractEmptyAdaptedClass(Class<?> duckInterface,
-			Class<?> originalClass, boolean canAdapt) {
+	AbstractEmptyAdaptedClass(Class<D> duckInterface,
+			Class<O> originalClass, boolean canAdapt) {
 		super(duckInterface, originalClass);
 		canAdaptClass = canAdapt;
 		canAdaptInstance = canAdapt;
