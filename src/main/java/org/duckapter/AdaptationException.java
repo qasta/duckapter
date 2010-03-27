@@ -8,9 +8,17 @@ public class AdaptationException extends RuntimeException {
 	public AdaptationException(Adapted<?, ?> adapted) {
 		this.adapted = adapted;
 	}
-	
+
 	public Adapted<?, ?> getAdapted() {
 		return adapted;
 	}
-	
+
+	@Override
+	public String getMessage() {
+		return "Adaptation fail! Unimplemented class methods: "
+				+ adapted.getAdaptedClass().getUnimplementedForClass()
+				+ ", Unimplemented methods for instance: "
+				+ adapted.getAdaptedClass().getUnimplementedForInstance();
+	}
+
 }

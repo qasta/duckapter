@@ -7,5 +7,8 @@ public interface Adapted<O,D> extends InvocationHandler {
 	O getOriginalInstance();
 
 	AdaptedClass<O,D> getAdaptedClass();
+	
+	D adaptInstance();
+	D adaptClass();
 
 }
