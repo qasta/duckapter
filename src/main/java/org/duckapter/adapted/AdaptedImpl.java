@@ -5,24 +5,10 @@ import java.lang.reflect.Method;
 import org.duckapter.Adapted;
 import org.duckapter.AdaptedClass;
 
-final class AdaptedImpl implements Adapted {
-
-	private final Object originalInstance;
-	private final AdaptedClass adaptedClass;
+final class AdaptedImpl extends AbstractAdapted implements Adapted {
 
 	AdaptedImpl(Object originalInstance, AdaptedClass adaptedClass) {
-		this.originalInstance = originalInstance;
-		this.adaptedClass = adaptedClass;
-	}
-
-	@Override
-	public Object getOriginalInstance() {
-		return originalInstance;
-	}
-
-	@Override
-	public AdaptedClass getAdaptedClass() {
-		return adaptedClass;
+		super(originalInstance, adaptedClass);
 	}
 
 	@Override
@@ -32,13 +18,16 @@ final class AdaptedImpl implements Adapted {
 			return method.invoke(this, args);
 		}
 		if (AdaptedClass.class.equals(method.getDeclaringClass())) {
-			return method.invoke(adaptedClass, args);
+			return method.invoke(getAdaptedClass(), args);
 		}
-		if (method.getDeclaringClass().isAssignableFrom(adaptedClass.getOriginalClass())) {
-			return method.invoke(originalInstance, args);
+		if (method.getDeclaringClass().isAssignableFrom(
+				getAdaptedClass().getOriginalClass())) {
+			return method.invoke(getOriginalInstance(), args);
 		}
-		if (method.getDeclaringClass().isAssignableFrom(adaptedClass.getDuckInterface())) {
-			return adaptedClass.invoke(originalInstance, method, args);
+		if (method.getDeclaringClass().isAssignableFrom(
+				getAdaptedClass().getDuckInterface())) {
+			return getAdaptedClass()
+					.invoke(getOriginalInstance(), method, args);
 		}
 		throw new UnsupportedOperationException("Operation not supported: "
 				+ method);

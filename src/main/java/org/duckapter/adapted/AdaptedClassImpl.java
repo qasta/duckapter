@@ -131,19 +131,19 @@ final class AdaptedClassImpl extends AbstractAdaptedClass implements AdaptedClas
 
 	private Collection<AnnotatedElement> getRelevantElements() {
 		Collection<AnnotatedElement> elements = new ArrayList<AnnotatedElement>();
-		elements.addAll(getRelevantConstructors(originalClass));
-		elements.addAll(getRelevantFields(originalClass));
-		elements.addAll(getRelevantMethods(originalClass));
+		elements.addAll(getRelevantConstructors(getOriginalClass()));
+		elements.addAll(getRelevantFields(getOriginalClass()));
+		elements.addAll(getRelevantMethods(getOriginalClass()));
 		return elements;
 	}
 
 	private void init() {
-		MethodAdapter adapter = doCheck(originalClass, duckInterface,
-				Checkers.collectCheckers(duckInterface));
+		MethodAdapter adapter = doCheck(getOriginalClass(), getDuckInterface(),
+				Checkers.collectCheckers(getDuckInterface()));
 		canAdaptClass = adapter.isInvocableOnClass();
 		canAdaptInstance = adapter.isInvocableOnInstance();
 
-		for (Method duckMethod : duckInterface.getMethods()) {
+		for (Method duckMethod : getDuckInterface().getMethods()) {
 			MethodAdapter old = checkDuckMethod(duckMethod);
 
 			canAdaptClass = canAdaptClass && old.isInvocableOnClass();
