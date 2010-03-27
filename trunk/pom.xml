@@ -1,61 +1,61 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.duckapter</groupId>
-  <artifactId>duckapter</artifactId>
-  <packaging>jar</packaging>
-  <version>0.1.0-SNAPSHOT</version>
-  <name>Duckapter</name>
-  <description>Duck typing support for Java</description>
-  <url>http://duckapter.googlecode.com</url>
-  <issueManagement>
-  	<url>http://code.google.com/p/duckapter/issues/list</url>
-  </issueManagement>
-  <developers>
-  	<developer>
-  		<id>vladimir.orany</id>
-  		<name>Vladimir Orany</name>
-  		<email>vladimir@orany.cz</email>
-  		<url>vladimir.orany.cz</url>
-  		<organization>EBDIT s.r.o.</organization>
-  		<organizationUrl>http://www.ebdit.eu</organizationUrl>
-  	</developer>
-  </developers>
-  <scm>
-  	<url>http://duckapter.googlecode.com/svn/trunk/</url>
-  </scm>
-  <organization>
-  	<name>EBDIT s.r.o.</name>
-  	<url>http://www.ebdit.eu</url>
-  </organization>
-  <build>
-  <plugins>
-  <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-  </plugins>
-  	<defaultGoal>package</defaultGoal>
-  	<testResources>
-  	</testResources>
-  </build>
-  <profiles>
-  </profiles>
-  <repositories>
-  </repositories>
-  <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.5</version>
-  		<scope>test</scope>
-  	</dependency>
-  </dependencies>
-  	<reporting>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.duckapter</groupId>
+	<artifactId>duckapter</artifactId>
+	<packaging>jar</packaging>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>Duckapter</name>
+	<description>Duck typing support for Java</description>
+	<url>http://duckapter.googlecode.com</url>
+	<issueManagement>
+		<url>http://code.google.com/p/duckapter/issues/list</url>
+	</issueManagement>
+	<developers>
+		<developer>
+			<id>vladimir.orany</id>
+			<name>Vladimir Orany</name>
+			<email>vladimir@orany.cz</email>
+			<url>vladimir.orany.cz</url>
+			<organization>EBDIT s.r.o.</organization>
+			<organizationUrl>http://www.ebdit.eu</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<url>http://duckapter.googlecode.com/svn/trunk/</url>
+	</scm>
+	<organization>
+		<name>EBDIT s.r.o.</name>
+		<url>http://www.ebdit.eu</url>
+	</organization>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<defaultGoal>package</defaultGoal>
+		<testResources>
+		</testResources>
+	</build>
+	<profiles>
+	</profiles>
+	<repositories>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<reporting>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -115,7 +115,9 @@
 					<findbugsXmlOutput>true</findbugsXmlOutput>
 					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
 					<xmlOutput>true</xmlOutput>
-<!--					<excludeFilterFile>${project.build.directory}/findbugs-exclude.xml</excludeFilterFile>-->
+					<!--
+						<excludeFilterFile>${project.build.directory}/findbugs-exclude.xml</excludeFilterFile>
+					-->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -137,8 +139,6 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
 			</plugin>
-			<plugins>
-			</plugins>
 		</plugins>
 	</reporting>
 </project>
