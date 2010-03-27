@@ -75,8 +75,8 @@ public final class Checkers {
 	}
 	
 	
-	@SuppressWarnings("unchecked") @Deprecated
-	public static CheckerAnnotation getCheckerAnnotation(Annotation anno){
+	@SuppressWarnings("unchecked")
+	private static CheckerAnnotation getCheckerAnnotation(Annotation anno){
 		return getCheckerAnno(anno.annotationType(), Target.class,
 				Retention.class, Documented.class, Inherited.class);
 	}
