@@ -25,7 +25,7 @@ public class FinalPropTest {
 		try {
 			Duckapter.adaptClass(FinalProp.class, FinalSetPropClass.class);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (AdaptationException e) {
 			// ok
 		}
 	}

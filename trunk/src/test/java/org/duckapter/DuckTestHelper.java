@@ -33,7 +33,7 @@ public final class DuckTestHelper {
 			try {
 				Duckapter.adaptInstance(toFail.newInstance(), testedInterface);
 				Assert.fail();
-			} catch (IllegalArgumentException e) {
+			} catch (AdaptationException e) {
 				// ok
 			}
 			assertFalse(Duckapter.canAdaptInstance(toFail.newInstance(),
@@ -48,7 +48,7 @@ public final class DuckTestHelper {
 			try {
 				Duckapter.adaptInstance(toPass.newInstance(), testedInterface);
 				// ok
-			} catch (IllegalArgumentException e) {
+			} catch (AdaptationException e) {
 				Assert.fail(e.getMessage());
 			}
 		} catch (InstantiationException e) {
@@ -82,14 +82,14 @@ public final class DuckTestHelper {
 		try {
 			Duckapter.adaptClass(toFail, testedInterface);
 			Assert.fail();
-		} catch (IllegalArgumentException e) {
+		} catch (AdaptationException e) {
 			// ok
 		}
 
 		try {
 			Duckapter.adaptClass(toPass, testedInterface);
 
-		} catch (IllegalArgumentException e) {
+		} catch (AdaptationException e) {
 			Assert.fail(e.getMessage());
 		}
 
