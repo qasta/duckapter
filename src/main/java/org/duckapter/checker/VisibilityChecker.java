@@ -3,26 +3,30 @@ package org.duckapter.checker;
 import static org.duckapter.checker.Checkers.getModifiers;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-import org.duckapter.Checker;
 import org.duckapter.Duck;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.Visibility;
 
 
-public class VisibilityChecker implements Checker<Annotation> {
+public class VisibilityChecker extends AbstractChecker<Annotation> {
+
+	@SuppressWarnings("unchecked")
+	private static final List<Class<PublicOnlyChecker>> SUPPRESSED = Arrays.asList(PublicOnlyChecker.class);
 
 	private static interface VisibilityAnno {
 		Visibility value();
 	}
 
 	@Override
-	public final boolean canAdapt(Annotation anno, AnnotatedElement element) {
-		return true;
+	protected Collection<ElementType> getTargetElements(Annotation anno) {
+		return ALL_TARGETS;
 	}
 
 	@Override
@@ -46,18 +50,7 @@ public class VisibilityChecker implements Checker<Annotation> {
 	@Override
 	public List<Class<PublicOnlyChecker>> suppressCheckers(Annotation anno,
 			AnnotatedElement duckMethod) {
-		return Arrays.asList(PublicOnlyChecker.class);
+		return SUPPRESSED;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		return Checkers.equals(this, obj);
-	}
-
-	private static final int HASH = Checkers.hashCode(VisibilityChecker.class);
-
-	@Override
-	public int hashCode() {
-		return HASH;
-	}
 }

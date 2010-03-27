@@ -10,12 +10,14 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.duckapter.Checker;
 
 public abstract class AbstractChecker<T extends Annotation> implements
 		Checker<T> {
 
+	protected static final List<ElementType> ALL_TARGETS = Arrays.asList(ElementType.values());
 	private final int hashCode;
 	
 	public AbstractChecker() {
@@ -47,7 +49,7 @@ public abstract class AbstractChecker<T extends Annotation> implements
 					"Cannot obtrain target elements! " + getClass());
 		}
 		if (!anno.annotationType().isAnnotationPresent(Target.class)) {
-			return Arrays.asList(ElementType.values());
+			return ALL_TARGETS;
 		}
 		Collection<ElementType> targets = Arrays.asList(anno.annotationType()
 				.getAnnotation(Target.class).value());
