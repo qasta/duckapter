@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 
 public class EmptyChecker<T extends Annotation> implements Checker<T> {
 
@@ -19,9 +19,9 @@ public class EmptyChecker<T extends Annotation> implements Checker<T> {
 	}
 	
 	@Override
-	public MethodAdapter adapt(T anno, AnnotatedElement original,
+	public InvocationAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
-		return MethodAdapters.OK;
+		return InvocationAdapters.OK;
 	}
 
 	@Override

@@ -3,9 +3,9 @@ package org.duckapter.adapter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 
-public class MethodCallAdapter extends DefaultMethodAdapter implements MethodAdapter {
+public class MethodCallAdapter extends DefaultMethodAdapter implements InvocationAdapter {
 
 	private final Method method;
 

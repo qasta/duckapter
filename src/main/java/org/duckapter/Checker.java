@@ -9,7 +9,7 @@ public interface Checker<T extends Annotation> {
 
 	boolean canAdapt(T anno, AnnotatedElement element);
 
-	MethodAdapter adapt(T anno, AnnotatedElement original, AnnotatedElement duck);
+	InvocationAdapter adapt(T anno, AnnotatedElement original, AnnotatedElement duck);
 
 	<A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
 			T anno, AnnotatedElement element);

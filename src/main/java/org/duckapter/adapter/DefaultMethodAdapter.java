@@ -3,9 +3,9 @@ package org.duckapter.adapter;
 import static org.duckapter.Duck.type;
 import static org.duckapter.Duck.test;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 
-public abstract class DefaultMethodAdapter implements MethodAdapter {
+public abstract class DefaultMethodAdapter implements InvocationAdapter {
 
 	private final Class<?> returnType;
 
@@ -55,13 +55,13 @@ public abstract class DefaultMethodAdapter implements MethodAdapter {
 	}
 
 	@Override
-	public MethodAdapter orMerge(MethodAdapter other) {
-		return MethodAdapters.orMerge(this, other);
+	public InvocationAdapter orMerge(InvocationAdapter other) {
+		return InvocationAdapters.orMerge(this, other);
 	}
 	
 	@Override
-	public MethodAdapter andMerge(MethodAdapter other) {
-		return MethodAdapters.andMerge(this, other);
+	public InvocationAdapter andMerge(InvocationAdapter other) {
+		return InvocationAdapters.andMerge(this, other);
 	}
 	
 	private Object handlePrimitive(Object ret, Class<?> duckType) {

@@ -1,9 +1,9 @@
 package org.duckapter.adapter;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 
 
-public class OptionalAdapter implements MethodAdapter {
+public class OptionalAdapter implements InvocationAdapter {
 
 	private final Class<?> returnType;
 	
@@ -12,13 +12,13 @@ public class OptionalAdapter implements MethodAdapter {
 	}
 	
 	@Override
-	public MethodAdapter andMerge(MethodAdapter other) {
-		return MethodAdapters.andMerge(this, other);
+	public InvocationAdapter andMerge(InvocationAdapter other) {
+		return InvocationAdapters.andMerge(this, other);
 	}
 	
 	@Override
-	public MethodAdapter orMerge(MethodAdapter other) {
-		return MethodAdapters.orMerge(this, other);
+	public InvocationAdapter orMerge(InvocationAdapter other) {
+		return InvocationAdapters.orMerge(this, other);
 	}
 	
 	@Override

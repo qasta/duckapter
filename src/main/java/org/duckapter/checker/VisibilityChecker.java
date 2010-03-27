@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.duckapter.Checker;
 import org.duckapter.Duck;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.Visibility;
 
 
@@ -26,11 +26,11 @@ public class VisibilityChecker implements Checker<Annotation> {
 	}
 
 	@Override
-	public final MethodAdapter adapt(Annotation anno, AnnotatedElement original,
+	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		return getVisibility(anno).check(anno, getModifiers(original)) 
-				? MethodAdapters.OK
-				: MethodAdapters.NULL;
+				? InvocationAdapters.OK
+				: InvocationAdapters.NULL;
 	}
 
 

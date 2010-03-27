@@ -6,27 +6,27 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 
 public abstract class BooleanCheckerBase<T extends Annotation> extends
 		CheckerBase<T> implements Checker<T> {
 
 	
-	protected final MethodAdapter adaptClass(T anno, Class<?> clazz,
+	protected final InvocationAdapter adaptClass(T anno, Class<?> clazz,
 			Class<?> duckInterface) {
 		return toMethodAdapter(checkClass(anno, clazz, duckInterface));
 	}
 
-	protected final MethodAdapter adaptField(T anno, Field field, Method duckMethod) {
+	protected final InvocationAdapter adaptField(T anno, Field field, Method duckMethod) {
 		return toMethodAdapter(checkField(anno, field, duckMethod));
 	}
 
-	protected final MethodAdapter adaptMethod(T anno, Method method, Method duckMethod) {
+	protected final InvocationAdapter adaptMethod(T anno, Method method, Method duckMethod) {
 		return toMethodAdapter(checkMethod(anno, method, duckMethod));
 	}
 
-	protected final MethodAdapter adaptConstructor(T anno,
+	protected final InvocationAdapter adaptConstructor(T anno,
 			Constructor<?> constructor, Method duckMethod) {
 		return toMethodAdapter(checkConstructor(anno, constructor, duckMethod));
 	};
@@ -48,12 +48,12 @@ public abstract class BooleanCheckerBase<T extends Annotation> extends
 		return false;
 	};
 
-	protected MethodAdapter toMethodAdapter(boolean b) {
-		return booleanToMethodAdapter(b, MethodAdapters.OK);
+	protected InvocationAdapter toMethodAdapter(boolean b) {
+		return booleanToMethodAdapter(b, InvocationAdapters.OK);
 	}
 
-	protected MethodAdapter booleanToMethodAdapter(boolean b,
-			MethodAdapter okAdapter) {
-		return b ? okAdapter : MethodAdapters.NULL;
+	protected InvocationAdapter booleanToMethodAdapter(boolean b,
+			InvocationAdapter okAdapter) {
+		return b ? okAdapter : InvocationAdapters.NULL;
 	}
 }

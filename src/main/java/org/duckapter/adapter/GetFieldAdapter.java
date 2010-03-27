@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 
-public class GetFieldAdapter extends DefaultMethodAdapter implements MethodAdapter {
+public class GetFieldAdapter extends DefaultMethodAdapter implements InvocationAdapter {
 
 	private final Field field;
 

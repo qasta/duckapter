@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.OptionalAdapter;
 import org.duckapter.annotation.Optional;
 
@@ -21,10 +21,10 @@ public class OptionalChecker implements Checker<Optional> {
 	}
 	
 	@Override
-	public MethodAdapter adapt(Optional anno, AnnotatedElement original,
+	public InvocationAdapter adapt(Optional anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (!(duck instanceof Method)) {
-			return MethodAdapters.NULL;
+			return InvocationAdapters.NULL;
 		}
 		return new OptionalAdapter(((Method)duck).getReturnType());
 	}

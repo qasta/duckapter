@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.duckapter.Checker;
-import org.duckapter.MethodAdapter;
+import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.AllMethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.All;
 
 public class AllChecker implements Checker<All> {
@@ -42,41 +42,41 @@ public class AllChecker implements Checker<All> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public MethodAdapter adapt(All anno, AnnotatedElement original,
+	public InvocationAdapter adapt(All anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (original instanceof Class) {
-			return MethodAdapters.OK;
+			return InvocationAdapters.OK;
 		}
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
 			return checkReturnType(anno, original, duckMethod.getReturnType());
 
 		}
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	}
 
-	private MethodAdapter checkReturnType(All anno, AnnotatedElement original, Class<?> retType) {
+	private InvocationAdapter checkReturnType(All anno, AnnotatedElement original, Class<?> retType) {
 		if (!retType.isArray()) {
-			return MethodAdapters.NULL;
+			return InvocationAdapters.NULL;
 		}
 		return checkMethodsType(anno, original, (Class<?>) retType.getComponentType());
 	}
 
-	private MethodAdapter checkMethodsType(All anno, AnnotatedElement original,
+	private InvocationAdapter checkMethodsType(All anno, AnnotatedElement original,
 			Class<?> methodsType) {
 		if (!methodsType.isInterface() || methodsType.getMethods().length != 1) {
-			return MethodAdapters.NULL;
+			return InvocationAdapters.NULL;
 		}
 		
 		return checkMethodInterface(anno, original, methodsType.getMethods()[0]);
 	}
 
-	private MethodAdapter checkMethodInterface(All anno, AnnotatedElement original,
+	private InvocationAdapter checkMethodInterface(All anno, AnnotatedElement original,
 			final Method returnTypeOnlyMethod) {
 		for (BooleanCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
 			if (ch.canAdapt(anno, original)
-					&& MethodAdapters.isNull(ch.adapt(anno, original, returnTypeOnlyMethod))) {
-				return MethodAdapters.NULL;
+					&& InvocationAdapters.isNull(ch.adapt(anno, original, returnTypeOnlyMethod))) {
+				return InvocationAdapters.NULL;
 			}
 		}
 		return new AllMethodAdapter(original, returnTypeOnlyMethod);

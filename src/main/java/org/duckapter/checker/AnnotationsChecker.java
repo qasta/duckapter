@@ -9,8 +9,8 @@ import java.util.HashSet;
 
 import org.duckapter.Checker;
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 
 public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 
@@ -19,14 +19,14 @@ public class AnnotationsChecker<T extends Annotation> implements Checker<T> {
 		return true;
 	};
 
-	public MethodAdapter adapt(T anno, AnnotatedElement original,
+	public InvocationAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		Collection<Annotation> fromDuck = collectAnnotations(duck);
 		Collection<Annotation> fromOriginal = collectAnnotations(original);
 		if (fromDuck.equals(fromOriginal)) {
-			return MethodAdapters.OK;
+			return InvocationAdapters.OK;
 		}
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	}
 
 	private Collection<Annotation> collectAnnotations(AnnotatedElement duck) {

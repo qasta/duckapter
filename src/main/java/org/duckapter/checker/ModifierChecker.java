@@ -3,8 +3,8 @@ package org.duckapter.checker;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
-import org.duckapter.MethodAdapter;
-import org.duckapter.adapter.MethodAdapters;
+import org.duckapter.InvocationAdapter;
+import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.ModifierMask;
 
 public class ModifierChecker extends AbstractChecker<Annotation> {
@@ -14,12 +14,12 @@ public class ModifierChecker extends AbstractChecker<Annotation> {
 	}
 
 	@Override
-	public final MethodAdapter adapt(Annotation anno, AnnotatedElement original,
+	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck) {
 		if (checkModifiers(anno, Checkers.getModifiers(original))) {
-			return MethodAdapters.OK;
+			return InvocationAdapters.OK;
 		}
-		return MethodAdapters.NULL;
+		return InvocationAdapters.NULL;
 	}
 
 	protected int getMask(Annotation fin) {
