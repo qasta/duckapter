@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.STATIC)
+@ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 public @interface StaticField{

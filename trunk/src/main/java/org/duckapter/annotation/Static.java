@@ -15,7 +15,7 @@ import java.lang.reflect.Modifier;
  * @author Vladimir Orany
  */
 @Documented
-@ModifierMask(Modifier.STATIC)
+@ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 public @interface Static {

@@ -21,7 +21,7 @@ import org.duckapter.Duck;
  * @author Vladimir Orany
  */
 @Documented
-@Stereotype(StereotypeType.OR)
+@StereotypeChecker(StereotypeType.OR)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
 @Method @Field

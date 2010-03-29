@@ -7,12 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.checker.StereotypeChecker;
+import org.duckapter.checker.StereotypeCheckerChecker;
 
 @Documented
-@CheckerAnnotation(StereotypeChecker.class)
+@CheckerAnnotation(StereotypeCheckerChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface Stereotype {
+public @interface StereotypeChecker {
 	StereotypeType value() default StereotypeType.AND;
 }

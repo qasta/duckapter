@@ -26,7 +26,7 @@ import org.duckapter.Duck;
  * 
  */
 @Documented
-@Stereotype(OR)
+@StereotypeChecker(OR)
 @Retention(RUNTIME)
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
 @Constructor

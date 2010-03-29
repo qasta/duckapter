@@ -7,12 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.checker.ModifierChecker;
+import org.duckapter.checker.ModifierCheckerChecker;
 
 @Documented
-@CheckerAnnotation(ModifierChecker.class)
+@CheckerAnnotation(ModifierCheckerChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
-public @interface ModifierMask {
+public @interface ModifierChecker {
 	int value();
 }
