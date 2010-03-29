@@ -20,11 +20,11 @@ public class PerfectDuck {
 	}
 
 	public void dive() {
-		System.out.println(getClass().getName() + " is diving");
+		
 	}
 
 	public void doSomething() {
-		System.out.println(getClass().getName() + " done something");
+		
 	}
 
 	public static boolean canFly() {

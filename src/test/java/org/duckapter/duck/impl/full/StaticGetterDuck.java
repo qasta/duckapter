@@ -24,7 +24,7 @@ public class StaticGetterDuck {
 	}
 
 	public void dive() {
-		System.out.println(getClass().getName() + " is diving");
+		
 	}
 
 	public static boolean canFly() {
