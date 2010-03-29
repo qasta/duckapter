@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.STRICT)
+@ModifierChecker(Modifier.STRICT)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.TYPE })
 public @interface StrictFloatingPoint {

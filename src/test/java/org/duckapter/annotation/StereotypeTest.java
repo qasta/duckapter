@@ -12,15 +12,15 @@ import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
 import org.duckapter.DuckTestHelper;
-import org.duckapter.checker.StereotypeChecker;
+import org.duckapter.checker.StereotypeCheckerChecker;
 import org.junit.Test;
 
 public class StereotypeTest {
 
 	
 	@Documented
-	@CheckerAnnotation(StereotypeChecker.class)
-	@Stereotype(OR)
+	@CheckerAnnotation(StereotypeCheckerChecker.class)
+	@StereotypeChecker(OR)
 	@Retention(RUNTIME)
 	@Target( { METHOD, ANNOTATION_TYPE })
 	@Constructor
@@ -74,8 +74,8 @@ public class StereotypeTest {
 	
 
 	@Documented
-	@CheckerAnnotation(StereotypeChecker.class)
-	@Stereotype(AND)
+	@CheckerAnnotation(StereotypeCheckerChecker.class)
+	@StereotypeChecker(AND)
 	@Retention(RUNTIME)
 	@Target( { METHOD, ANNOTATION_TYPE })
 	@Package(Visibility.AT_MOST)

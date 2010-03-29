@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@ModifierMask(FINAL)
+@ModifierChecker(FINAL)
 @Target( { ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,
 		ElementType.CONSTRUCTOR, ElementType.PARAMETER,
 		ElementType.ANNOTATION_TYPE })

@@ -5,9 +5,9 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.annotation.ModifierMask;
+import org.duckapter.annotation.ModifierChecker;
 
-public class ModifierChecker extends AbstractChecker<Annotation> {
+public class ModifierCheckerChecker extends AbstractChecker<Annotation> {
 
 	private boolean checkModifiers(Annotation f, final int modifiers) {
 		return (modifiers & getMask(f)) != 0;
@@ -23,15 +23,15 @@ public class ModifierChecker extends AbstractChecker<Annotation> {
 	}
 
 	protected int getMask(Annotation fin) {
-		if (fin instanceof ModifierMask) {
-			return ((ModifierMask) fin).value();
+		if (fin instanceof ModifierChecker) {
+			return ((ModifierChecker) fin).value();
 		}
-		if (fin.annotationType().isAnnotationPresent(ModifierMask.class)) {
-			return fin.annotationType().getAnnotation(ModifierMask.class)
+		if (fin.annotationType().isAnnotationPresent(ModifierChecker.class)) {
+			return fin.annotationType().getAnnotation(ModifierChecker.class)
 					.value();
 		}
 		throw new IllegalStateException("Annotation " + fin
 				+ " declares modifier checker but is "
-				+ "not annotated by @ModifierMask annotation!");
+				+ "not annotated by @ModifierChecker annotation!");
 	}
 }

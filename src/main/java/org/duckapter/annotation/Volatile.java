@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.VOLATILE)
+@ModifierChecker(Modifier.VOLATILE)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
 public @interface Volatile {

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.TRANSIENT)
+@ModifierChecker(Modifier.TRANSIENT)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
 public @interface Transient {

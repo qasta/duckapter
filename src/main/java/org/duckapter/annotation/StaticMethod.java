@@ -12,7 +12,7 @@ import java.lang.reflect.Modifier;
 
 
 @Documented
-@ModifierMask(Modifier.STATIC)
+@ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.ANNOTATION_TYPE, ElementType.METHOD })
 public @interface StaticMethod {

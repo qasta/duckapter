@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.ABSTRACT)
+@ModifierChecker(Modifier.ABSTRACT)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface Abstract {

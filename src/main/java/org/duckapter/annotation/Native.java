@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.NATIVE)
+@ModifierChecker(Modifier.NATIVE)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 public @interface Native {

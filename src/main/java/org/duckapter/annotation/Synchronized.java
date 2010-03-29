@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 @Documented
-@ModifierMask(Modifier.SYNCHRONIZED)
+@ModifierChecker(Modifier.SYNCHRONIZED)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.ANNOTATION_TYPE, ElementType.METHOD })
 public @interface Synchronized {

@@ -11,10 +11,10 @@ import java.util.Map.Entry;
 
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
-import org.duckapter.annotation.Stereotype;
+import org.duckapter.annotation.StereotypeChecker;
 import org.duckapter.annotation.StereotypeType;
 
-public class StereotypeChecker implements Checker<Annotation> {
+public class StereotypeCheckerChecker implements Checker<Annotation> {
 
 	@Override
 	public InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
@@ -56,11 +56,11 @@ public class StereotypeChecker implements Checker<Annotation> {
 	}
 
 	private StereotypeType getStereotypeType(Annotation anno) {
-		if (anno instanceof Stereotype) {
-			return ((Stereotype) anno).value();
+		if (anno instanceof StereotypeChecker) {
+			return ((StereotypeChecker) anno).value();
 		}
-		if (anno.annotationType().isAnnotationPresent(Stereotype.class)) {
-			return anno.annotationType().getAnnotation(Stereotype.class)
+		if (anno.annotationType().isAnnotationPresent(StereotypeChecker.class)) {
+			return anno.annotationType().getAnnotation(StereotypeChecker.class)
 					.value();
 		}
 		throw new IllegalStateException("Annotation " + anno
@@ -73,7 +73,7 @@ public class StereotypeChecker implements Checker<Annotation> {
 		return Checkers.equals(this, obj);
 	}
 
-	private static final int HASH = Checkers.hashCode(StereotypeChecker.class);
+	private static final int HASH = Checkers.hashCode(StereotypeCheckerChecker.class);
 
 	@Override
 	public int hashCode() {
