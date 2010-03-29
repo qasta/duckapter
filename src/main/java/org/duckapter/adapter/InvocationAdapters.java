@@ -15,8 +15,18 @@ public enum InvocationAdapters implements InvocationAdapter {
 		}
 	},
 	
-	MAX(MethodAdapterPriorities.MAX),
-	MIN(MethodAdapterPriorities.MIN),
+	MAX(MethodAdapterPriorities.MAX){
+		@Override
+		public InvocationAdapter orMerge(InvocationAdapter other) {
+			return this;
+		}
+	},
+	MIN(MethodAdapterPriorities.MIN){
+		@Override
+		public InvocationAdapter andMerge(InvocationAdapter other) {
+			return this;
+		}
+	},
 	
 	NULL(MethodAdapterPriorities.NONE) {
 		@Override
@@ -67,6 +77,22 @@ public enum InvocationAdapters implements InvocationAdapter {
 		return lowest;
 	}
 
+	public static InvocationAdapter orMerge(InvocationAdapter first, InvocationAdapter other){
+		if (other.getPriority() > first.getPriority()) {
+			return other;
+		} else {
+			return first;
+		}
+	}
+	
+	public static InvocationAdapter andMerge(InvocationAdapter first, InvocationAdapter other){
+		if (other.getPriority() < first.getPriority()) {
+			return other;
+		} else {
+			return first;
+		}
+	}
+	
 	@Override
 	public int getPriority(){
 		return priority;
