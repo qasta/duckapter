@@ -24,13 +24,13 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 			return method.invoke(getAdaptedClass(), args);
 		}
 		if (method.getDeclaringClass().isAssignableFrom(
-				getAdaptedClass().getOriginalClass())) {
-			return method.invoke(getOriginalInstance(), args);
-		}
-		if (method.getDeclaringClass().isAssignableFrom(
 				getAdaptedClass().getDuckInterface())) {
 			return getAdaptedClass()
 					.invoke(getOriginalInstance(), method, args);
+		}
+		if (method.getDeclaringClass().isAssignableFrom(
+				getAdaptedClass().getOriginalClass())) {
+			return method.invoke(getOriginalInstance(), args);
 		}
 		throw new UnsupportedOperationException("Operation not supported: "
 				+ method);

@@ -3,6 +3,7 @@ package org.duckapter.adapter;
 import static org.duckapter.Duck.type;
 import static org.duckapter.Duck.test;
 
+import org.duckapter.Adapted;
 import org.duckapter.InvocationAdapter;
 
 public abstract class DefaultMethodAdapter implements InvocationAdapter {
@@ -38,9 +39,18 @@ public abstract class DefaultMethodAdapter implements InvocationAdapter {
 		return duckedArgs;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Object handleObject(Object ret, final Class<?> duckType) {
 		if (ret == null) {
 			return null;
+		}
+		if (ret instanceof Adapted) {
+			Adapted adapted = (Adapted) ret;
+			if (duckType.isAssignableFrom(adapted.getAdaptedClass()
+					.getOriginalClass())) {
+				return adapted.getOriginalInstance();
+			}
+
 		}
 		if (duckType.isAssignableFrom(ret.getClass())) {
 			return ret;
@@ -58,12 +68,12 @@ public abstract class DefaultMethodAdapter implements InvocationAdapter {
 	public InvocationAdapter orMerge(InvocationAdapter other) {
 		return InvocationAdapters.orMerge(this, other);
 	}
-	
+
 	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return InvocationAdapters.andMerge(this, other);
 	}
-	
+
 	private Object handlePrimitive(Object ret, Class<?> duckType) {
 		return ret;
 	}
@@ -71,12 +81,12 @@ public abstract class DefaultMethodAdapter implements InvocationAdapter {
 	private final Object handleReturnType(Object ret) {
 		return handleObject(ret, getReturnType());
 	}
-	
+
 	@Override
 	public boolean isInvocableOnClass() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isInvocableOnInstance() {
 		return true;

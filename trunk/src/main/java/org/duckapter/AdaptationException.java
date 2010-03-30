@@ -15,7 +15,11 @@ public class AdaptationException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return "Adaptation fail! Unimplemented class methods: "
+		return "Adaptation fail! (Original class: "
+				+ adapted.getAdaptedClass().getOriginalClass()
+				+ ", duck interface: "
+				+ adapted.getAdaptedClass().getDuckInterface()
+				+ ")Unimplemented class methods: "
 				+ adapted.getAdaptedClass().getUnimplementedForClass()
 				+ ", Unimplemented methods for instance: "
 				+ adapted.getAdaptedClass().getUnimplementedForInstance();
