@@ -20,6 +20,7 @@ import org.duckapter.AdaptedClass;
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
+import org.duckapter.adapter.MethodCallAdapter;
 import org.duckapter.checker.Checkers;
 
 final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
@@ -142,14 +143,25 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 				Checkers.collectCheckers(getDuckInterface()));
 		canAdaptClass = adapter.isInvocableOnClass();
 		canAdaptInstance = adapter.isInvocableOnInstance();
-
-		for (Method duckMethod : getDuckInterface().getMethods()) {
+		
+		for (Method duckMethod : getDuckMethods()) {
 			InvocationAdapter old = checkDuckMethod(duckMethod);
 
 			canAdaptClass = canAdaptClass && old.isInvocableOnClass();
 			canAdaptInstance = canAdaptInstance && old.isInvocableOnInstance();
 			adapters.put(duckMethod, old);
 		}
+		for (Method m : Object.class.getMethods()) {
+			if (!adapters.containsKey(m)) {
+				adapters.put(m, new MethodCallAdapter(m, m));
+			}
+		}
+	}
+
+
+
+	private Iterable<Method> getDuckMethods() {
+		return Arrays.asList(getDuckInterface().getMethods());
 	}
 
 	private InvocationAdapter checkDuckMethod(Method duckMethod) {
