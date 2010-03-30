@@ -111,16 +111,16 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 			if (ch == null) {
 				continue;
 			}
-			if (checkers.containsKey(ch) && ch.canAdapt(anno, original)) {
-				final InvocationAdapter adapter = ch.adapt(anno, original, duck);
+			if (checkers.containsKey(ch) && ch.canAdapt(anno, original, getOriginalClass())) {
+				final InvocationAdapter adapter = ch.adapt(anno, original, duck, getOriginalClass());
 				ret = ret.andMerge(adapter);
 				checkers.remove(ch);
 			}
 		}
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
-			if (checkers.containsKey(entry.getKey()) && entry.getKey().canAdapt(entry.getValue(), original)) {
+			if (checkers.containsKey(entry.getKey()) && entry.getKey().canAdapt(entry.getValue(), original, getOriginalClass())) {
 				final InvocationAdapter adapter = entry.getKey().adapt(entry.getValue(), original,
-						duck);
+						duck, getOriginalClass());
 				ret = ret.andMerge(adapter);
 			}
 		}

@@ -8,10 +8,12 @@ import java.util.Arrays;
 final class MethodSignature {
 	private final String name;
 	private final Class<?>[] parameterTypes;
+	private final int hashCode;
 
 	public MethodSignature(Class<?>[] parameterTypes, String name) {
 		this.parameterTypes = parameterTypes;
 		this.name = name;
+		this.hashCode = computeHash();
 	}
 
 	@Override
@@ -34,7 +36,9 @@ final class MethodSignature {
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode() { return hashCode; };
+	
+	private final int computeHash() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());

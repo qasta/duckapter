@@ -25,7 +25,7 @@ public class AllChecker extends AbstractChecker<All> {
 					ExceptionsChecker.class);
 	@SuppressWarnings("unchecked")
 	private static final Collection<BooleanCheckerBase> SUPPRESSED_CHECKERS;
-	
+
 	private static final Collection<ElementType> TARGETS;
 
 	static {
@@ -42,7 +42,7 @@ public class AllChecker extends AbstractChecker<All> {
 			}
 		}
 		SUPPRESSED_CHECKERS = Collections.unmodifiableCollection(checkers);
-		
+
 		Set<ElementType> targets = new HashSet<ElementType>();
 		for (AbstractChecker<?> ac : SUPPRESSED_CHECKERS) {
 			targets.addAll(ac.getTargetElements(null));
@@ -53,45 +53,51 @@ public class AllChecker extends AbstractChecker<All> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public InvocationAdapter adapt(All anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof Class) {
 			return InvocationAdapters.OK;
 		}
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
-			return checkReturnType(anno, original, duckMethod.getReturnType());
+			return checkReturnType(anno, original, classOfOriginal, duckMethod
+					.getReturnType());
 
 		}
 		return InvocationAdapters.NULL;
 	}
 
-	private InvocationAdapter checkReturnType(All anno, AnnotatedElement original, Class<?> retType) {
+	private InvocationAdapter checkReturnType(All anno,
+			AnnotatedElement original, Class<?> classOfOriginal,
+			Class<?> retType) {
 		if (!retType.isArray()) {
 			return InvocationAdapters.NULL;
 		}
-		return checkMethodsType(anno, original, (Class<?>) retType.getComponentType());
+		return checkMethodsType(anno, original, classOfOriginal,
+				(Class<?>) retType.getComponentType());
 	}
 
-	private InvocationAdapter checkMethodsType(All anno, AnnotatedElement original,
+	private InvocationAdapter checkMethodsType(All anno,
+			AnnotatedElement original, Class<?> classOfOriginal,
 			Class<?> methodsType) {
 		if (!methodsType.isInterface() || methodsType.getMethods().length != 1) {
 			return InvocationAdapters.NULL;
 		}
-		
-		return checkMethodInterface(anno, original, methodsType.getMethods()[0]);
+
+		return checkMethodInterface(anno, original, classOfOriginal, methodsType.getMethods()[0]);
 	}
 
-	private InvocationAdapter checkMethodInterface(All anno, AnnotatedElement original,
-			final Method returnTypeOnlyMethod) {
+	private InvocationAdapter checkMethodInterface(All anno,
+			AnnotatedElement original, Class<?> classOfOriginal, final Method returnTypeOnlyMethod) {
 		for (BooleanCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
-			if (ch.canAdapt(anno, original)
-					&& InvocationAdapters.isNull(ch.adapt(anno, original, returnTypeOnlyMethod))) {
+			if (ch.canAdapt(anno, original, classOfOriginal)
+					&& InvocationAdapters.isNull(ch.adapt(anno, original,
+							returnTypeOnlyMethod, classOfOriginal))) {
 				return InvocationAdapters.NULL;
 			}
 		}
 		return new AllMethodAdapter(original, returnTypeOnlyMethod);
 	}
-	
+
 	@Override
 	protected Collection<ElementType> getTargetElements(All anno) {
 		return TARGETS;

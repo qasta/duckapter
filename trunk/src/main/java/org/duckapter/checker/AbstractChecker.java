@@ -29,7 +29,7 @@ public abstract class AbstractChecker<T extends Annotation> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final boolean canAdapt(T anno, AnnotatedElement element) {
+	public final boolean canAdapt(T anno, AnnotatedElement element, Class<?> classOfOriginal) {
 		Collection<ElementType> targets = getTargetElements(anno);
 		if (element instanceof Class) {
 			return targets.contains(ElementType.TYPE);

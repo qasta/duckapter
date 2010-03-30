@@ -11,7 +11,7 @@ public class NameChecker<T extends Annotation> extends BooleanCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno,
 			java.lang.reflect.Constructor<?> constructor, Method duckMethod) {
-		return checkFieldName(duckMethod.getName(), constructor.getName());
+		return checkMethodName(duckMethod.getName(), constructor.getName());
 	};
 
 	@Override
