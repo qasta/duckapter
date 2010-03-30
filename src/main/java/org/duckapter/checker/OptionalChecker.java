@@ -12,7 +12,7 @@ public class OptionalChecker extends AbstractChecker<Optional> {
 
 	@Override
 	public InvocationAdapter adapt(Optional anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (!(duck instanceof Method)) {
 			return InvocationAdapters.NULL;
 		}

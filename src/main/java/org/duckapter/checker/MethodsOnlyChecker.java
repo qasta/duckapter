@@ -15,7 +15,7 @@ public class MethodsOnlyChecker<T extends Annotation> extends
 		AbstractChecker<T> {
 
 	public InvocationAdapter adapt(T anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof Method && duck instanceof Method ) {
 			return new MethodCallAdapter((Method) duck, (Method) original);
 		}

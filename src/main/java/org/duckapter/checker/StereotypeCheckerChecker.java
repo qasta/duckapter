@@ -18,14 +18,15 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 
 	@Override
 	public InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		return getStereotypeType(anno).adapt(anno, original, duck,
-				getCheckers(anno));
+				classOfOriginal, getCheckers(anno));
 	}
 
 	@Override
-	public boolean canAdapt(Annotation anno, AnnotatedElement element) {
-		return getStereotypeType(anno).canAdapt(anno, element,
+	public boolean canAdapt(Annotation anno, AnnotatedElement element,
+			Class<?> classOfOriginal) {
+		return getStereotypeType(anno).canAdapt(anno, element, classOfOriginal,
 				getCheckers(anno));
 	}
 
@@ -73,7 +74,8 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 		return Checkers.equals(this, obj);
 	}
 
-	private static final int HASH = Checkers.hashCode(StereotypeCheckerChecker.class);
+	private static final int HASH = Checkers
+			.hashCode(StereotypeCheckerChecker.class);
 
 	@Override
 	public int hashCode() {

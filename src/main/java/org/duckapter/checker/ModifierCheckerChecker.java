@@ -15,7 +15,7 @@ public class ModifierCheckerChecker extends AbstractChecker<Annotation> {
 
 	@Override
 	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (checkModifiers(anno, Checkers.getModifiers(original))) {
 			return InvocationAdapters.OK;
 		}

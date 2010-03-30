@@ -36,15 +36,15 @@ public enum StereotypeType {
 
 	};
 	public final <T extends Annotation> InvocationAdapter adapt(T anno,
-			AnnotatedElement original, AnnotatedElement duck,
+			AnnotatedElement original, AnnotatedElement duck, Class<?> classOfOriginal, 
 			Map<Checker<T>, T> checkers) {
 		InvocationAdapter adapter = defaultAdapter();
 		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
-			if (!entry.getKey().canAdapt(entry.getValue(), original)) {
+			if (!entry.getKey().canAdapt(entry.getValue(), original, classOfOriginal)) {
 				continue;
 			}
 			InvocationAdapter other = entry.getKey().adapt(entry.getValue(),
-					original, duck);
+					original, duck, classOfOriginal);
 			if (checkPriority(adapter, other)) {
 				adapter = other;
 			}
@@ -58,11 +58,11 @@ public enum StereotypeType {
 			InvocationAdapter other);
 
 	public final <T extends Annotation> boolean canAdapt(T anno,
-			AnnotatedElement original, Map<Checker<T>, T> checkers) {
+			AnnotatedElement original, Class<?> classOfOriginal, Map<Checker<T>, T> checkers) {
 		boolean canAdapt = false;
 		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
 			canAdapt = canAdapt
-					|| entry.getKey().canAdapt(entry.getValue(), original);
+					|| entry.getKey().canAdapt(entry.getValue(), original, classOfOriginal);
 		}
 		return canAdapt;
 	}

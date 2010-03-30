@@ -21,7 +21,7 @@ public class EmptyChecker<T extends Annotation> extends AbstractChecker<T> {
 
 	@Override
 	public InvocationAdapter adapt(T anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		return InvocationAdapters.OK;
 	}
 

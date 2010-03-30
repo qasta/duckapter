@@ -19,7 +19,7 @@ public class AnnotationsChecker<T extends Annotation> extends
 	}
 
 	public InvocationAdapter adapt(T anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		Collection<Annotation> fromDuck = collectAnnotations(duck);
 		Collection<Annotation> fromOriginal = collectAnnotations(original);
 		if (fromDuck.equals(fromOriginal)) {

@@ -14,7 +14,7 @@ public abstract class CheckerBase<T extends Annotation> extends AbstractChecker<
 	@SuppressWarnings("unchecked")
 	@Override
 	public final InvocationAdapter  adapt(T anno, AnnotatedElement original,
-			AnnotatedElement duck) {
+			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof Class && duck instanceof Class) {
 			return adaptClass(anno, (Class) original, (Class) duck);
 		}
