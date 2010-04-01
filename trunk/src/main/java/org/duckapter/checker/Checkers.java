@@ -19,6 +19,8 @@ import java.util.Map.Entry;
 
 import org.duckapter.Checker;
 import org.duckapter.CheckerAnnotation;
+import org.duckapter.Duck;
+import org.duckapter.annotation.CheckerWithPriority;
 
 public final class Checkers {
 
@@ -69,43 +71,56 @@ public final class Checkers {
 		}
 		return checker;
 	}
-	
-	public static boolean isCheckerAnnotation(Annotation anno){
+
+	public static boolean isCheckerAnnotation(Annotation anno) {
 		return !EmptyChecker.getInstance().equals(getChecker(anno));
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
-	private static CheckerAnnotation getCheckerAnnotation(Annotation anno){
+	private static CheckerAnnotation getCheckerAnnotation(Annotation anno) {
 		return getCheckerAnno(anno.annotationType(), Target.class,
 				Retention.class, Documented.class, Inherited.class);
 	}
-	
-	@SuppressWarnings("unchecked")
-	private static CheckerAnnotation getCheckerAnno(Class<? extends Annotation> anno,
+
+	private static CheckerAnnotation getCheckerAnno(
+			Class<? extends Annotation> anno,
 			Class<? extends Annotation>... exclude) {
 		if (anno.isAnnotationPresent(CheckerAnnotation.class)) {
 			return anno.getAnnotation(CheckerAnnotation.class);
 		}
 		Collection<Class<? extends Annotation>> toTest = new ArrayList<Class<? extends Annotation>>();
-		final List<Class<? extends Annotation>> excludeList = Arrays.asList(exclude);
+		final List<Class<? extends Annotation>> excludeList = Arrays
+				.asList(exclude);
+		final List<Annotation> withCheckerAnnotation = new ArrayList<Annotation>();
 		for (Annotation a : anno.getAnnotations()) {
 			if (excludeList.contains(a)) {
 				continue;
 			}
 			if (a.annotationType().isAnnotationPresent(CheckerAnnotation.class)) {
-				return a.annotationType().getAnnotation(CheckerAnnotation.class);
+				withCheckerAnnotation.add(a);
 			} else {
-				for (Annotation annoToTest : a.annotationType().getAnnotations()) {
+				for (Annotation annoToTest : a.annotationType()
+						.getAnnotations()) {
 					toTest.add(annoToTest.annotationType());
 				}
 				toTest.remove(a);
 			}
 		}
+		if (!withCheckerAnnotation.isEmpty()) {
+			return getWithHighestPriority(withCheckerAnnotation);
+		}
 		toTest.remove(anno);
 		toTest.removeAll(excludeList);
+		return testForCheckerAnno(toTest, excludeList);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static CheckerAnnotation testForCheckerAnno(
+			Collection<Class<? extends Annotation>> toTest,
+			final List<Class<? extends Annotation>> excludeList) {
 		for (Class<? extends Annotation> a : toTest) {
-			CheckerAnnotation dann = getCheckerAnno(a, (Class[]) excludeList.toArray(new Class[excludeList.size()]));
+			CheckerAnnotation dann = getCheckerAnno(a, (Class[]) excludeList
+					.toArray(new Class[excludeList.size()]));
 			if (dann != null) {
 				return dann;
 			}
@@ -113,11 +128,31 @@ public final class Checkers {
 		return null;
 	}
 
-	private static final Map<Class<? extends Annotation>,Checker<? extends Annotation>> checkersCache = new HashMap<Class<? extends Annotation>, Checker<? extends Annotation>>();
+	private static CheckerAnnotation getWithHighestPriority(
+			final List<Annotation> withCheckerAnnotation) {
+		Annotation toReturn = withCheckerAnnotation.get(0);
+		for (int i = 1; i < withCheckerAnnotation.size(); i++) {
+			if (getAnnoPriority(toReturn) < getAnnoPriority(withCheckerAnnotation
+					.get(i))) {
+				toReturn = withCheckerAnnotation.get(i);
+			}
+		}
+		return toReturn.annotationType().getAnnotation(CheckerAnnotation.class);
+	}
 	
+	private static int getAnnoPriority(Annotation toReturn) {
+		if (Duck.test(toReturn, CheckerWithPriority.class)) {
+			return Duck.type(toReturn, CheckerWithPriority.class).checkerPriority();
+		}
+		return Integer.MIN_VALUE;
+	}
+
+	private static final Map<Class<? extends Annotation>, Checker<? extends Annotation>> checkersCache = new HashMap<Class<? extends Annotation>, Checker<? extends Annotation>>();
+
 	@SuppressWarnings("unchecked")
 	public static <A extends Annotation> Checker<A> getChecker(A anno) {
-		final Class<? extends Annotation> annotationType = anno.annotationType();
+		final Class<? extends Annotation> annotationType = anno
+				.annotationType();
 		Checker<A> checker = (Checker<A>) checkersCache.get(annotationType);
 		if (checker != null) {
 			return checker;
@@ -185,7 +220,7 @@ public final class Checkers {
 	public static int hashCode(Checker<?> ch) {
 		return 37 + 37 * ch.getClass().getName().hashCode();
 	}
-	
+
 	public static int hashCode(Class<?> clazz) {
 		return 37 + 37 * clazz.getName().hashCode();
 	}

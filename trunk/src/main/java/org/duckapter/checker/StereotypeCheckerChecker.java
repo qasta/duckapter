@@ -66,7 +66,7 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 		}
 		throw new IllegalStateException("Annotation " + anno
 				+ " declares stereotype checker but is "
-				+ "not annotated by @Sterotype annotation!");
+				+ "not annotated by @SterotypeChecker annotation!");
 	}
 
 	@Override

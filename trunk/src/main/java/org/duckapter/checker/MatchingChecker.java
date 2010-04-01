@@ -1,16 +1,13 @@
 package org.duckapter.checker;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.duckapter.Checker;
 import org.duckapter.annotation.Matching;
 
 public class MatchingChecker extends BooleanCheckerBase<Matching> {

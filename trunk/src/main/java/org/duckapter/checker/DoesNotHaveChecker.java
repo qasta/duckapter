@@ -4,18 +4,18 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
 import org.duckapter.InvocationAdapter;
-import org.duckapter.adapter.HasNoAdapter;
+import org.duckapter.adapter.DoesNotHaveAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.annotation.HasNo;
+import org.duckapter.annotation.DoesNotHave;
 
-public class HasNoChecker extends AbstractChecker<HasNo> {
+public class DoesNotHaveChecker extends AbstractChecker<DoesNotHave> {
 
 	@Override
-	public InvocationAdapter adapt(HasNo anno, AnnotatedElement original,
+	public InvocationAdapter adapt(DoesNotHave anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
-			return new HasNoAdapter(duckMethod.getReturnType());
+			return new DoesNotHaveAdapter(duckMethod.getReturnType());
 		}
 		return InvocationAdapters.NULL;
 	}
