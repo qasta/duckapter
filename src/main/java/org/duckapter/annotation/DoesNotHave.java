@@ -7,12 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.checker.HasNoChecker;
+import org.duckapter.checker.DoesNotHaveChecker;
 
 @Documented
-@CheckerAnnotation(HasNoChecker.class)
+@CheckerAnnotation(DoesNotHaveChecker.class)
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface HasNo {
+public @interface DoesNotHave {
 
 }

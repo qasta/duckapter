@@ -2,11 +2,11 @@ package org.duckapter.adapter;
 
 import org.duckapter.InvocationAdapter;
 
-public class HasNoAdapter extends EmptyAdapter {
+public class DoesNotHaveAdapter extends EmptyAdapter {
 
 	private InvocationAdapter inverted = null;
 
-	public HasNoAdapter(Class<?> returnType) {
+	public DoesNotHaveAdapter(Class<?> returnType) {
 		super(returnType);
 	}
 
@@ -15,8 +15,8 @@ public class HasNoAdapter extends EmptyAdapter {
 		if (inverted == null) {
 			inverted = InvocationAdapters.MIN;
 		}
-		if (other instanceof HasNoAdapter) {
-			inverted = inverted.orMerge(((HasNoAdapter) other).inverted);
+		if (other instanceof DoesNotHaveAdapter) {
+			inverted = inverted.orMerge(((DoesNotHaveAdapter) other).inverted);
 		} else {
 			inverted = inverted.orMerge(other);
 		}
@@ -28,8 +28,8 @@ public class HasNoAdapter extends EmptyAdapter {
 		if (inverted == null) {
 			inverted = InvocationAdapters.MAX;
 		}
-		if (other instanceof HasNoAdapter) {
-			inverted = inverted.andMerge(((HasNoAdapter) other).inverted);
+		if (other instanceof DoesNotHaveAdapter) {
+			inverted = inverted.andMerge(((DoesNotHaveAdapter) other).inverted);
 		} else {
 			inverted = inverted.andMerge(other);
 		}

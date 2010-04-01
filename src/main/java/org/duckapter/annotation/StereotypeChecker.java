@@ -14,5 +14,8 @@ import org.duckapter.checker.StereotypeCheckerChecker;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface StereotypeChecker {
+	
+	int checkerPriority() default Integer.MAX_VALUE;
+	
 	StereotypeType value() default StereotypeType.AND;
 }
