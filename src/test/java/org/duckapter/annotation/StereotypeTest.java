@@ -11,13 +11,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
+import org.duckapter.Duck;
 import org.duckapter.DuckTestHelper;
 import org.duckapter.checker.StereotypeCheckerChecker;
 import org.junit.Test;
 
 public class StereotypeTest {
 
-	
 	@Documented
 	@CheckerAnnotation(StereotypeCheckerChecker.class)
 	@StereotypeChecker(OR)
@@ -59,19 +59,18 @@ public class StereotypeTest {
 		DuckTestHelper.assertCanAdaptInstance(MyFactoryIFace.class,
 				MyFactoryConstructor.class, MyFactoryFail.class);
 	}
-	
+
 	@Test
 	public void testMyFactoryField() {
 		DuckTestHelper.assertCanAdaptInstance(MyFactoryIFace.class,
 				MyFactoryField.class, MyFactoryFail.class);
 	}
-	
+
 	@Test
 	public void testMyFactoryMethod() {
 		DuckTestHelper.assertCanAdaptInstance(MyFactoryIFace.class,
 				MyFactoryMethod.class, MyFactoryFail.class);
 	}
-	
 
 	@Documented
 	@CheckerAnnotation(StereotypeCheckerChecker.class)
@@ -84,24 +83,34 @@ public class StereotypeTest {
 	@Field
 	public static @interface AtMostPackageConst {
 	}
-	
+
 	public static interface AMCPInterface {
-		@AtMostPackageConst String constant();
+		@AtMostPackageConst
+		String constant();
 	}
-	
+
 	public static class AMCPClassPass {
 		static final String CONSTANT = "BLA";
 	}
-	
+
 	public static class AMCPClassFail {
 		public static final String CONSTANT = "BLA";
 	}
-	
+
 	@Test
 	public void testAMCP() {
 		DuckTestHelper.assertCanAdaptInstance(AMCPInterface.class,
 				AMCPClassPass.class, AMCPClassFail.class);
 	}
-	
+
+	@StereotypeChecker
+	private static @interface TEST {
+	}
+
+	@Test
+	public void testPriority() {
+		Duck.type(TEST.class.getAnnotation(StereotypeChecker.class),
+				CheckerWithPriority.class);
+	}
 
 }
