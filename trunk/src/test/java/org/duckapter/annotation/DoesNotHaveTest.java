@@ -4,10 +4,10 @@ import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
 import org.junit.Test;
 
-public class HasNoTest {
+public class DoesNotHaveTest {
 
 	public static interface HasNoInterface {
-		@HasNo @Field @Matching(".*") String hasNoField();
+		@DoesNotHave @Field @Matching(".*") String hasNoField();
 	}
 
 	public static class HasField {
