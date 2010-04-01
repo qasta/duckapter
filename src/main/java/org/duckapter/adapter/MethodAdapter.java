@@ -5,11 +5,11 @@ import java.lang.reflect.Modifier;
 
 import org.duckapter.InvocationAdapter;
 
-public class MethodCallAdapter extends DefaultMethodAdapter implements InvocationAdapter {
+public class MethodAdapter extends DefaultInvocationAdapter implements InvocationAdapter {
 
 	private final Method method;
 
-	public MethodCallAdapter(Method duckMethod, Method method) {
+	public MethodAdapter(Method duckMethod, Method method) {
 		super(duckMethod.getReturnType());
 		this.method = method;
 		method.setAccessible(true);
@@ -27,7 +27,7 @@ public class MethodCallAdapter extends DefaultMethodAdapter implements Invocatio
 	
 	@Override
 	public int getPriority() {
-		return MethodAdapterPriorities.METHOD;
+		return InvocationAdaptersPriorities.METHOD;
 	}
 
 	
@@ -47,7 +47,7 @@ public class MethodCallAdapter extends DefaultMethodAdapter implements Invocatio
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MethodCallAdapter other = (MethodCallAdapter) obj;
+		MethodAdapter other = (MethodAdapter) obj;
 		if (method == null) {
 			if (other.method != null)
 				return false;
@@ -63,7 +63,7 @@ public class MethodCallAdapter extends DefaultMethodAdapter implements Invocatio
 	
 	@Override
 	public String toString() {
-		return "MethodCallAdapter[" + method + "]";
+		return "MethodAdapter[" + method + "]";
 	}
 
 }

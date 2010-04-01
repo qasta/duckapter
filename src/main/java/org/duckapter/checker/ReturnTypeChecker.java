@@ -14,7 +14,7 @@ public class ReturnTypeChecker<T extends Annotation> extends
 		BooleanCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
-			Method duckMethod) {
+			Method duckMethod, Class<?> classOfOriginal) {
 		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())) {
 			return true;
 		}
@@ -55,7 +55,7 @@ public class ReturnTypeChecker<T extends Annotation> extends
 	};
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod) {
+	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
 		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())
 				&& field.getDeclaringClass().isAssignableFrom(field.getType())
 		) {
@@ -65,7 +65,7 @@ public class ReturnTypeChecker<T extends Annotation> extends
 	};
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())
 				&& method.getDeclaringClass().isAssignableFrom(method.getReturnType())
 		) {

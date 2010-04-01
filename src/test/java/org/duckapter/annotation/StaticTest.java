@@ -29,5 +29,19 @@ public class StaticTest {
 		assertCanAdaptInstance(WithStaticMethodInterface.class,
 				WithStaticMethodClass.class, WithoutStaticMethodClass.class);
 	}
+	
+	@Static public static interface StaticInterface{}
+	
+	public static class StaticClass{}
+	
+	public class MemberClass{}
+	
+	@Test
+	public void testStaticClass() throws Exception {
+		assertCanAdaptClass(StaticInterface.class,
+				StaticClass.class, MemberClass.class);
+		assertCanAdaptInstance(StaticInterface.class,
+				StaticClass.class, MemberClass.class);
+	}
 
 }

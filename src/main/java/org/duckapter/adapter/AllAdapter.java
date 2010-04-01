@@ -10,20 +10,20 @@ import java.util.List;
 
 import org.duckapter.InvocationAdapter;
 
-public class AllMethodAdapter implements InvocationAdapter {
+public class AllAdapter implements InvocationAdapter {
 
 	private final Method returnsTypeMethod;
 
 	private InvocationAdapter adapter = InvocationAdapters.MAX;
-	private AllMethodAdapter previous = null;
+	private AllAdapter previous = null;
 
-	public AllMethodAdapter(AnnotatedElement element, Method returnsTypeMethod) {
+	public AllAdapter(AnnotatedElement element, Method returnsTypeMethod) {
 		this.returnsTypeMethod = returnsTypeMethod;
 	}
 
 	@Override
 	public int getPriority() {
-		return MethodAdapterPriorities.ALL;
+		return InvocationAdaptersPriorities.ALL;
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class AllMethodAdapter implements InvocationAdapter {
 		if (theOther.getPriority() > getPriority()) {
 			return theOther;
 		}
-		if (theOther instanceof AllMethodAdapter) {
-			this.previous = (AllMethodAdapter) theOther;
+		if (theOther instanceof AllAdapter) {
+			this.previous = (AllAdapter) theOther;
 		}
 		return this;
 	}
@@ -56,7 +56,7 @@ public class AllMethodAdapter implements InvocationAdapter {
 
 	private <T> List<T> collectProxies(Object obj, Class<T> footPrint) {
 		List<T> ret = new ArrayList<T>();
-		AllMethodAdapter ama = this;
+		AllAdapter ama = this;
 		while (ama.previous != null) {
 			if (obj == null && ama.adapter.isInvocableOnClass()) {
 				ret.add(createProxy(ama.adapter, null, footPrint));

@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.MethodCallAdapter;
+import org.duckapter.adapter.MethodAdapter;
 
 public class MethodsOnlyChecker<T extends Annotation> extends
 		AbstractChecker<T> {
@@ -17,7 +17,7 @@ public class MethodsOnlyChecker<T extends Annotation> extends
 	public InvocationAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof Method && duck instanceof Method ) {
-			return new MethodCallAdapter((Method) duck, (Method) original);
+			return new MethodAdapter((Method) duck, (Method) original);
 		}
 		return InvocationAdapters.NULL;
 	};

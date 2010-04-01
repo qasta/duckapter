@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import org.duckapter.InvocationAdapter;
 
-public class ConstructorAdapter extends DefaultMethodAdapter implements InvocationAdapter {
+public class ConstructorAdapter extends DefaultInvocationAdapter implements InvocationAdapter {
 
 	private final Constructor<?> constructor;
 
@@ -27,7 +27,7 @@ public class ConstructorAdapter extends DefaultMethodAdapter implements Invocati
 	
 	@Override
 	public int getPriority() {
-		return MethodAdapterPriorities.CONSTRUCTOR;
+		return InvocationAdaptersPriorities.CONSTRUCTOR;
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.duckapter.InvocationAdapter;
-import org.duckapter.adapter.AllMethodAdapter;
+import org.duckapter.adapter.AllAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.All;
 
@@ -95,7 +95,7 @@ public class AllChecker extends AbstractChecker<All> {
 				return InvocationAdapters.NULL;
 			}
 		}
-		return new AllMethodAdapter(original, returnTypeOnlyMethod);
+		return new AllAdapter(original, returnTypeOnlyMethod);
 	}
 
 	@Override

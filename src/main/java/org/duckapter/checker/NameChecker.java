@@ -10,12 +10,12 @@ import java.util.Collection;
 public class NameChecker<T extends Annotation> extends BooleanCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno,
-			java.lang.reflect.Constructor<?> constructor, Method duckMethod) {
+			java.lang.reflect.Constructor<?> constructor, Method duckMethod, Class<?> classOfOriginal) {
 		return checkMethodName(duckMethod.getName(), constructor.getName());
 	};
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod) {
+	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
 		return checkFieldName(duckMethod.getName(), field.getName());
 	}
 
@@ -28,7 +28,7 @@ public class NameChecker<T extends Annotation> extends BooleanCheckerBase<T> {
 	};
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		final String methodName = method.getName();
 		final String duckName = duckMethod.getName();
 		return checkMethodName(duckName, methodName);

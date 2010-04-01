@@ -19,13 +19,13 @@ public class ParametersChecker<T extends Annotation> extends
 					ElementType.CONSTRUCTOR });
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
-			Method duckMethod) {
+			Method duckMethod, Class<?> classOfOriginal) {
 		return checkParameters(constructor.getParameterTypes(), duckMethod
 				.getParameterTypes());
 	};
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod) {
+	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
 		if (duckMethod.getParameterTypes().length == 0) {
 			return true;
 		}
@@ -47,7 +47,7 @@ public class ParametersChecker<T extends Annotation> extends
 	};
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		return checkParameters(method.getParameterTypes(), duckMethod
 				.getParameterTypes());
 	}
