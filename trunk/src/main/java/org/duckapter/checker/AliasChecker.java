@@ -11,8 +11,8 @@ import org.duckapter.annotation.Alias;
 public class AliasChecker extends NameChecker<Alias> {
 
 	@Override
-	protected boolean checkField(Alias anno, Field field, Method duckMethod) {
-		if (super.checkField(anno, field, duckMethod)) {
+	protected boolean checkField(Alias anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
+		if (super.checkField(anno, field, duckMethod, classOfOriginal)) {
 			return true;
 		}
 		for (String alias : anno.value()) {
@@ -24,8 +24,8 @@ public class AliasChecker extends NameChecker<Alias> {
 	}
 
 	@Override
-	protected boolean checkMethod(Alias anno, Method method, Method duckMethod) {
-		if (super.checkMethod(anno, method, duckMethod)) {
+	protected boolean checkMethod(Alias anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
+		if (super.checkMethod(anno, method, duckMethod, classOfOriginal)) {
 			return true;
 		}
 		for (String alias : anno.value()) {

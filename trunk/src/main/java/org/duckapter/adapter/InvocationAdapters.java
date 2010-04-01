@@ -3,7 +3,7 @@ package org.duckapter.adapter;
 import org.duckapter.InvocationAdapter;
 
 public enum InvocationAdapters implements InvocationAdapter {
-	OK(MethodAdapterPriorities.DEFAULT){
+	OK(InvocationAdaptersPriorities.DEFAULT){
 		@Override
 		public boolean isInvocableOnClass() {
 			return true;
@@ -15,20 +15,20 @@ public enum InvocationAdapters implements InvocationAdapter {
 		}
 	},
 	
-	MAX(MethodAdapterPriorities.MAX){
+	MAX(InvocationAdaptersPriorities.MAX){
 		@Override
 		public InvocationAdapter orMerge(InvocationAdapter other) {
 			return this;
 		}
 	},
-	MIN(MethodAdapterPriorities.MIN){
+	MIN(InvocationAdaptersPriorities.MIN){
 		@Override
 		public InvocationAdapter andMerge(InvocationAdapter other) {
 			return this;
 		}
 	},
 	
-	NULL(MethodAdapterPriorities.NONE) {
+	NULL(InvocationAdaptersPriorities.NONE) {
 		@Override
 		public Object invoke(Object obj, Object[] args) throws Throwable {
 			throw new UnsupportedOperationException(

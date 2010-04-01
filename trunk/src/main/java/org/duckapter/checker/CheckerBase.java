@@ -21,14 +21,14 @@ public abstract class CheckerBase<T extends Annotation> extends AbstractChecker<
 		if (duck instanceof Method) {
 			Method duckMethod = (Method) duck;
 			if (original instanceof Field) {
-				return adaptField(anno, (Field) original, duckMethod);
+				return adaptField(anno, (Field) original, duckMethod, classOfOriginal);
 			}
 			if (original instanceof Method) {
-				return adaptMethod(anno, (Method) original, duckMethod);
+				return adaptMethod(anno, (Method) original, duckMethod, classOfOriginal);
 			}
 			if (original instanceof Constructor) {
 				return adaptConstructor(anno, (Constructor) original,
-						duckMethod);
+						duckMethod, classOfOriginal);
 			}
 		}
 		return InvocationAdapters.NULL;
@@ -38,16 +38,16 @@ public abstract class CheckerBase<T extends Annotation> extends AbstractChecker<
 		return InvocationAdapters.NULL;
 	}
 
-	protected InvocationAdapter adaptField(T anno, Field field, Method duckMethod) {
+	protected InvocationAdapter adaptField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
 		return InvocationAdapters.NULL;
 	}
 
-	protected InvocationAdapter adaptMethod(T anno, Method method, Method duckMethod) {
+	protected InvocationAdapter adaptMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		return InvocationAdapters.NULL;
 	}
 
 	protected InvocationAdapter adaptConstructor(T anno, Constructor<?> constructor,
-			Method duckMethod) {
+			Method duckMethod, Class<?> classOfOriginal) {
 		return InvocationAdapters.NULL;
 	};
 	

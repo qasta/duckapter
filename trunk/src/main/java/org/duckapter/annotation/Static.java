@@ -17,7 +17,7 @@ import java.lang.reflect.Modifier;
 @Documented
 @ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD })
+@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.TYPE })
 public @interface Static {
 
 }

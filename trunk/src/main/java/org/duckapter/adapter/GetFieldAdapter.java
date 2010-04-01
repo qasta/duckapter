@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 
 import org.duckapter.InvocationAdapter;
 
-public class GetFieldAdapter extends DefaultMethodAdapter implements InvocationAdapter {
+public class GetFieldAdapter extends DefaultInvocationAdapter implements InvocationAdapter {
 
 	private final Field field;
 
@@ -28,7 +28,7 @@ public class GetFieldAdapter extends DefaultMethodAdapter implements InvocationA
 	
 	@Override
 	public int getPriority() {
-		return MethodAdapterPriorities.FIELD;
+		return InvocationAdaptersPriorities.FIELD;
 	}
 
 	@Override

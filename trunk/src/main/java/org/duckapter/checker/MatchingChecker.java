@@ -1,10 +1,16 @@
 package org.duckapter.checker;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import org.duckapter.Checker;
 import org.duckapter.annotation.Matching;
 
 public class MatchingChecker extends BooleanCheckerBase<Matching> {
@@ -12,27 +18,27 @@ public class MatchingChecker extends BooleanCheckerBase<Matching> {
 	@Override
 	public boolean checkClass(Matching anno, Class<?> clazz,
 			Class<?> duckInterface) {
-		return preparePattern(anno).matcher(clazz.getName()).matches();
+		return preparePattern(anno, duckInterface.getName(), clazz.getName()).matcher(clazz.getName()).matches();
 	}
 
 	@Override
 	protected boolean checkConstructor(Matching anno,
-			Constructor<?> constructor, Method duckMethod) {
-		return preparePattern(anno).matcher(constructor.getName()).matches();
+			Constructor<?> constructor, Method duckMethod, Class<?> classOfOriginal) {
+		return preparePattern(anno, duckMethod.getName(), classOfOriginal.getName()).matcher(constructor.getName()).matches();
 	}
 
 	@Override
-	protected boolean checkField(Matching anno, Field field, Method duckMethod) {
-		return preparePattern(anno).matcher(field.getName()).matches();
+	protected boolean checkField(Matching anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
+		return preparePattern(anno, duckMethod.getName(), classOfOriginal.getName()).matcher(field.getName()).matches();
 	}
 
 	@Override
 	protected boolean checkMethod(Matching anno, Method method,
-			Method duckMethod) {
-		return preparePattern(anno).matcher(method.getName()).matches();
+			Method duckMethod, Class<?> classOfOriginal) {
+		return preparePattern(anno, duckMethod.getName(), classOfOriginal.getName()).matcher(method.getName()).matches();
 	}
 
-	private Pattern preparePattern(Matching anno) {
+	private Pattern preparePattern(Matching anno, String name, String className) {
 		int flag = 0;
 		if (anno.canonical()) {
 			flag |= Pattern.CANON_EQ;
@@ -58,7 +64,17 @@ public class MatchingChecker extends BooleanCheckerBase<Matching> {
 		if (anno.unixLines()) {
 			flag |= Pattern.UNIX_LINES;
 		}
-		return Pattern.compile(anno.value(), flag);
+		String value = anno.value().replace("${name}", name).replace(
+				"${className}", className);
+
+		return Pattern.compile(value, flag);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Class<NameChecker>> suppressCheckers(
+			Matching anno, AnnotatedElement element) {
+		return Arrays.asList(NameChecker.class);
 	}
 
 }

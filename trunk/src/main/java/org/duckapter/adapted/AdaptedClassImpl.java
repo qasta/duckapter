@@ -20,7 +20,7 @@ import org.duckapter.AdaptedClass;
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.MethodCallAdapter;
+import org.duckapter.adapter.MethodAdapter;
 import org.duckapter.checker.Checkers;
 
 final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
@@ -153,7 +153,7 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 		}
 		for (Method m : Object.class.getMethods()) {
 			if (!adapters.containsKey(m)) {
-				adapters.put(m, new MethodCallAdapter(m, m));
+				adapters.put(m, new MethodAdapter(m, m));
 			}
 		}
 	}

@@ -12,13 +12,13 @@ public class ConcreteMethodsChecker<T extends Annotation> extends
 		BooleanCheckerBase<T> {
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		return !Modifier.isAbstract(method.getModifiers());
 	};
 
 	@Override
 	protected boolean checkConstructor(T anno, Constructor<?> con,
-			Method duckMethod) {
+			Method duckMethod, Class<?> classOfOriginal) {
 		return !Modifier.isAbstract(con.getModifiers());
 	};
 

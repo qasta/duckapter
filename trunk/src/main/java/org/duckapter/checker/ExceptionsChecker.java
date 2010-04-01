@@ -10,7 +10,7 @@ import java.util.Collection;
 public class ExceptionsChecker<T extends Annotation> extends
 		BooleanCheckerBase<T> {
 
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		return checkExes(method.getExceptionTypes(), duckMethod
 				.getExceptionTypes());
 	}
@@ -36,7 +36,7 @@ public class ExceptionsChecker<T extends Annotation> extends
 	};
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
-			Method duckMethod) {
+			Method duckMethod, Class<?> classOfOriginal) {
 		return checkExes(constructor.getExceptionTypes(), duckMethod
 				.getExceptionTypes());
 	};

@@ -1,6 +1,6 @@
 package org.duckapter.adapter;
 
-public final class MethodAdapterPriorities {
+public final class InvocationAdaptersPriorities {
 
 	public static int MIN = Integer.MIN_VALUE;
 	public static int OPTIONAL = Integer.MIN_VALUE + 500;
@@ -12,9 +12,10 @@ public final class MethodAdapterPriorities {
 	
 	public static int DEFAULT = Integer.MAX_VALUE - 1000;
 	public static int ALL = Integer.MAX_VALUE - 1;
+	public static int HAS_NO = ALL;
 	public static int MAX = Integer.MAX_VALUE;
 	
-	private MethodAdapterPriorities() {
+	private InvocationAdaptersPriorities() {
 		// prevents instance creation and subtyping
 	}
 	

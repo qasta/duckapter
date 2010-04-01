@@ -18,33 +18,33 @@ public abstract class BooleanCheckerBase<T extends Annotation> extends
 		return toMethodAdapter(checkClass(anno, clazz, duckInterface));
 	}
 
-	protected final InvocationAdapter adaptField(T anno, Field field, Method duckMethod) {
-		return toMethodAdapter(checkField(anno, field, duckMethod));
+	protected final InvocationAdapter adaptField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
+		return toMethodAdapter(checkField(anno, field, duckMethod, classOfOriginal));
 	}
 
-	protected final InvocationAdapter adaptMethod(T anno, Method method, Method duckMethod) {
-		return toMethodAdapter(checkMethod(anno, method, duckMethod));
+	protected final InvocationAdapter adaptMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
+		return toMethodAdapter(checkMethod(anno, method, duckMethod, classOfOriginal));
 	}
 
 	protected final InvocationAdapter adaptConstructor(T anno,
-			Constructor<?> constructor, Method duckMethod) {
-		return toMethodAdapter(checkConstructor(anno, constructor, duckMethod));
+			Constructor<?> constructor, Method duckMethod, Class<?> classOfOriginal) {
+		return toMethodAdapter(checkConstructor(anno, constructor, duckMethod, classOfOriginal));
 	};
 
 	protected boolean checkClass(T anno, Class<?> clazz, Class<?> duckInterface) {
 		return false;
 	}
 
-	protected boolean checkField(T anno, Field field, Method duckMethod) {
+	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
 		return false;
 	}
 
-	protected boolean checkMethod(T anno, Method method, Method duckMethod) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		return false;
 	}
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
-			Method duckMethod) {
+			Method duckMethod, Class<?> classOfOriginal) {
 		return false;
 	};
 
