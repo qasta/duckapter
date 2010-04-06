@@ -3,7 +3,19 @@ package org.duckapter.adapter;
 import org.duckapter.InvocationAdapter;
 
 public enum InvocationAdapters implements InvocationAdapter {
-	OK(InvocationAdaptersPriorities.DEFAULT){
+	OK(InvocationAdaptersPriorities.OK){
+		@Override
+		public boolean isInvocableOnClass() {
+			return true;
+		}
+		
+		@Override
+		public boolean isInvocableOnInstance() {
+			return true;
+		}
+	},
+	
+	DISCRIMINATOR(InvocationAdaptersPriorities.HAS_NO){
 		@Override
 		public boolean isInvocableOnClass() {
 			return true;

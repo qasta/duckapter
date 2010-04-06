@@ -4,10 +4,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 
 import org.duckapter.InvocationAdapter;
+import org.duckapter.LogicalChecker;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.ModifierChecker;
 
-public class ModifierCheckerChecker extends AbstractChecker<Annotation> {
+public class ModifierCheckerChecker extends AbstractChecker<Annotation> implements LogicalChecker<Annotation>{
 
 	private boolean checkModifiers(Annotation f, final int modifiers) {
 		return (modifiers & getMask(f)) != 0;
@@ -33,5 +34,11 @@ public class ModifierCheckerChecker extends AbstractChecker<Annotation> {
 		throw new IllegalStateException("Annotation " + fin
 				+ " declares modifier checker but is "
 				+ "not annotated by @ModifierChecker annotation!");
+	}
+
+	@Override
+	public boolean check(Annotation anno, AnnotatedElement original,
+			AnnotatedElement duck, Class<?> classOfOriginal) {
+		return checkModifiers(anno, Checkers.getModifiers(original));
 	}
 }

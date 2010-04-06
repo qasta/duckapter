@@ -14,5 +14,6 @@ import org.duckapter.checker.ModifierCheckerChecker;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface ModifierChecker {
+	int checkerPriority() default Integer.MAX_VALUE - 10000;
 	int value();
 }

@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class NameChecker<T extends Annotation> extends BooleanCheckerBase<T> {
+public class NameChecker<T extends Annotation> extends LogicalCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno,
 			java.lang.reflect.Constructor<?> constructor, Method duckMethod, Class<?> classOfOriginal) {

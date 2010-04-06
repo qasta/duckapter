@@ -23,8 +23,8 @@ import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.MethodAdapter;
 import org.duckapter.checker.Checkers;
 
-final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
-
+final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
+		AdaptedClass<O, D> {
 
 	private static Map<String, Field> getFields(Class<?> clazz,
 			boolean exceptPrivate) {
@@ -37,21 +37,19 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 		return ret;
 	}
 
-
-
 	private static Collection<Constructor<?>> getRelevantConstructors(
 			Class<?> original) {
 		return Arrays.asList(original.getDeclaredConstructors());
 	}
-	
+
 	private static Map<MethodSignature, Method> getMethods(Class<?> clazz,
 			boolean exceptPrivate) {
 		Map<MethodSignature, Method> ret = new LinkedHashMap<MethodSignature, Method>();
 		for (Method m : clazz.getDeclaredMethods()) {
 			if (!exceptPrivate || !Modifier.isPrivate(m.getModifiers())) {
 				ret
-				.put(new MethodSignature(m.getParameterTypes(), m
-						.getName()), m);
+						.put(new MethodSignature(m.getParameterTypes(), m
+								.getName()), m);
 			}
 		}
 		return ret;
@@ -97,38 +95,42 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	}
 
 	@Override
-	public Object invoke(O originalInstance, Method duckMethod,
-			Object[] args) throws Throwable {
+	public Object invoke(O originalInstance, Method duckMethod, Object[] args)
+			throws Throwable {
 		return adapters.get(duckMethod).invoke(originalInstance, args);
 	}
 
 	@SuppressWarnings("unchecked")
 	private final InvocationAdapter doCheck(AnnotatedElement original,
-			AnnotatedElement duck, Map<Checker<Annotation>, Annotation> checkersMap) {
-		Map<Checker<Annotation>, Annotation> checkers = new HashMap<Checker<Annotation>, Annotation>(checkersMap);
+			AnnotatedElement duck,
+			Map<Checker<Annotation>, Annotation> checkersMap) {
+		Map<Checker<Annotation>, Annotation> checkers = new HashMap<Checker<Annotation>, Annotation>(
+				checkersMap);
 		InvocationAdapter ret = InvocationAdapters.MAX;
 		for (Annotation anno : duck.getAnnotations()) {
 			Checker ch = Checkers.getChecker(anno);
 			if (ch == null) {
 				continue;
 			}
-			if (checkers.containsKey(ch) && ch.canAdapt(anno, original, getOriginalClass())) {
-				final InvocationAdapter adapter = ch.adapt(anno, original, duck, getOriginalClass());
+			if (checkers.containsKey(ch)
+					&& ch.canAdapt(anno, original, getOriginalClass())) {
+				final InvocationAdapter adapter = ch.adapt(anno, original,
+						duck, getOriginalClass());
 				ret = ret.andMerge(adapter);
 				checkers.remove(ch);
 			}
 		}
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
-			if (checkers.containsKey(entry.getKey()) && entry.getKey().canAdapt(entry.getValue(), original, getOriginalClass())) {
-				final InvocationAdapter adapter = entry.getKey().adapt(entry.getValue(), original,
-						duck, getOriginalClass());
+			if (checkers.containsKey(entry.getKey())
+					&& entry.getKey().canAdapt(entry.getValue(), original,
+							getOriginalClass())) {
+				final InvocationAdapter adapter = entry.getKey().adapt(
+						entry.getValue(), original, duck, getOriginalClass());
 				ret = ret.andMerge(adapter);
 			}
 		}
 		return ret;
 	}
-
-
 
 	private Collection<AnnotatedElement> getRelevantElements() {
 		Collection<AnnotatedElement> elements = new ArrayList<AnnotatedElement>();
@@ -139,11 +141,12 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	}
 
 	private void init() {
-		InvocationAdapter adapter = doCheck(getOriginalClass(), getDuckInterface(),
-				Checkers.collectCheckers(getDuckInterface()));
+		InvocationAdapter adapter = doCheck(getOriginalClass(),
+				getDuckInterface(), Checkers
+						.collectCheckers(getDuckInterface()));
 		canAdaptClass = adapter.isInvocableOnClass();
 		canAdaptInstance = adapter.isInvocableOnInstance();
-		
+
 		for (Method duckMethod : getDuckMethods()) {
 			InvocationAdapter old = checkDuckMethod(duckMethod);
 
@@ -158,14 +161,13 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 		}
 	}
 
-
-
 	private Iterable<Method> getDuckMethods() {
 		return Arrays.asList(getDuckInterface().getMethods());
 	}
 
 	private InvocationAdapter checkDuckMethod(Method duckMethod) {
-		Map<Checker<Annotation>, Annotation> methodCheckers = Checkers.collectCheckers(duckMethod);
+		Map<Checker<Annotation>, Annotation> methodCheckers = Checkers
+				.collectCheckers(duckMethod);
 		InvocationAdapter adapter = InvocationAdapters.MIN;
 		for (AnnotatedElement element : getRelevantElements()) {
 			adapter = doCheck(element, duckMethod, methodCheckers).orMerge(
@@ -178,7 +180,8 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 	public Collection<Method> getUnimplementedForClass() {
 		Collection<Method> methods = new ArrayList<Method>();
 		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
-			if (!entry.getValue().isInvocableOnClass()) {
+			if (!entry.getValue().isInvocableOnClass()
+					&& !Object.class.equals(entry.getKey().getDeclaringClass())) {
 				methods.add(entry.getKey());
 			}
 		}
@@ -195,5 +198,5 @@ final class AdaptedClassImpl<O,D> extends AbstractAdaptedClass<O,D> implements A
 		}
 		return Collections.unmodifiableCollection(methods);
 	}
-	
+
 }

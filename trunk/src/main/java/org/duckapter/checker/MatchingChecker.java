@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import org.duckapter.annotation.Matching;
 
-public class MatchingChecker extends BooleanCheckerBase<Matching> {
+public class MatchingChecker extends LogicalCheckerBase<Matching> {
 
 	@Override
 	public boolean checkClass(Matching anno, Class<?> clazz,
