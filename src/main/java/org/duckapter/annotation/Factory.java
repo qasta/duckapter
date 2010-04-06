@@ -32,6 +32,4 @@ import org.duckapter.Duck;
 @Constructor
 @StaticField
 @StaticMethod
-public @interface Factory {
-	
-}
+public @interface Factory {}

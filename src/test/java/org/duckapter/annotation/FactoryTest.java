@@ -2,7 +2,9 @@ package org.duckapter.annotation;
 
 import static org.duckapter.DuckTestHelper.assertCanAdaptClass;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
+import junit.framework.Assert;
 
+import org.duckapter.Duck;
 import org.junit.Test;
 
 public class FactoryTest {
@@ -58,6 +60,10 @@ public class FactoryTest {
 				WithoutAnyFactoryMethod.class);
 		assertCanAdaptInstance(FactoryInterface.class, WithField.class,
 				WithoutAnyFactoryMethod.class);
+		final Object instance = Duck.type(WithField.class,
+				FactoryInterface.class).getInstance();
+		Assert.assertNotNull(instance);
+		Assert.assertEquals(WithField.class, instance.getClass());
 
 	}
 

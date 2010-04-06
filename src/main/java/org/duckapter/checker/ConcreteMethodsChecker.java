@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class ConcreteMethodsChecker<T extends Annotation> extends
-		BooleanCheckerBase<T> {
+		LogicalCheckerBase<T> {
 
 	@Override
 	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {

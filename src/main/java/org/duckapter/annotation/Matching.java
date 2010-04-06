@@ -11,7 +11,8 @@ import org.duckapter.checker.MatchingChecker;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
+@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE,
+		ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
 @CheckerAnnotation(MatchingChecker.class)
 public @interface Matching {
 	String value();

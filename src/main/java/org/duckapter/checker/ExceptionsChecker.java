@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class ExceptionsChecker<T extends Annotation> extends
-		BooleanCheckerBase<T> {
+		LogicalCheckerBase<T> {
 
 	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
 		return checkExes(method.getExceptionTypes(), duckMethod

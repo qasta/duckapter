@@ -15,7 +15,8 @@ import java.lang.reflect.Modifier;
  * @author Vladimir Orany
  */
 @Documented
+@Negative
 @ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.TYPE })
-public @interface Static {}
+public @interface NonStatic {}

@@ -20,19 +20,19 @@ import org.duckapter.annotation.All;
 public class AllChecker extends AbstractChecker<All> {
 
 	@SuppressWarnings("unchecked")
-	private static final List<Class<? extends BooleanCheckerBase>> SUPPRESSED = Arrays
+	private static final List<Class<? extends LogicalCheckerBase>> SUPPRESSED = Arrays
 			.asList(ReturnTypeChecker.class, ParametersChecker.class,
 					ExceptionsChecker.class);
 	@SuppressWarnings("unchecked")
-	private static final Collection<BooleanCheckerBase> SUPPRESSED_CHECKERS;
+	private static final Collection<LogicalCheckerBase> SUPPRESSED_CHECKERS;
 
 	private static final Collection<ElementType> TARGETS;
 
 	static {
 		@SuppressWarnings("unchecked")
-		Collection<BooleanCheckerBase> checkers = new ArrayList<BooleanCheckerBase>();
+		Collection<LogicalCheckerBase> checkers = new ArrayList<LogicalCheckerBase>();
 		for (@SuppressWarnings("unchecked")
-		Class<? extends BooleanCheckerBase> checkerClass : SUPPRESSED) {
+		Class<? extends LogicalCheckerBase> checkerClass : SUPPRESSED) {
 			try {
 				checkers.add(checkerClass.newInstance());
 			} catch (InstantiationException e) {
@@ -88,7 +88,7 @@ public class AllChecker extends AbstractChecker<All> {
 
 	private InvocationAdapter checkMethodInterface(All anno,
 			AnnotatedElement original, Class<?> classOfOriginal, final Method returnTypeOnlyMethod) {
-		for (BooleanCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
+		for (LogicalCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
 			if (ch.canAdapt(anno, original, classOfOriginal)
 					&& InvocationAdapters.isNull(ch.adapt(anno, original,
 							returnTypeOnlyMethod, classOfOriginal))) {
@@ -105,7 +105,7 @@ public class AllChecker extends AbstractChecker<All> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Class<? extends BooleanCheckerBase>> suppressCheckers(
+	public Collection<Class<? extends LogicalCheckerBase>> suppressCheckers(
 			All anno, AnnotatedElement duckMethod) {
 		return SUPPRESSED;
 	}

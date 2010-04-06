@@ -10,7 +10,9 @@ public final class InvocationAdaptersPriorities {
 	public static int CONSTRUCTOR = - 5000;
 	public static int METHOD = 0;
 	
-	public static int DEFAULT = Integer.MAX_VALUE - 1000;
+	public static int WITH_ANY_PARAMS = 10000;
+	
+	public static int OK = Integer.MAX_VALUE - 1000;
 	public static int ALL = Integer.MAX_VALUE - 1;
 	public static int HAS_NO = ALL;
 	public static int MAX = Integer.MAX_VALUE;

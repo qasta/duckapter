@@ -4,7 +4,6 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.duckapter.annotation.StereotypeType.AND;
-import static org.duckapter.annotation.StereotypeType.OR;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -18,19 +17,9 @@ import org.junit.Test;
 
 public class StereotypeTest {
 
-	@Documented
-	@CheckerAnnotation(StereotypeCheckerChecker.class)
-	@StereotypeChecker(OR)
-	@Retention(RUNTIME)
-	@Target( { METHOD, ANNOTATION_TYPE })
-	@Constructor
-	@StaticField
-	@StaticMethod
-	public static @interface MyFactory {
-	}
 
 	public static interface MyFactoryIFace {
-		@MyFactory
+		@Factory
 		Object instance();
 	}
 

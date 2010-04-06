@@ -13,7 +13,7 @@ import java.util.List;
 import org.duckapter.adapted.AdaptedFactory;
 
 public class ParametersChecker<T extends Annotation> extends
-		BooleanCheckerBase<T> {
+		LogicalCheckerBase<T> {
 
 	private static final List<ElementType> TARGETS = Arrays.asList(new ElementType[] { ElementType.METHOD,
 					ElementType.CONSTRUCTOR });

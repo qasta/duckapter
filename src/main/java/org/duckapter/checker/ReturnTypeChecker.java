@@ -11,7 +11,7 @@ import java.util.Collection;
 import org.duckapter.adapted.AdaptedFactory;
 
 public class ReturnTypeChecker<T extends Annotation> extends
-		BooleanCheckerBase<T> {
+		LogicalCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod, Class<?> classOfOriginal) {
