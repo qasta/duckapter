@@ -36,8 +36,8 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 		if (checkersCache.containsKey(anno)) {
 			return checkersCache.get(anno);
 		}
-		final Map<Checker<Annotation>, Annotation> checkers = Checkers
-				.collectCheckers(anno.annotationType());
+		final Map<Checker<Annotation>, Annotation> checkers = new HashMap<Checker<Annotation>, Annotation>(
+				Checkers.collectCheckers(anno.annotationType()));
 		checkers.keySet().removeAll(Checkers.getDefaultCheckers());
 		checkersCache.put(anno, checkers);
 		return checkers;

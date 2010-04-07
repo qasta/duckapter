@@ -3,6 +3,7 @@ package org.duckapter.annotation;
 import static org.duckapter.Duck.type;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
+import org.duckapter.adapted.AdaptedFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -65,6 +66,8 @@ public class AllTest {
 	public void testTestCaseImpl() {
 		assertCanAdaptInstance(TestCase.class, TestCaseImpl.class,
 				FailClass.class);
+		System.out.println("****************");
+		AdaptedFactory.clearCache();
 		TestMethod[] testMethods = type(new TestCaseImpl(),
 				TestCase.class).testMethods();
 		Assert.assertEquals(3, testMethods.length);

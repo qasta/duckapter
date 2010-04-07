@@ -28,17 +28,23 @@ public class AllAdapter implements InvocationAdapter {
 
 	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
+		System.out.printf("%s andMerge with %s%n", this, other);
 		adapter = InvocationAdapters.andMerge(adapter, other);
+		System.out.printf("%s andMerge adapter =  %s%n", this, adapter);
 		return this;
 	}
 
 	@Override
 	public InvocationAdapter orMerge(InvocationAdapter theOther) {
+		System.out.printf("%s orMerge with %s%n", this, theOther);
 		if (theOther.getPriority() > getPriority()) {
+			System.out.printf("%s orMerge returns %s%n", this, theOther);
 			return theOther;
 		}
 		if (theOther instanceof AllAdapter) {
-			this.previous = (AllAdapter) theOther;
+			System.out.printf("%s orMerge sets previous %s%n", this, theOther);
+			((AllAdapter) theOther).previous = this;
+			return theOther;
 		}
 		return this;
 	}
@@ -57,7 +63,7 @@ public class AllAdapter implements InvocationAdapter {
 	private <T> List<T> collectProxies(Object obj, Class<T> footPrint) {
 		List<T> ret = new ArrayList<T>();
 		AllAdapter ama = this;
-		while (ama.previous != null) {
+		while (ama != null) {
 			if (obj == null && ama.adapter.isInvocableOnClass()) {
 				ret.add(createProxy(ama.adapter, null, footPrint));
 			}
@@ -70,8 +76,8 @@ public class AllAdapter implements InvocationAdapter {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T createProxy(final InvocationAdapter adapter, final Object obj,
-			Class<T> footPrint) {
+	private <T> T createProxy(final InvocationAdapter adapter,
+			final Object obj, Class<T> footPrint) {
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
 				new Class<?>[] { footPrint }, new InvocationHandler() {
 
@@ -89,8 +95,9 @@ public class AllAdapter implements InvocationAdapter {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "[return type method="
-				+ returnsTypeMethod + ", adapter=" + adapter + ", previous="
-				+ previous;
+				+ returnsTypeMethod.getDeclaringClass().getSimpleName() + "."
+				+ returnsTypeMethod.getName() + "(*), adapter=" + adapter
+				+ ", previous=" + previous;
 	}
 
 	@Override
