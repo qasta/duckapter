@@ -4,8 +4,8 @@ import org.duckapter.AdaptedClass;
 
 abstract class AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
 
-	protected boolean canAdaptClass;
-	protected boolean canAdaptInstance;
+	protected boolean canAdaptClass = true;
+	protected boolean canAdaptInstance = true;
 	private final Class<D> duckInterface;
 	private final Class<O> originalClass;
 
