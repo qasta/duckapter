@@ -66,7 +66,6 @@ public class AllTest {
 	public void testTestCaseImpl() {
 		assertCanAdaptInstance(TestCase.class, TestCaseImpl.class,
 				FailClass.class);
-		System.out.println("****************");
 		AdaptedFactory.clearCache();
 		TestMethod[] testMethods = type(new TestCaseImpl(),
 				TestCase.class).testMethods();

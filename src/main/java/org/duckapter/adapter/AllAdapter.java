@@ -28,21 +28,16 @@ public class AllAdapter implements InvocationAdapter {
 
 	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
-		System.out.printf("%s andMerge with %s%n", this, other);
 		adapter = InvocationAdapters.andMerge(adapter, other);
-		System.out.printf("%s andMerge adapter =  %s%n", this, adapter);
 		return this;
 	}
 
 	@Override
 	public InvocationAdapter orMerge(InvocationAdapter theOther) {
-		System.out.printf("%s orMerge with %s%n", this, theOther);
 		if (theOther.getPriority() > getPriority()) {
-			System.out.printf("%s orMerge returns %s%n", this, theOther);
 			return theOther;
 		}
 		if (theOther instanceof AllAdapter) {
-			System.out.printf("%s orMerge sets previous %s%n", this, theOther);
 			((AllAdapter) theOther).previous = this;
 			return theOther;
 		}
