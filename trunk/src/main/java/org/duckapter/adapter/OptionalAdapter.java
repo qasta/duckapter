@@ -23,5 +23,7 @@ public class OptionalAdapter extends EmptyAdapter implements InvocationAdapter {
 	public int getPriority() {
 		return InvocationAdaptersPriorities.OPTIONAL;
 	}
+	
+	
 
 }

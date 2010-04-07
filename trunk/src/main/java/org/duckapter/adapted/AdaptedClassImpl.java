@@ -6,7 +6,6 @@ import static org.duckapter.adapter.InvocationAdapters.MAX;
 import static org.duckapter.adapter.InvocationAdapters.MIN;
 import static org.duckapter.adapter.InvocationAdapters.safe;
 import static org.duckapter.checker.Checkers.collectCheckers;
-import static org.duckapter.checker.Checkers.getChecker;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -108,24 +107,11 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		return new HashMap<Checker<Annotation>, Annotation>(checkersMap);
 	}
 
-	@SuppressWarnings("unchecked")
 	private final InvocationAdapter resolveAdapter(AnnotatedElement original,
 			AnnotatedElement duck,
 			Map<Checker<Annotation>, Annotation> checkersMap) {
 		Map<Checker<Annotation>, Annotation> checkers = copy(checkersMap);
 		InvocationAdapter ret = initialForElement(duck);
-		for (Annotation anno : duck.getAnnotations()) {
-			Checker ch = getChecker(anno);
-			if (ch == null) {
-				continue;
-			}
-			if (canAdapt(original, checkers, ch, anno)) {
-				final InvocationAdapter adapter = ch.adapt(anno, original,
-						duck, getOriginalClass());
-				ret = mergeAdaptersFromCheckers(ret, adapter);
-				checkers.remove(ch);
-			}
-		}
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
 			final Checker<Annotation> ch = entry.getKey();
 			final Annotation anno = entry.getValue();
@@ -163,12 +149,18 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 
 	private InvocationAdapter mergeAdaptersFromElements(InvocationAdapter ret,
 			final InvocationAdapter adapter) {
-		return ret.orMerge(adapter);
+		if (ret.getPriority() >= adapter.getPriority()) {
+			return ret.orMerge(adapter);
+		}
+		return adapter.orMerge(ret);
 	}
 
 	private InvocationAdapter mergeAdaptersFromCheckers(InvocationAdapter ret,
 			final InvocationAdapter adapter) {
-		return ret.andMerge(adapter);
+		if (ret.getPriority() >= adapter.getPriority()) {
+			return ret.andMerge(adapter);
+		}
+		return adapter.andMerge(ret);
 	}
 
 }
