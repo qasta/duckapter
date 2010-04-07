@@ -51,4 +51,32 @@ public class DoesNotHaveAdapter extends EmptyAdapter {
 		return !inverted.isInvocableOnInstance();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((inverted == null) ? 0 : inverted.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DoesNotHaveAdapter other = (DoesNotHaveAdapter) obj;
+		if (inverted == null) {
+			if (other.inverted != null)
+				return false;
+		} else if (!inverted.equals(other.inverted))
+			return false;
+		return true;
+	}
+	
+	
+
 }

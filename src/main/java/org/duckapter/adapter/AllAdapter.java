@@ -104,5 +104,7 @@ public class AllAdapter implements InvocationAdapter {
 	public boolean isInvocableOnInstance() {
 		return true;
 	}
+	
+	
 
 }
