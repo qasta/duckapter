@@ -6,11 +6,11 @@ import static org.duckapter.Duck.test;
 import org.duckapter.Adapted;
 import org.duckapter.InvocationAdapter;
 
-public abstract class DefaultInvocationAdapter implements InvocationAdapter {
+public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 
 	private final Class<?> returnType;
 
-	public DefaultInvocationAdapter(Class<?> returnType) {
+	public AbstractInvocationAdapter(Class<?> returnType) {
 		this.returnType = returnType;
 	}
 
@@ -73,6 +73,7 @@ public abstract class DefaultInvocationAdapter implements InvocationAdapter {
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return InvocationAdapters.andMerge(this, other);
 	}
+	
 
 	private Object handlePrimitive(Object ret, Class<?> duckType) {
 		return ret;

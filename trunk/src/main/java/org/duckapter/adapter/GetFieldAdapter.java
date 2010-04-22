@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 
 import org.duckapter.InvocationAdapter;
 
-public class GetFieldAdapter extends DefaultInvocationAdapter implements InvocationAdapter {
+public class GetFieldAdapter extends AbstractInvocationAdapter implements InvocationAdapter {
 
 	private final Field field;
 
