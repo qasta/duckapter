@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier;
 
 import org.duckapter.InvocationAdapter;
 
-public class MethodAdapter extends DefaultInvocationAdapter implements InvocationAdapter {
+public class MethodAdapter extends AbstractInvocationAdapter implements InvocationAdapter {
 
 	private final Method method;
 

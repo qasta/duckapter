@@ -3,9 +3,8 @@ package org.duckapter.adapter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.duckapter.InvocationAdapter;
-
-public class ConstructorAdapter extends DefaultInvocationAdapter implements InvocationAdapter {
+public class ConstructorAdapter 
+	extends AbstractInvocationAdapter{
 
 	private final Constructor<?> constructor;
 
@@ -24,7 +23,7 @@ public class ConstructorAdapter extends DefaultInvocationAdapter implements Invo
 	protected Class<?>[] getParameterTypes() {
 		return constructor.getParameterTypes();
 	}
-	
+
 	@Override
 	public int getPriority() {
 		return InvocationAdaptersPriorities.CONSTRUCTOR;
@@ -55,16 +54,15 @@ public class ConstructorAdapter extends DefaultInvocationAdapter implements Invo
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean isInvocableOnClass() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isInvocableOnInstance() {
 		return true;
 	}
-	
 
 }

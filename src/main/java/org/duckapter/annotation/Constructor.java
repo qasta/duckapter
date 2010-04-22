@@ -25,5 +25,4 @@ import org.duckapter.checker.ConstructorChecker;
 @CheckerAnnotation(ConstructorChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR})
-public @interface Constructor {
-}
+public @interface Constructor {}

@@ -95,13 +95,6 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		}
 	}
 
-	private boolean canAdapt(AnnotatedElement original,
-			Map<Checker<Annotation>, Annotation> allowed,
-			final Checker<Annotation> ch, final Annotation anno) {
-		return allowed.containsKey(ch)
-				&& ch.canAdapt(anno, original, getOriginalClass());
-	}
-
 	private Map<Checker<Annotation>, Annotation> copy(
 			Map<Checker<Annotation>, Annotation> checkersMap) {
 		return new HashMap<Checker<Annotation>, Annotation>(checkersMap);
@@ -115,7 +108,7 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
 			final Checker<Annotation> ch = entry.getKey();
 			final Annotation anno = entry.getValue();
-			if (canAdapt(original, checkers, ch, anno)) {
+			if (ch.canAdapt(anno, original, getOriginalClass())) {
 				final InvocationAdapter adapter = ch.adapt(anno, original,
 						duck, getOriginalClass());
 				ret = mergeAdaptersFromCheckers(ret, adapter);
@@ -146,7 +139,7 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		canAdaptClass = canAdaptClass && adapter.isInvocableOnClass();
 		canAdaptInstance = canAdaptInstance && adapter.isInvocableOnInstance();
 	}
-
+	
 	private InvocationAdapter mergeAdaptersFromElements(InvocationAdapter ret,
 			final InvocationAdapter adapter) {
 		if (ret.getPriority() >= adapter.getPriority()) {
