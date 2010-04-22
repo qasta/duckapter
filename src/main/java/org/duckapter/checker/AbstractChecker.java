@@ -28,7 +28,6 @@ public abstract class AbstractChecker<T extends Annotation> implements
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public final boolean canAdapt(T anno, AnnotatedElement element, Class<?> classOfOriginal) {
 		Collection<ElementType> targets = getTargetElements(anno);
 		if (element instanceof Class) {
@@ -69,7 +68,6 @@ public abstract class AbstractChecker<T extends Annotation> implements
 		return targets;
 	}
 
-	@Override
 	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
 			T anno, AnnotatedElement element) {
 		return Collections.emptyList();

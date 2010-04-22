@@ -16,7 +16,6 @@ import org.duckapter.annotation.Field;
 
 public class FieldChecker extends AbstractChecker<Field> {
 	
-	@Override
 	public InvocationAdapter adapt(Field anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof java.lang.reflect.Field && duck instanceof Method) {

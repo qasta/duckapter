@@ -13,12 +13,10 @@ abstract class AbstractAdapted<O,D> implements Adapted<O,D> {
 		this.adaptedClass = adaptedClass;
 	}
 
-	@Override
 	public AdaptedClass<O,D> getAdaptedClass() {
 		return adaptedClass;
 	}
 
-	@Override
 	public O getOriginalInstance() {
 		return original;
 	}

@@ -16,17 +16,14 @@ public abstract class EmptyAdapter implements InvocationAdapter{
 		this.returnType = returnType;
 	}
 
-	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return InvocationAdapters.andMerge(this, other);
 	}
 
-	@Override
 	public InvocationAdapter orMerge(InvocationAdapter other) {
 		return InvocationAdapters.orMerge(this, other);
 	}
 
-	@Override
 	public Object invoke(Object obj, Object[] args) throws Throwable {
 		if (int.class.equals(returnType)){
 			return 0;

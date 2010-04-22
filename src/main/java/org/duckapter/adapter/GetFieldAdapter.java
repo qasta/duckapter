@@ -26,7 +26,6 @@ public class GetFieldAdapter extends AbstractInvocationAdapter implements Invoca
 		return new Class<?>[0];
 	}
 	
-	@Override
 	public int getPriority() {
 		return InvocationAdaptersPriorities.FIELD;
 	}

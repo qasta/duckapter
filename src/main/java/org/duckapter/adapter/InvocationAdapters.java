@@ -105,33 +105,27 @@ public enum InvocationAdapters implements InvocationAdapter {
 		}
 	}
 	
-	@Override
 	public int getPriority(){
 		return priority;
 	}
 	
-	@Override
 	public boolean isInvocableOnClass() {
 		return false;
 	}
 	
-	@Override
 	public boolean isInvocableOnInstance() {
 		return false;
 	}
 
 
-	@Override
 	public Object invoke(Object obj, Object[] args) throws Throwable {
 		return null;
 	}
 	
-	@Override
 	public InvocationAdapter orMerge(InvocationAdapter other) {
 		return orMerge(this, other);
 	}
 	
-	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return andMerge(this, other);
 	}

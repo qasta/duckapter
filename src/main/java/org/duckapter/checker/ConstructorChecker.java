@@ -12,7 +12,6 @@ import org.duckapter.annotation.Constructor;
 
 public class ConstructorChecker extends AbstractChecker<Constructor> {
 
-	@Override
 	public InvocationAdapter adapt(Constructor anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (!(original instanceof java.lang.reflect.Constructor<?>)

@@ -16,14 +16,12 @@ import org.duckapter.annotation.StereotypeType;
 
 public class StereotypeCheckerChecker implements Checker<Annotation> {
 
-	@Override
 	public InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		return getStereotypeType(anno).adapt(anno, original, duck,
 				classOfOriginal, getCheckers(anno));
 	}
 
-	@Override
 	public boolean canAdapt(Annotation anno, AnnotatedElement element,
 			Class<?> classOfOriginal) {
 		return getStereotypeType(anno).canAdapt(anno, element, classOfOriginal,
@@ -44,7 +42,6 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
 			Annotation anno, AnnotatedElement element) {
 		Collection ret = new HashSet();

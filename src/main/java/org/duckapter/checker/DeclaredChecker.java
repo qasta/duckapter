@@ -9,7 +9,6 @@ import org.duckapter.annotation.Declared;
 
 public class DeclaredChecker extends AbstractChecker<Declared> {
 
-	@Override
 	public InvocationAdapter adapt(Declared anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof Member && ((Member) original).getDeclaringClass().equals(classOfOriginal)) {

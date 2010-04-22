@@ -29,7 +29,6 @@ public class VisibilityChecker extends AbstractChecker<Annotation> {
 		return ALL_TARGETS;
 	}
 
-	@Override
 	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		return getVisibility(anno).check(anno, getModifiers(original)) 
