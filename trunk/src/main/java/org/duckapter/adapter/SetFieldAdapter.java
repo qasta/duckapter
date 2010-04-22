@@ -27,7 +27,6 @@ public class SetFieldAdapter extends AbstractInvocationAdapter implements Invoca
 		return new Class<?>[] { field.getType() };
 	}
 
-	@Override
 	public int getPriority() {
 		return InvocationAdaptersPriorities.FIELD;
 	}

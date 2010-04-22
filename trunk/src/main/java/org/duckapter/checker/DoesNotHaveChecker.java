@@ -10,7 +10,6 @@ import org.duckapter.annotation.DoesNotHave;
 
 public class DoesNotHaveChecker extends AbstractChecker<DoesNotHave> {
 
-	@Override
 	public InvocationAdapter adapt(DoesNotHave anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (duck instanceof Method) {

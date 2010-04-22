@@ -9,7 +9,6 @@ import org.duckapter.annotation.AssignableTo;
 public class AssignableToChecker extends AbstractChecker<AssignableTo> {
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public InvocationAdapter adapt(AssignableTo anno,
 			AnnotatedElement original, AnnotatedElement duck,
 			Class<?> classOfOriginal) {

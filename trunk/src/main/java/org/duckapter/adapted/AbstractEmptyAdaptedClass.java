@@ -20,19 +20,16 @@ abstract class AbstractEmptyAdaptedClass<O,D> extends AbstractAdaptedClass<O,D> 
 		}
 	}
 
-	@Override
 	public Object invoke(Object originalInstance, Method duckMethod,
 			Object[] args) throws Throwable {
 		throw new UnsupportedOperationException(
 				"Cannot invoke method on empty adapted class!");
 	}
 
-	@Override
 	public Collection<Method> getUnimplementedForClass() {
 		return Collections.unmodifiableCollection(unimplMethods);
 	}
 
-	@Override
 	public Collection<Method> getUnimplementedForInstance() {
 		return Collections.unmodifiableCollection(unimplMethods);
 	}

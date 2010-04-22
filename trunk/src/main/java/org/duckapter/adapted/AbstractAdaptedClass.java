@@ -16,22 +16,18 @@ abstract class AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
 		this.originalClass = originalClass;
 	}
 
-	@Override
 	public boolean canAdaptClass() {
 		return canAdaptClass;
 	}
 
-	@Override
 	public boolean canAdaptInstance() {
 		return canAdaptInstance;
 	}
 
-	@Override
 	public Class<D> getDuckInterface() {
 		return duckInterface;
 	}
 
-	@Override
 	public Class<O> getOriginalClass() {
 		return originalClass;
 	}

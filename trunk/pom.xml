@@ -6,8 +6,8 @@
 	<packaging>jar</packaging>
 	<version>0.7.0-BETA</version>
 	<name>Duckapter</name>
-	<description>Reflection and duck typing library for Java</description>
-	<url>http://code.google.com/p/duckater</url>
+	<description>Duck typing support for Java</description>
+	<url>http://duckapter.googlecode.com</url>
 	<issueManagement>
 		<url>http://code.google.com/p/duckapter/issues/list</url>
 	</issueManagement>
@@ -123,11 +123,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.1</version>
 			</plugin>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.2</version>
 				<configuration>
 					<formats>
 						<format>html</format>
@@ -138,6 +140,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0-beta-2</version>
 			</plugin>
 		</plugins>
 	</reporting>

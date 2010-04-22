@@ -21,18 +21,15 @@ public class AllAdapter implements InvocationAdapter {
 		this.returnsTypeMethod = returnsTypeMethod;
 	}
 
-	@Override
 	public int getPriority() {
 		return InvocationAdaptersPriorities.ALL;
 	}
 
-	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		adapter = InvocationAdapters.andMerge(adapter, other);
 		return this;
 	}
 
-	@Override
 	public InvocationAdapter orMerge(InvocationAdapter theOther) {
 		if (theOther.getPriority() > getPriority()) {
 			return theOther;
@@ -44,7 +41,6 @@ public class AllAdapter implements InvocationAdapter {
 		return this;
 	}
 
-	@Override
 	public Object invoke(Object obj, Object[] args) throws Throwable {
 		return collectProxiesArray(obj, returnsTypeMethod.getDeclaringClass());
 	}
@@ -76,7 +72,6 @@ public class AllAdapter implements InvocationAdapter {
 		return (T) Proxy.newProxyInstance(getClass().getClassLoader(),
 				new Class<?>[] { footPrint }, new InvocationHandler() {
 
-					@Override
 					public Object invoke(Object proxy, Method method,
 							Object[] args) throws Throwable {
 						if (returnsTypeMethod.equals(method)) {
@@ -95,12 +90,10 @@ public class AllAdapter implements InvocationAdapter {
 				+ ", previous=" + previous;
 	}
 
-	@Override
 	public boolean isInvocableOnClass() {
 		return true;
 	}
 
-	@Override
 	public boolean isInvocableOnInstance() {
 		return true;
 	}

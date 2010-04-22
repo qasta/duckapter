@@ -10,12 +10,10 @@ final class EmptyAdapted<O,D> extends AbstractAdapted<O,D> implements Adapted<O,
 		super(original, adaptedClass);
 	}
 	
-	@Override
 	public D adaptClass() {
 		throw new AdaptationException(this);
 	}
 	
-	@Override
 	public D adaptInstance() {
 		throw new AdaptationException(this);
 	}

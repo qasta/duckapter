@@ -32,7 +32,6 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		init();
 	}
 
-	@Override
 	public Collection<Method> getUnimplementedForClass() {
 		Collection<Method> methods = new ArrayList<Method>();
 		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
@@ -44,7 +43,6 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		return Collections.unmodifiableCollection(methods);
 	}
 
-	@Override
 	public Collection<Method> getUnimplementedForInstance() {
 		Collection<Method> methods = new ArrayList<Method>();
 		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
@@ -55,7 +53,6 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		return Collections.unmodifiableCollection(methods);
 	}
 
-	@Override
 	public Object invoke(O originalInstance, Method duckMethod, Object[] args)
 			throws Throwable {
 		return adapters.get(duckMethod).invoke(originalInstance, args);

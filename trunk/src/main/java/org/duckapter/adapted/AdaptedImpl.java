@@ -15,7 +15,6 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 		super(originalInstance, adaptedClass);
 	}
 
-	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		if (Adapted.class.equals(method.getDeclaringClass())) {

@@ -64,12 +64,10 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 		throw new IllegalArgumentException("Wrong object to return!");
 	}
 
-	@Override
 	public InvocationAdapter orMerge(InvocationAdapter other) {
 		return InvocationAdapters.orMerge(this, other);
 	}
 
-	@Override
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return InvocationAdapters.andMerge(this, other);
 	}
@@ -83,12 +81,10 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 		return handleObject(ret, getReturnType());
 	}
 
-	@Override
 	public boolean isInvocableOnClass() {
 		return true;
 	}
 
-	@Override
 	public boolean isInvocableOnInstance() {
 		return true;
 	}

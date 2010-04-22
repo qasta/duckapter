@@ -24,7 +24,6 @@ public class ConstructorAdapter
 		return constructor.getParameterTypes();
 	}
 
-	@Override
 	public int getPriority() {
 		return InvocationAdaptersPriorities.CONSTRUCTOR;
 	}

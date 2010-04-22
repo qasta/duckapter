@@ -14,7 +14,6 @@ public class ModifierCheckerChecker extends AbstractChecker<Annotation> implemen
 		return (modifiers & getMask(f)) != 0;
 	}
 
-	@Override
 	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (checkModifiers(anno, Checkers.getModifiers(original))) {
@@ -36,7 +35,6 @@ public class ModifierCheckerChecker extends AbstractChecker<Annotation> implemen
 				+ "not annotated by @ModifierChecker annotation!");
 	}
 
-	@Override
 	public boolean check(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		return checkModifiers(anno, Checkers.getModifiers(original));

@@ -25,7 +25,6 @@ public class MethodAdapter extends AbstractInvocationAdapter implements Invocati
 		return method.getParameterTypes();
 	}
 	
-	@Override
 	public int getPriority() {
 		return InvocationAdaptersPriorities.METHOD;
 	}

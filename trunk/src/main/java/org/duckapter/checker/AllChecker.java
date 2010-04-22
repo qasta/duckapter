@@ -51,7 +51,6 @@ public class AllChecker extends AbstractChecker<All> {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public InvocationAdapter adapt(All anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		if (original instanceof Class) {

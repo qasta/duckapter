@@ -15,7 +15,6 @@ public class NonCheckerChecker extends AbstractChecker<Annotation> implements
 		LogicalChecker<Annotation> {
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public boolean check(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		Class<?> annoType = anno.annotationType();
@@ -38,7 +37,6 @@ public class NonCheckerChecker extends AbstractChecker<Annotation> implements
 
 	}
 
-	@Override
 	public InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
 		return check(anno, original, duck, classOfOriginal) ? OK : NULL;
