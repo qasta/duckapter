@@ -6,8 +6,8 @@
 	<packaging>jar</packaging>
 	<version>0.7.0-BETA</version>
 	<name>Duckapter</name>
-	<description>Duck typing support for Java</description>
-	<url>http://duckapter.googlecode.com</url>
+	<description>Reflection and duck typing library for Java</description>
+	<url>http://code.google.com/p/duckater</url>
 	<issueManagement>
 		<url>http://code.google.com/p/duckapter/issues/list</url>
 	</issueManagement>
