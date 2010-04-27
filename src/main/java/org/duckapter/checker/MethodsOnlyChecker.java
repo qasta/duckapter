@@ -11,12 +11,22 @@ import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.MethodAdapter;
 
+/**
+ * The default checker which checks whether the target element is method. It
+ * provides the adaptation using the {@link MethodAdapter}.
+ * 
+ * @author Vladimir Orany
+ * 
+ * @param <T>
+ *            any checker annotation type
+ * @see MethodAdapter
+ */
 public class MethodsOnlyChecker<T extends Annotation> extends
 		AbstractChecker<T> {
 
 	public InvocationAdapter adapt(T anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
-		if (original instanceof Method && duck instanceof Method ) {
+		if (original instanceof Method && duck instanceof Method) {
 			return new MethodAdapter((Method) duck, (Method) original);
 		}
 		return InvocationAdapters.NULL;

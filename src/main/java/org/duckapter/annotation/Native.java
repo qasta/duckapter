@@ -7,10 +7,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
+/**
+ * The substitute for the <code>native</code> keyword. Can be only used on duck
+ * method.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
 @Documented
 @ModifierChecker(Modifier.NATIVE)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 public @interface Native {
 
 }

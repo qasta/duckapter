@@ -1,10 +1,28 @@
-package org.duckapter.annotation;
+package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 
-public enum Visibility {
+import org.duckapter.annotation.Package;
+import org.duckapter.annotation.Private;
+import org.duckapter.annotation.Protected;
+import org.duckapter.annotation.Public;
 
+/**
+ * This enumeration declares modes for determining the desired visibility of the
+ * target element.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
+public enum Visibility {
+	/**
+	 * The visibility of the target element must be at least the same as
+	 * declared by the annotation.
+	 * 
+	 * @author Vladimir Orany
+	 * 
+	 */
 	AT_LEAST {
 		@Override
 		protected boolean checkPackage(int mod) {
@@ -26,6 +44,13 @@ public enum Visibility {
 			return Modifier.isPublic(mod);
 		}
 	},
+	/**
+	 * The visibility of the target element must be at most the same as declared
+	 * by the annotation.
+	 * 
+	 * @author Vladimir Orany
+	 * 
+	 */
 	AT_MOST {
 		@Override
 		protected boolean checkPackage(int mod) {
@@ -47,6 +72,13 @@ public enum Visibility {
 			return true;
 		}
 	},
+	/**
+	 * The visibility of the target element must be the same as declared by the
+	 * annotation.
+	 * 
+	 * @author Vladimir Orany
+	 * 
+	 */
 	EXACT {
 		@Override
 		protected boolean checkPackage(int mod) {
@@ -71,7 +103,7 @@ public enum Visibility {
 
 	};
 
-	public boolean check(Annotation anno, int mod){
+	boolean check(Annotation anno, int mod) {
 		if (anno == null || anno instanceof Public) {
 			return checkPublic(mod);
 		}
@@ -86,7 +118,7 @@ public enum Visibility {
 		}
 		return false;
 	}
-	
+
 	protected abstract boolean checkPrivate(int mod);
 
 	protected abstract boolean checkProtected(int mod);
@@ -94,6 +126,5 @@ public enum Visibility {
 	protected abstract boolean checkPackage(int mod);
 
 	protected abstract boolean checkPublic(int mod);
-	
-	
+
 }

@@ -11,6 +11,15 @@ import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 
+/**
+ * The default checker which checks that the duck and target elements have the
+ * same non-checker annotations. Suppresses {@link NameChecker} if there is
+ * some non-checker annotation placed on the duck element (method or class). 
+ * 
+ * @author Vladimir Orany
+ *
+ * @param <T> any checker annotation type
+ */
 public class AnnotationsChecker<T extends Annotation> extends
 		AbstractChecker<T> {
 

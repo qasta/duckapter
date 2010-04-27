@@ -8,15 +8,15 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 /**
- * Declares that annotated method or all methods of annotated class must be
- * accessed statically. {@link Factory} and {@link Constructor} are supposed to
- * be static automatically.
- * 
+ * Inversion of the {@link Static} annotation.
  * @author Vladimir Orany
+ * @see Negative
+ * @see Static
  */
 @Documented
 @Negative
 @ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.TYPE })
-public @interface NonStatic {}
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, 
+	ElementType.FIELD, ElementType.TYPE })
+public @interface NonStatic { } 

@@ -7,15 +7,28 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * The default checkers which checks whether the name of the target element is
+ * the same as the name of the duck method. For fields, the name of the duck
+ * method can be prefixed by <code>get</code>, <code>set</code> or
+ * <code>is</code>.
+ * 
+ * @author Vladimir Orany
+ * 
+ * @param <T>
+ *            any checker annotation type
+ */
 public class NameChecker<T extends Annotation> extends LogicalCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno,
-			java.lang.reflect.Constructor<?> constructor, Method duckMethod, Class<?> classOfOriginal) {
+			java.lang.reflect.Constructor<?> constructor, Method duckMethod,
+			Class<?> classOfOriginal) {
 		return checkMethodName(duckMethod.getName(), constructor.getName());
 	};
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
+	protected boolean checkField(T anno, Field field, Method duckMethod,
+			Class<?> classOfOriginal) {
 		return checkFieldName(duckMethod.getName(), field.getName());
 	}
 
@@ -28,7 +41,8 @@ public class NameChecker<T extends Annotation> extends LogicalCheckerBase<T> {
 	};
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod,
+			Class<?> classOfOriginal) {
 		final String methodName = method.getName();
 		final String duckName = duckMethod.getName();
 		return checkMethodName(duckName, methodName);

@@ -2,10 +2,24 @@ package org.duckapter.adapter;
 
 import org.duckapter.InvocationAdapter;
 
+/**
+ * The adapter for {@link DoesNotHave} annotation and {@link DoesNotHaveChecker}
+ * . Collects the best suitable adapter for particular duck method and inverts
+ * the results of its {@link #isInvocableOnClass()} and
+ * {@link #isInvocableOnInstance()} methods.
+ * 
+ * @author Vladimir Orany
+ * @see org.duckapter.annotation.DoesNotHave
+ * @see org.duckapter.checker.DoesNotHaveChecker
+ */
 public class DoesNotHaveAdapter extends EmptyAdapter {
 
 	private InvocationAdapter inverted = null;
 
+	/**
+	 * @param returnType
+	 *            the return type
+	 */
 	public DoesNotHaveAdapter(Class<?> returnType) {
 		super(returnType);
 	}
@@ -76,7 +90,5 @@ public class DoesNotHaveAdapter extends EmptyAdapter {
 			return false;
 		return true;
 	}
-	
-	
 
 }

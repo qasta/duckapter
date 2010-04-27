@@ -10,6 +10,15 @@ import java.util.List;
 
 import org.duckapter.InvocationAdapter;
 
+/**
+ * The adapter for {@link All} annotation and {@link AllChecker}. Collects the
+ * best adapters for each duck method and original element pair. The adapter is
+ * always invokable because the resulting array can be empty.
+ * 
+ * @author Vladimir Orany
+ * @see org.duckapter.annotation.All
+ * @see org.duckapter.checker.AllChecker
+ */
 public class AllAdapter implements InvocationAdapter {
 
 	private final Method returnsTypeMethod;
@@ -17,6 +26,12 @@ public class AllAdapter implements InvocationAdapter {
 	private InvocationAdapter adapter = InvocationAdapters.MAX;
 	private AllAdapter previous = null;
 
+	/**
+	 * @param element
+	 *            the annotated element, usually the duck method
+	 * @param returnsTypeMethod
+	 *            the single method from the return type's interface
+	 */
 	public AllAdapter(AnnotatedElement element, Method returnsTypeMethod) {
 		this.returnsTypeMethod = returnsTypeMethod;
 	}
@@ -97,7 +112,5 @@ public class AllAdapter implements InvocationAdapter {
 	public boolean isInvocableOnInstance() {
 		return true;
 	}
-	
-	
 
 }

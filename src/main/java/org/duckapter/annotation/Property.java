@@ -6,24 +6,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.duckapter.Duck;
+import org.duckapter.checker.StereotypeType;
 
 /**
- * Declares that method is property getter/setter. Annotated methods should use
- * JavaBeans naming conventions with get*, set* and is*. Setter methods must
- * return void and have one parameter. Getter methods must return property value
- * and have no parameters. If there is no method of appropriate name
- * {@link Duck} will try to find field with name derived from getter or
- * setter method name. If this field is final it will not satisfy annotated
- * setter method. {@link Alias} can contain aslo bare field name without get*,
- * set* or is* prefix.
+ * Declares that the target element must be method or field. Can be only used on
+ * the duck method.
  * 
  * @author Vladimir Orany
  */
 @Documented
 @StereotypeChecker(StereotypeType.OR)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
-@Method @Field
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
+		ElementType.CONSTRUCTOR, ElementType.FIELD })
+@Method
+@Field
 public @interface Property {
 }

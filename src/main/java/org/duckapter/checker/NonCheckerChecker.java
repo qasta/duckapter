@@ -11,6 +11,12 @@ import org.duckapter.InvocationAdapter;
 import org.duckapter.LogicalChecker;
 import org.duckapter.annotation.Negative;
 
+/**
+ * Checker for the {@link Negative} metaannotation.
+ * 
+ * @author Vladimir Orany
+ * @see Negative
+ */
 public class NonCheckerChecker extends AbstractChecker<Annotation> implements
 		LogicalChecker<Annotation> {
 

@@ -6,10 +6,25 @@ import static org.duckapter.Duck.test;
 import org.duckapter.Adapted;
 import org.duckapter.InvocationAdapter;
 
+/**
+ * This class helps creating new implementations of {@link InvocationAdapter}
+ * interface. It provides methods for handling input parameters and also the
+ * return value. Merge methods {@link #orMerge(InvocationAdapter)} and
+ * {@link #andMerge(InvocationAdapter)} delegate its function to the
+ * {@link InvocationAdapters} implementations. The methods
+ * {@link #isInvocableOnClass()} and {@link #isInvocableOnInstance()} return
+ * <code>true</code> by default.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
 public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 
 	private final Class<?> returnType;
 
+	/**
+	 * @param returnType the return type of the invocation
+	 */
 	public AbstractInvocationAdapter(Class<?> returnType) {
 		this.returnType = returnType;
 	}
@@ -18,11 +33,24 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 		return handleReturnType(doInvoke(obj, handleArgs(args)));
 	}
 
+	/**
+	 * Perform the invocation on the adapted element.
+	 * @param obj the object to be the invocation performed
+	 * @param args prepared method arguments
+	 * @return result of the invocation to be handled by this class and returned
+	 * @throws Throwable if exception occurs during the invocation
+	 */
 	protected abstract Object doInvoke(Object obj, Object[] args)
 			throws Throwable;
 
+	/**
+	 * @return the original parameter types for the invocation
+	 */
 	protected abstract Class<?>[] getParameterTypes();
 
+	/**
+	 * @return the return type of the duck method
+	 */
 	protected final Class<?> getReturnType() {
 		return returnType;
 	}
@@ -71,7 +99,6 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return InvocationAdapters.andMerge(this, other);
 	}
-	
 
 	private Object handlePrimitive(Object ret, Class<?> duckType) {
 		return ret;

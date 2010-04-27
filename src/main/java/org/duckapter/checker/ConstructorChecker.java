@@ -10,6 +10,13 @@ import org.duckapter.adapter.ConstructorAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.Constructor;
 
+/**
+ * Checker for the {@link Constructor} annotation. Suppresses
+ * {@link NameChecker} and {@link MethodsOnlyChecker}.
+ * 
+ * @author Vladimir Orany
+ * @see Constructor
+ */
 public class ConstructorChecker extends AbstractChecker<Constructor> {
 
 	public InvocationAdapter adapt(Constructor anno, AnnotatedElement original,

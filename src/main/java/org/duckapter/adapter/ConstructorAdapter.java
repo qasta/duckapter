@@ -3,11 +3,25 @@ package org.duckapter.adapter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-public class ConstructorAdapter 
-	extends AbstractInvocationAdapter{
+/**
+ * The adapter for the constructors. Wraps constructor call to be invokable
+ * using {@link InvocationAdapter} interface. The adapter is always invokable
+ * because its considered static.
+ * 
+ * @author Vladimir Orany
+ * @see org.duckapter.annotation.Constructor
+ * @see org.duckapter.checker.ConstructorChecker
+ */
+public class ConstructorAdapter extends AbstractInvocationAdapter {
 
 	private final Constructor<?> constructor;
 
+	/**
+	 * @param duckMethod
+	 *            the duck method
+	 * @param constructor
+	 *            the constructor to be adapted
+	 */
 	public ConstructorAdapter(Method duckMethod, Constructor<?> constructor) {
 		super(duckMethod.getReturnType());
 		this.constructor = constructor;

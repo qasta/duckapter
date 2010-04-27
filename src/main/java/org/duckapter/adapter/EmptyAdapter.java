@@ -2,7 +2,14 @@ package org.duckapter.adapter;
 
 import org.duckapter.InvocationAdapter;
 
-public abstract class EmptyAdapter implements InvocationAdapter{
+/**
+ * The base class for the empty adapters which don't wrap any element are e.g.
+ * used for discriminating purpose.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
+public abstract class EmptyAdapter implements InvocationAdapter {
 
 	private final Class<?> returnType;
 
@@ -12,6 +19,10 @@ public abstract class EmptyAdapter implements InvocationAdapter{
 
 	public abstract boolean isInvocableOnClass();
 
+	/**
+	 * @param returnType
+	 *            the return type
+	 */
 	public EmptyAdapter(Class<?> returnType) {
 		this.returnType = returnType;
 	}
@@ -25,20 +36,20 @@ public abstract class EmptyAdapter implements InvocationAdapter{
 	}
 
 	public Object invoke(Object obj, Object[] args) throws Throwable {
-		if (int.class.equals(returnType)){
+		if (int.class.equals(returnType)) {
 			return 0;
 		}
 		if (short.class.equals(returnType)) {
-			return (short)0;
+			return (short) 0;
 		}
 		if (byte.class.equals(returnType)) {
-			return (byte)0;
+			return (byte) 0;
 		}
 		if (long.class.equals(returnType)) {
 			return 0L;
 		}
 		if (char.class.equals(returnType)) {
-			return (char)0;
+			return (char) 0;
 		}
 		if (float.class.equals(returnType)) {
 			return 0f;
@@ -78,6 +89,4 @@ public abstract class EmptyAdapter implements InvocationAdapter{
 		return true;
 	}
 
-	
-	
 }

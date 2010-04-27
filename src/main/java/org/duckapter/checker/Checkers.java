@@ -21,8 +21,13 @@ import java.util.Map.Entry;
 import org.duckapter.Checker;
 import org.duckapter.CheckerAnnotation;
 import org.duckapter.Duck;
-import org.duckapter.annotation.CheckerWithPriority;
 
+/**
+ * Utility class for checkers.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
 public final class Checkers {
 
 	private Checkers() {
@@ -32,6 +37,24 @@ public final class Checkers {
 	@SuppressWarnings("unchecked")
 	private static final Collection defaultCheckers = new ArrayList();
 
+	/**
+	 * Return the collection of the default checkers which are always used until
+	 * suppressed by
+	 * {@link Checker#suppressCheckers(Annotation, AnnotatedElement)} method.
+	 * The default checker are listed under the see tag.
+	 * 
+	 * @param <T>
+	 *            common checker annotation of all default checkers
+	 * @return the collection of all default checkers
+	 * @see AnnotationsChecker
+	 * @see ExceptionsChecker
+	 * @see NameChecker
+	 * @see MethodsOnlyChecker
+	 * @see PublicOnlyChecker
+	 * @see ConcreteMethodsChecker
+	 * @see ParametersChecker
+	 * @see ReturnTypeChecker
+	 */
 	@SuppressWarnings("unchecked")
 	public static final <T extends Annotation> Collection<Checker<T>> getDefaultCheckers() {
 		return defaultCheckers;
@@ -55,6 +78,15 @@ public final class Checkers {
 
 	private static Map<Class<?>, Checker<?>> checkerClassToInstanceMap = new HashMap<Class<?>, Checker<?>>();
 
+	/**
+	 * Return shared instance for the specified checker class.
+	 * 
+	 * @param <A>
+	 *            the checker's annotation
+	 * @param theClass
+	 *            the class of the checker
+	 * @return the instance of specified checker
+	 */
 	@SuppressWarnings("unchecked")
 	public static <A extends Annotation> Checker<A> getCheckerInstance(
 			Class<? extends Checker<? extends Annotation>> theClass) {
@@ -73,6 +105,13 @@ public final class Checkers {
 		return checker;
 	}
 
+	/**
+	 * Tests the annotation for being the checker annotation.
+	 * 
+	 * @param anno
+	 *            the annotation which might be the checker annotation
+	 * @return <code>true</code> if the annotation is the checker annotation
+	 */
 	public static boolean isCheckerAnnotation(Annotation anno) {
 		return !EmptyChecker.getInstance().equals(getChecker(anno));
 	}
@@ -140,16 +179,30 @@ public final class Checkers {
 		}
 		return toReturn.annotationType().getAnnotation(CheckerAnnotation.class);
 	}
-	
+
+	private static interface CheckerWithPriority {
+		int checkerPriority();
+	}
+
 	private static int getAnnoPriority(Annotation toReturn) {
 		if (Duck.test(toReturn, CheckerWithPriority.class)) {
-			return Duck.type(toReturn, CheckerWithPriority.class).checkerPriority();
+			return Duck.type(toReturn, CheckerWithPriority.class)
+					.checkerPriority();
 		}
 		return Integer.MIN_VALUE;
 	}
 
 	private static final Map<Class<? extends Annotation>, Checker<? extends Annotation>> checkersCache = new HashMap<Class<? extends Annotation>, Checker<? extends Annotation>>();
 
+	/**
+	 * Returns an instance of checker bind to specified annotation.
+	 * 
+	 * @param <A>
+	 *            the type of the annotation
+	 * @param anno
+	 *            the annotation
+	 * @return the checker bind to this annotation
+	 */
 	@SuppressWarnings("unchecked")
 	public static <A extends Annotation> Checker<A> getChecker(A anno) {
 		final Class<? extends Annotation> annotationType = anno
@@ -172,6 +225,16 @@ public final class Checkers {
 		return ch;
 	}
 
+	/**
+	 * Collect instances of checkers using annotation placed on the element and
+	 * the defualt checkers.
+	 * 
+	 * @param <T>
+	 *            the common annotation type
+	 * @param m
+	 *            the annotated element
+	 * @return the collection of checkers for specified element
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> Map<Checker<T>, T> collectCheckers(
 			AnnotatedElement m) {
@@ -197,6 +260,13 @@ public final class Checkers {
 		return Collections.unmodifiableMap(methodCheckers);
 	}
 
+	/**
+	 * Returns modifiers for specified element.
+	 * 
+	 * @param original
+	 *            the element
+	 * @return modifiers for the specified element
+	 */
 	@SuppressWarnings("unchecked")
 	public static int getModifiers(AnnotatedElement original) {
 		if (original instanceof Class) {
@@ -208,6 +278,15 @@ public final class Checkers {
 		throw new IllegalArgumentException("Illegal argument: " + original);
 	}
 
+	/**
+	 * Optimized method for the checkers.
+	 * 
+	 * @param ch
+	 *            the checker
+	 * @param obj
+	 *            the other object
+	 * @return if the checker equals the other object
+	 */
 	public static boolean equals(Checker<?> ch, Object obj) {
 		if (obj == null) {
 			return false;
@@ -218,10 +297,21 @@ public final class Checkers {
 		return ch.hashCode() == obj.hashCode();
 	}
 
+	/**
+	 * Return hash code for the checker based on common convention.
+	 * 
+	 * @param ch the checker 
+	 * @return the hash code for the checker
+	 */
 	public static int hashCode(Checker<?> ch) {
 		return 37 + 37 * ch.getClass().getName().hashCode();
 	}
 
+	/**
+	 * Return hash
+	 * @param clazz
+	 * @return
+	 */
 	public static int hashCode(Class<?> clazz) {
 		return 37 + 37 * clazz.getName().hashCode();
 	}

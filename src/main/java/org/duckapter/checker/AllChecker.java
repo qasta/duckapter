@@ -12,11 +12,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.AllAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.All;
 
+/**
+ * Checker for the {@link All} annotation. Suppresses {@link ReturnTypeChecker},
+ * {@link ParametersChecker} and {@link ExceptionsChecker}.
+ * 
+ * @author Vladimir Orany
+ * @see All
+ */
 public class AllChecker extends AbstractChecker<All> {
 
 	@SuppressWarnings("unchecked")
@@ -82,11 +90,13 @@ public class AllChecker extends AbstractChecker<All> {
 			return InvocationAdapters.NULL;
 		}
 
-		return checkMethodInterface(anno, original, classOfOriginal, methodsType.getMethods()[0]);
+		return checkMethodInterface(anno, original, classOfOriginal,
+				methodsType.getMethods()[0]);
 	}
 
 	private InvocationAdapter checkMethodInterface(All anno,
-			AnnotatedElement original, Class<?> classOfOriginal, final Method returnTypeOnlyMethod) {
+			AnnotatedElement original, Class<?> classOfOriginal,
+			final Method returnTypeOnlyMethod) {
 		for (LogicalCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
 			if (ch.canAdapt(anno, original, classOfOriginal)
 					&& InvocationAdapters.isNull(ch.adapt(anno, original,

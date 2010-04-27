@@ -9,10 +9,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Shortcut for {@link Static} {@link Field} annotations' pair.
+ * @author Vladimir Orany
+ *
+ */
 @Documented
 @StereotypeChecker
 @Static @Field
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
-public @interface StaticField{
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
+public @interface StaticField {
 }

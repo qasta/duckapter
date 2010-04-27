@@ -12,13 +12,27 @@ import java.util.List;
 import org.duckapter.Duck;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.annotation.Visibility;
 
-
+/**
+ * Common checker for the visibility annotations
+ * {@link org.duckapter.annotation.Private},
+ * {@link org.duckapter.annotation.Protected}
+ * {@link org.duckapter.annotation.Package} and
+ * {@link org.duckapter.annotation.Public}.
+ * 
+ * @author Vladimir Orany
+ * @see org.duckapter.annotation.Private
+ * @see org.duckapter.annotation.Protected
+ * @see org.duckapter.annotation.Package
+ * @see org.duckapter.annotation.Public
+ * @see Visibility
+ * 
+ */
 public class VisibilityChecker extends AbstractChecker<Annotation> {
 
 	@SuppressWarnings("unchecked")
-	private static final List<Class<PublicOnlyChecker>> SUPPRESSED = Arrays.asList(PublicOnlyChecker.class);
+	private static final List<Class<PublicOnlyChecker>> SUPPRESSED = Arrays
+			.asList(PublicOnlyChecker.class);
 
 	private static interface VisibilityAnno {
 		Visibility value();
@@ -29,13 +43,12 @@ public class VisibilityChecker extends AbstractChecker<Annotation> {
 		return ALL_TARGETS;
 	}
 
-	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
-			AnnotatedElement duck, Class<?> classOfOriginal) {
-		return getVisibility(anno).check(anno, getModifiers(original)) 
-				? InvocationAdapters.OK
+	public final InvocationAdapter adapt(Annotation anno,
+			AnnotatedElement original, AnnotatedElement duck,
+			Class<?> classOfOriginal) {
+		return getVisibility(anno).check(anno, getModifiers(original)) ? InvocationAdapters.OK
 				: InvocationAdapters.NULL;
 	}
-
 
 	protected Visibility getVisibility(Annotation anno) {
 		if (!Duck.test(anno, VisibilityAnno.class)) {
@@ -51,5 +64,5 @@ public class VisibilityChecker extends AbstractChecker<Annotation> {
 			AnnotatedElement duckMethod) {
 		return SUPPRESSED;
 	}
-	
+
 }

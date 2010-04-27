@@ -10,6 +10,14 @@ import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 
+/**
+ * This is the <code>null</code> object for the {@link InvocationAdapter}
+ * interface.
+ * 
+ * @author Vladimir Orany
+ * 
+ * @param <T> any checker annotation type
+ */
 public class EmptyChecker<T extends Annotation> extends AbstractChecker<T> {
 
 	private static final EmptyChecker<Annotation> INSTANCE = new EmptyChecker<Annotation>();

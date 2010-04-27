@@ -12,10 +12,27 @@ import java.util.List;
 
 import org.duckapter.adapted.AdaptedFactory;
 
+/**
+ * The default checker which checks whether the target element's parameters are
+ * compatible with the ones declared by the duck method.<br/>
+ * The target element's parameters are compatibile if
+ * <ul>
+ * <li>the count of the parameters are the same
+ * <li>the types from the duck interface can be assigned to the types from the
+ * target element or can be adapted to these parameters
+ * </ul>
+ * 
+ * 
+ * @author Vladimir Orany
+ * 
+ * @param <T>
+ *            any checker annotation type
+ */
 public class ParametersChecker<T extends Annotation> extends
 		LogicalCheckerBase<T> {
 
-	private static final List<ElementType> TARGETS = Arrays.asList(new ElementType[] { ElementType.METHOD,
+	private static final List<ElementType> TARGETS = Arrays
+			.asList(new ElementType[] { ElementType.METHOD,
 					ElementType.CONSTRUCTOR });
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
@@ -25,7 +42,8 @@ public class ParametersChecker<T extends Annotation> extends
 	};
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
+	protected boolean checkField(T anno, Field field, Method duckMethod,
+			Class<?> classOfOriginal) {
 		if (duckMethod.getParameterTypes().length == 0) {
 			return true;
 		}
@@ -47,7 +65,8 @@ public class ParametersChecker<T extends Annotation> extends
 	};
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod,
+			Class<?> classOfOriginal) {
 		return checkParameters(method.getParameterTypes(), duckMethod
 				.getParameterTypes());
 	}
@@ -69,7 +88,6 @@ public class ParametersChecker<T extends Annotation> extends
 		if (desired.isAssignableFrom(actual)) {
 			return true;
 		}
-		return AdaptedFactory.adapt(actual, desired)
-		.canAdaptInstance();
+		return AdaptedFactory.adapt(actual, desired).canAdaptInstance();
 	};
 }

@@ -8,14 +8,22 @@ import org.duckapter.LogicalChecker;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.ModifierChecker;
 
-public class ModifierCheckerChecker extends AbstractChecker<Annotation> implements LogicalChecker<Annotation>{
+/**
+ * Checker for the {@link ModifierChecker} metaannotation.
+ * 
+ * @author Vladimir Orany
+ * @see ModifierChecker
+ */
+public class ModifierCheckerChecker extends AbstractChecker<Annotation>
+		implements LogicalChecker<Annotation> {
 
 	private boolean checkModifiers(Annotation f, final int modifiers) {
 		return (modifiers & getMask(f)) != 0;
 	}
 
-	public final InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
-			AnnotatedElement duck, Class<?> classOfOriginal) {
+	public final InvocationAdapter adapt(Annotation anno,
+			AnnotatedElement original, AnnotatedElement duck,
+			Class<?> classOfOriginal) {
 		if (checkModifiers(anno, Checkers.getModifiers(original))) {
 			return InvocationAdapters.OK;
 		}

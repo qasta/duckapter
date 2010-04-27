@@ -12,8 +12,13 @@ import java.util.Map.Entry;
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.annotation.StereotypeChecker;
-import org.duckapter.annotation.StereotypeType;
 
+/**
+ * Checker for the {@link StereotypeChecker} metaannotation.
+ * 
+ * @author Vladimir Orany
+ * @see StereotypeChecker
+ */
 public class StereotypeCheckerChecker implements Checker<Annotation> {
 
 	public InvocationAdapter adapt(Annotation anno, AnnotatedElement original,
