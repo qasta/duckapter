@@ -7,10 +7,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
+/**
+ * Inversion of the {@link Native} annotation.
+ * @author Vladimir Orany
+ * @see Negative
+ * @see Native
+ */
 @Documented
+@Negative
 @ModifierChecker(Modifier.NATIVE)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 public @interface NonNative {
 
 }

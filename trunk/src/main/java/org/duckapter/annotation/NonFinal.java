@@ -8,11 +8,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Inversion of the {@link Final} annotation.
+ * @author Vladimir Orany
+ * @see Negative
+ * @see Final
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Negative
 @ModifierChecker(FINAL)
-@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,
+@Target({ ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,
 		ElementType.CONSTRUCTOR, ElementType.PARAMETER,
 		ElementType.ANNOTATION_TYPE })
 public @interface NonFinal {

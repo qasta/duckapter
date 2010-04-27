@@ -3,7 +3,10 @@ package org.duckapter;
 import org.duckapter.adapted.AdaptedFactory;
 
 /**
- * TODO: full example place here
+ * The {@link Duck} class is facade for the Duckapter framework. It provides the
+ * core methods {@link #type(Class, Class)}, {@link #type(Object, Class)},
+ * {@link #test(Class, Class)} and {@link #type(Object, Class)} which can users
+ * use for duck testing and duck typing. 
  * 
  * @author Vladimir Orany
  */

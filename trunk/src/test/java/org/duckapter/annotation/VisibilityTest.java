@@ -5,6 +5,7 @@ import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 import static org.junit.Assert.assertTrue;
 
 import org.duckapter.adapted.AdaptedFactory;
+import org.duckapter.checker.Visibility;
 import org.junit.Test;
 
 public class VisibilityTest {

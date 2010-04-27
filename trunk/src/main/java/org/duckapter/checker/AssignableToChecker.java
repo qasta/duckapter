@@ -5,7 +5,11 @@ import java.lang.reflect.AnnotatedElement;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.AssignableTo;
-
+/**
+ * Checker for the {@link AssignableTo} annotation.
+ * @author Vladimir Orany
+ * @see AssignableTo
+ */
 public class AssignableToChecker extends AbstractChecker<AssignableTo> {
 
 	@SuppressWarnings("unchecked")

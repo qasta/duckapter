@@ -8,6 +8,13 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * The default checker which checks whether the target element is concrete
+ * method or constructor.
+ * @author Vladimir Orany
+ *
+ * @param <T> any checker annotation type
+ */
 public class ConcreteMethodsChecker<T extends Annotation> extends
 		LogicalCheckerBase<T> {
 

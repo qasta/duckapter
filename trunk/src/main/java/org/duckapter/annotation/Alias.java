@@ -7,19 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.Duck;
 import org.duckapter.checker.AliasChecker;
 
 /**
- * Allows annotated method or property to has more potential names. <br/>
- * For example if you try to adapt folowing method
- * 
- * <pre>
- * @code @Alias("otherName") void originalName(); }
- * </pre> {@link Duck} will first look whether there is method called
- * <code>originalName</code> and if there isn't it will try to find method
- * called <code>otherName</code>. Both this methods will satisfy demanded method
- * of interface.
+ * Allows the target element to have more alternative potential names. Can be
+ * used only on the duck methods. Does not provide any guarantee which target
+ * element will be picked if more than one succeed the check.
  * 
  * @author Vladimir Orany
  * 
@@ -27,9 +20,13 @@ import org.duckapter.checker.AliasChecker;
 @Documented
 @CheckerAnnotation(AliasChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
+		ElementType.CONSTRUCTOR, ElementType.FIELD })
 public @interface Alias {
 
+	/**
+	 * Array of other potential names of the target element.
+	 */
 	String[] value();
 
 }

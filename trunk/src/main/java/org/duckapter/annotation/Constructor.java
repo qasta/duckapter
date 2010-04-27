@@ -10,13 +10,8 @@ import org.duckapter.CheckerAnnotation;
 import org.duckapter.checker.ConstructorChecker;
 
 /**
- * Declares that annotated method will be constructor for given class.
- * Constructors are matched by method's parameters. For example following method
- * would satisfy all classes with default constructor.
- * 
- * <pre>
- * @code @Constructor Object newInstance();}
- * </pre>
+ * Declares that the target element must be a constructor. Can be only used on
+ * the duck method.
  * 
  * @author Vladimir Orany
  * 
@@ -24,5 +19,7 @@ import org.duckapter.checker.ConstructorChecker;
 @Documented
 @CheckerAnnotation(ConstructorChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR})
-public @interface Constructor {}
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
+		ElementType.CONSTRUCTOR })
+public @interface Constructor {
+}

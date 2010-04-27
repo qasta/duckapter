@@ -7,10 +7,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
+/**
+ * The substitute for the <code>volatile</code> keyword. Can be only used on
+ * the duck method. The target element must be a field.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
 @Documented
 @ModifierChecker(Modifier.VOLATILE)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
 public @interface Volatile {
 
 }

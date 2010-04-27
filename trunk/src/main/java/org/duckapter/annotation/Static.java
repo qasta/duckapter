@@ -8,14 +8,15 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 
 /**
- * Declares that annotated method or all methods of annotated class must be
- * accessed statically. {@link Factory} and {@link Constructor} are supposed to
- * be static automatically.
+ * The substitute for the <code>static</code> keyword. Can be used on the duck
+ * interface or the duck method.
  * 
  * @author Vladimir Orany
+ * 
  */
 @Documented
 @ModifierChecker(Modifier.STATIC)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.TYPE })
-public @interface Static {}
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE, 
+	ElementType.FIELD, ElementType.TYPE })
+public @interface Static { } 

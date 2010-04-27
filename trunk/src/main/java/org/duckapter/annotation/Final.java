@@ -8,10 +8,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * The substitute for the <code>final</code> keyword. Can be used on the duck
+ * interface or the duck method.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @ModifierChecker(FINAL)
-@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,
+@Target({ ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,
 		ElementType.CONSTRUCTOR, ElementType.PARAMETER,
 		ElementType.ANNOTATION_TYPE })
 public @interface Final {

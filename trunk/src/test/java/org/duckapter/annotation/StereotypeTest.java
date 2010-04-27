@@ -3,7 +3,7 @@ package org.duckapter.annotation;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static org.duckapter.annotation.StereotypeType.AND;
+import static org.duckapter.checker.StereotypeType.AND;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -13,6 +13,7 @@ import org.duckapter.CheckerAnnotation;
 import org.duckapter.Duck;
 import org.duckapter.DuckTestHelper;
 import org.duckapter.checker.StereotypeCheckerChecker;
+import org.duckapter.checker.Visibility;
 import org.junit.Test;
 
 public class StereotypeTest {
@@ -94,12 +95,6 @@ public class StereotypeTest {
 
 	@StereotypeChecker
 	private static @interface TEST {
-	}
-
-	@Test
-	public void testPriority() {
-		Duck.type(TEST.class.getAnnotation(StereotypeChecker.class),
-				CheckerWithPriority.class);
 	}
 
 }

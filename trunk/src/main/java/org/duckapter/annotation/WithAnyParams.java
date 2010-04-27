@@ -9,10 +9,19 @@ import java.lang.annotation.Target;
 import org.duckapter.CheckerAnnotation;
 import org.duckapter.checker.WithAnyParamsChecker;
 
+/**
+ * Denotes that the target element can have any parameters declared. Once used
+ * on the duck method the duck method cannot be called and is used only for
+ * discrimination. Can only be used on the duck method.
+ * 
+ * @author Vladimir Orany
+ * 
+ */
 @Documented
 @CheckerAnnotation(WithAnyParamsChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR})
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
+		ElementType.CONSTRUCTOR })
 public @interface WithAnyParams {
 
 }

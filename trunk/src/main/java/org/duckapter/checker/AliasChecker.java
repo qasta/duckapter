@@ -8,6 +8,11 @@ import java.util.List;
 
 import org.duckapter.annotation.Alias;
 
+/**
+ * Checker for the {@link Alias} annotation. Suppresses {@link NameChecker}.
+ * @author Vladimir Orany
+ * @see Alias
+ */
 public class AliasChecker extends NameChecker<Alias> {
 
 	@Override

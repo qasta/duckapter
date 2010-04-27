@@ -14,14 +14,24 @@ import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.SetFieldAdapter;
 import org.duckapter.annotation.Field;
 
+/**
+ * Checker for the {@link Field} annotation.
+ * 
+ * @author Vladimir Orany
+ * @see Field
+ * @see SetFieldAdapter
+ * @see GetFieldAdapter
+ */
 public class FieldChecker extends AbstractChecker<Field> {
-	
+
 	public InvocationAdapter adapt(Field anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
-		if (original instanceof java.lang.reflect.Field && duck instanceof Method) {
-			final Method duckMethod = (Method)duck;
+		if (original instanceof java.lang.reflect.Field
+				&& duck instanceof Method) {
+			final Method duckMethod = (Method) duck;
 			final java.lang.reflect.Field field = (java.lang.reflect.Field) original;
-			if (duckMethod.getParameterTypes().length == 1 && !Modifier.isFinal(field.getModifiers())) {
+			if (duckMethod.getParameterTypes().length == 1
+					&& !Modifier.isFinal(field.getModifiers())) {
 				return new SetFieldAdapter(duckMethod, field);
 			} else if (duckMethod.getParameterTypes().length == 0) {
 				return new GetFieldAdapter(duckMethod, field);
@@ -38,12 +48,11 @@ public class FieldChecker extends AbstractChecker<Field> {
 		return Arrays.asList(new ElementType[] { ElementType.METHOD,
 				ElementType.CONSTRUCTOR, ElementType.FIELD });
 	};
-	
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Class<MethodsOnlyChecker>> suppressCheckers(
-			Field anno, AnnotatedElement duckMethod) {
+	public List<Class<MethodsOnlyChecker>> suppressCheckers(Field anno,
+			AnnotatedElement duckMethod) {
 		return Arrays.asList(MethodsOnlyChecker.class);
 	}
 

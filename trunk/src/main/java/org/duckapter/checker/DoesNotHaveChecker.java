@@ -8,6 +8,12 @@ import org.duckapter.adapter.DoesNotHaveAdapter;
 import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.annotation.DoesNotHave;
 
+/**
+ * Checker for the {@link DoesNotHave} annotation.
+ * @author Vladimir Orany
+ * @see DoesNotHave
+ * @see DoesNotHaveAdapter
+ */
 public class DoesNotHaveChecker extends AbstractChecker<DoesNotHave> {
 
 	public InvocationAdapter adapt(DoesNotHave anno, AnnotatedElement original,

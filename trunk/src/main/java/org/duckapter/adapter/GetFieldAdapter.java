@@ -6,10 +6,24 @@ import java.lang.reflect.Modifier;
 
 import org.duckapter.InvocationAdapter;
 
-public class GetFieldAdapter extends AbstractInvocationAdapter implements InvocationAdapter {
+/**
+ * This adapter reads field content as the result of invocation.
+ * 
+ * @author Vladimir Orany
+ * @see org.duckapter.annotation.Field
+ * @see org.duckapter.checker.FieldChecker
+ */
+public class GetFieldAdapter extends AbstractInvocationAdapter implements
+		InvocationAdapter {
 
 	private final Field field;
 
+	/**
+	 * @param duckMethod
+	 *            the duck method
+	 * @param field
+	 *            the field to be adapted
+	 */
 	public GetFieldAdapter(Method duckMethod, final Field field) {
 		super(duckMethod.getReturnType());
 		this.field = field;
@@ -25,7 +39,7 @@ public class GetFieldAdapter extends AbstractInvocationAdapter implements Invoca
 	protected Class<?>[] getParameterTypes() {
 		return new Class<?>[0];
 	}
-	
+
 	public int getPriority() {
 		return InvocationAdaptersPriorities.FIELD;
 	}
@@ -54,12 +68,10 @@ public class GetFieldAdapter extends AbstractInvocationAdapter implements Invoca
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean isInvocableOnClass() {
 		return Modifier.isStatic(field.getModifiers());
 	}
-	
-	
 
 }

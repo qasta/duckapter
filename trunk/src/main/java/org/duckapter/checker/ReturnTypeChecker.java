@@ -8,14 +8,27 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.duckapter.Duck;
 import org.duckapter.adapted.AdaptedFactory;
 
+/**
+ * Default checker which checks whether the target element's return type is
+ * compatible with the return type of the duck method. The target element's
+ * return type is compatible if is assignable to the return type of the duck
+ * method or can be adapted using {@link Duck#type(Class, Class)} or
+ * {@link Duck#type(Object, Class)} methods.
+ * 
+ * @author Vladimir Orany
+ * 
+ * @param <T>
+ */
 public class ReturnTypeChecker<T extends Annotation> extends
 		LogicalCheckerBase<T> {
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod, Class<?> classOfOriginal) {
-		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())) {
+		if (duckMethod.getDeclaringClass().isAssignableFrom(
+				duckMethod.getReturnType())) {
 			return true;
 		}
 		return checkDuck(constructor.getDeclaringClass(), duckMethod);
@@ -34,15 +47,15 @@ public class ReturnTypeChecker<T extends Annotation> extends
 		if (duckMethod.getReturnType().isAssignableFrom(returnType)) {
 			return true;
 		}
-		if (duckMethod.getReturnType().isPrimitive() && !returnType.isPrimitive()) {
+		if (duckMethod.getReturnType().isPrimitive()
+				&& !returnType.isPrimitive()) {
 			return false;
 		}
 		if (!duckMethod.getReturnType().isInterface()) {
 			return false;
 		}
-		return AdaptedFactory.adapt(returnType, duckMethod
-				.getReturnType())
-		.canAdaptInstance();
+		return AdaptedFactory.adapt(returnType, duckMethod.getReturnType())
+				.canAdaptInstance();
 	};
 
 	@Override
@@ -55,20 +68,23 @@ public class ReturnTypeChecker<T extends Annotation> extends
 	};
 
 	@Override
-	protected boolean checkField(T anno, Field field, Method duckMethod, Class<?> classOfOriginal) {
-		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())
-				&& field.getDeclaringClass().isAssignableFrom(field.getType())
-		) {
+	protected boolean checkField(T anno, Field field, Method duckMethod,
+			Class<?> classOfOriginal) {
+		if (duckMethod.getDeclaringClass().isAssignableFrom(
+				duckMethod.getReturnType())
+				&& field.getDeclaringClass().isAssignableFrom(field.getType())) {
 			return true;
 		}
 		return checkDuck(field.getType(), duckMethod);
 	};
 
 	@Override
-	protected boolean checkMethod(T anno, Method method, Method duckMethod, Class<?> classOfOriginal) {
-		if (duckMethod.getDeclaringClass().isAssignableFrom(duckMethod.getReturnType())
-				&& method.getDeclaringClass().isAssignableFrom(method.getReturnType())
-		) {
+	protected boolean checkMethod(T anno, Method method, Method duckMethod,
+			Class<?> classOfOriginal) {
+		if (duckMethod.getDeclaringClass().isAssignableFrom(
+				duckMethod.getReturnType())
+				&& method.getDeclaringClass().isAssignableFrom(
+						method.getReturnType())) {
 			return true;
 		}
 		return checkDuck(method.getReturnType(), duckMethod);

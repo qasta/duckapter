@@ -8,6 +8,12 @@ import org.duckapter.adapter.InvocationAdapters;
 import org.duckapter.adapter.OptionalAdapter;
 import org.duckapter.annotation.Optional;
 
+/**
+ * Checker for the {@link Optional} annotation.
+ * 
+ * @author Vladimir Orany
+ * @see Optional
+ */
 public class OptionalChecker extends AbstractChecker<Optional> {
 
 	public InvocationAdapter adapt(Optional anno, AnnotatedElement original,

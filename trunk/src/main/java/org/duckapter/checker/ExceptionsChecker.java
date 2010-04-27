@@ -7,6 +7,13 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * The default checker which checks whether the target elements' declared
+ * exceptions are compatible with the ones declared by the duck method.
+ * @author Vladimir Orany
+ *
+ * @param <T> any checker annotation type
+ */
 public class ExceptionsChecker<T extends Annotation> extends
 		LogicalCheckerBase<T> {
 
