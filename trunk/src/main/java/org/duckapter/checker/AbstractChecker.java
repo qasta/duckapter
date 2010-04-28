@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.duckapter.Checker;
+import org.duckapter.adapter.InvocationAdaptersPriorities;
 
 /**
  * The base class for implementation of the {@link Checker} interface. It
@@ -109,6 +110,14 @@ public abstract class AbstractChecker<T extends Annotation> implements
 	@Override
 	public final int hashCode() {
 		return hashCode;
+	}
+	
+	public int getMinAdapterPriorityToFail(Annotation anno) {
+		return InvocationAdaptersPriorities.NONE;
+	}
+	
+	public int getMinAdapterPriorityToPass(Annotation anno) {
+		return InvocationAdaptersPriorities.METHOD;
 	}
 
 }

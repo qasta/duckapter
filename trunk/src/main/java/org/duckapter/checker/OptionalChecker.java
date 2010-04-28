@@ -1,5 +1,6 @@
 package org.duckapter.checker;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
@@ -22,6 +23,11 @@ public class OptionalChecker extends AbstractChecker<Optional> {
 			return InvocationAdapters.NULL;
 		}
 		return new OptionalAdapter(((Method) duck).getReturnType());
+	}
+	
+	@Override
+	public int getMinAdapterPriorityToFail(Annotation anno) {
+		return Integer.MIN_VALUE;
 	}
 
 }

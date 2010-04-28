@@ -11,26 +11,29 @@ import org.duckapter.AdaptedClass;
 final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 		Adapted<O, D>, InvocationHandler {
 
+	private D proxy;
+
 	AdaptedImpl(O originalInstance, AdaptedClass<O, D> adaptedClass) {
 		super(originalInstance, adaptedClass);
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		if (Adapted.class.equals(method.getDeclaringClass())) {
+		final Class<?> declaringClass = method.getDeclaringClass();
+		if (Adapted.class.equals(declaringClass)) {
 			return method.invoke(this, args);
 		}
-		if (AdaptedClass.class.equals(method.getDeclaringClass())) {
+		if (AdaptedClass.class.equals(declaringClass)) {
 			return method.invoke(getAdaptedClass(), args);
 		}
-		if (method.getDeclaringClass().isAssignableFrom(
-				getAdaptedClass().getDuckInterface())) {
+		if (declaringClass.isAssignableFrom(getAdaptedClass()
+				.getDuckInterface())) {
 			return getAdaptedClass()
-					.invoke(getOriginalInstance(), method, args);
+					.invoke((O) proxy, method, args);
 		}
-		if (method.getDeclaringClass().isAssignableFrom(
-				getAdaptedClass().getOriginalClass())) {
-			return method.invoke(getOriginalInstance(), args);
+		if (declaringClass.isAssignableFrom(getAdaptedClass()
+				.getOriginalClass())) {
+			return method.invoke(proxy, args);
 		}
 		throw new UnsupportedOperationException("Operation not supported: "
 				+ method);
@@ -40,15 +43,21 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 		if (!getAdaptedClass().canAdaptInstance()) {
 			throw new AdaptationException(this);
 		}
-		return createProxy();
+		return getProxy();
 	}
 
-	
+	private D getProxy() {
+		if (proxy == null) {
+			proxy = createProxy();
+		}
+		return proxy;
+	}
+
 	public D adaptClass() {
 		if (!getAdaptedClass().canAdaptClass()) {
 			throw new AdaptationException(this);
 		}
-		return createProxy();
+		return getProxy();
 	}
 
 	private D createProxy() {

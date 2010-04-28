@@ -1,5 +1,7 @@
 package org.duckapter.adapter;
 
+import static org.duckapter.adapter.ObjectHandlersFactory.getHandler;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -15,7 +17,6 @@ import java.lang.reflect.Method;
 public class ConstructorAdapter extends AbstractInvocationAdapter {
 
 	private final Constructor<?> constructor;
-
 	/**
 	 * @param duckMethod
 	 *            the duck method
@@ -23,19 +24,35 @@ public class ConstructorAdapter extends AbstractInvocationAdapter {
 	 *            the constructor to be adapted
 	 */
 	public ConstructorAdapter(Method duckMethod, Constructor<?> constructor) {
-		super(duckMethod.getReturnType());
+		super(duckMethod);
 		this.constructor = constructor;
 		constructor.setAccessible(true);
 	}
 
 	@Override
-	public Object doInvoke(Object obj, Object[] args) throws Throwable {
-		return constructor.newInstance(args);
+	protected ObjectHandler initReturnTypeHandler() {
+		return getHandler(constructor.getDeclaringClass(), getDuckMethod()
+				.getReturnType());
 	}
 
 	@Override
-	protected Class<?>[] getParameterTypes() {
-		return constructor.getParameterTypes();
+	protected ObjectHandler[] initArgumentsHandlers() {
+		ObjectHandler[] handlers = new ObjectHandler[getDuckMethod()
+				.getParameterTypes().length];
+		if (getDuckMethod().getParameterTypes().length == constructor
+				.getParameterTypes().length) {
+			for (int i = 0; i < getDuckMethod().getParameterTypes().length; i++) {
+				handlers[i] = ObjectHandlersFactory.getHandler(getDuckMethod()
+						.getParameterTypes()[i], constructor
+						.getParameterTypes()[i]);
+			}
+		}
+		return handlers;
+	}
+
+	@Override
+	public Object doInvoke(Object obj, Object[] args) throws Throwable {
+		return constructor.newInstance(args);
 	}
 
 	public int getPriority() {
