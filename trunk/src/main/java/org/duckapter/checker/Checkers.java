@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -238,14 +239,14 @@ public final class Checkers {
 	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> Map<Checker<T>, T> collectCheckers(
 			AnnotatedElement m) {
-		Map methodCheckers = new HashMap();
-		for (Checker ch : getDefaultCheckers()) {
-			methodCheckers.put(ch, null);
-		}
+		Map methodCheckers = new LinkedHashMap();
 		for (Annotation anno : m.getAnnotations()) {
 			if (isCheckerAnnotation(anno)) {
 				methodCheckers.put(getChecker(anno), anno);
 			}
+		}
+		for (Checker ch : getDefaultCheckers()) {
+			methodCheckers.put(ch, null);
 		}
 		Set<Entry<Checker<Annotation>, Annotation>> entries = (Set<Entry<Checker<Annotation>, Annotation>>) methodCheckers
 				.entrySet();
