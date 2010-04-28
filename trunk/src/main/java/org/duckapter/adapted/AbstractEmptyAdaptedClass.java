@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-
-abstract class AbstractEmptyAdaptedClass<O,D> extends AbstractAdaptedClass<O,D> {
+abstract class AbstractEmptyAdaptedClass<O, D> extends
+		AbstractAdaptedClass<O, D> {
 
 	protected final Collection<Method> unimplMethods = new ArrayList<Method>();
 
-	AbstractEmptyAdaptedClass(Class<D> duckInterface,
-			Class<O> originalClass, boolean canAdapt) {
+	AbstractEmptyAdaptedClass(Class<D> duckInterface, Class<O> originalClass,
+			boolean canAdapt) {
 		super(duckInterface, originalClass);
 		canAdaptClass = canAdapt;
 		canAdaptInstance = canAdapt;
@@ -32,6 +32,16 @@ abstract class AbstractEmptyAdaptedClass<O,D> extends AbstractAdaptedClass<O,D> 
 
 	public Collection<Method> getUnimplementedForInstance() {
 		return Collections.unmodifiableCollection(unimplMethods);
+	}
+
+	public D adaptClass() {
+		throw new UnsupportedOperationException(
+				"Cannot adapt empty adapted class!");
+	}
+
+	public D adaptInstance(Object o) {
+		throw new UnsupportedOperationException(
+				"Cannot adapt empty adapted class!");
 	}
 
 }

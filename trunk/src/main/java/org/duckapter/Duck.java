@@ -42,8 +42,8 @@ public final class Duck {
 	public static <O, D> D type(final O original, final Class<D> duck) {
 		@SuppressWarnings("unchecked")
 		final Class<O> originalClass = (Class<O>) original.getClass();
-		return AdaptedFactory.adapt(original, originalClass, duck)
-				.adaptInstance();
+		return AdaptedFactory.adapt(originalClass, duck)
+				.adaptInstance(original);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public final class Duck {
 	 * @throws AdaptationException
 	 */
 	public static <O, D> D type(final Class<O> original, final Class<D> duck) {
-		return AdaptedFactory.adapt(null, original, duck).adaptClass();
+		return AdaptedFactory.adapt(original, duck).adaptClass();
 	}
 
 	/**
