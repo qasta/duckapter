@@ -6,6 +6,7 @@ import static org.duckapter.adapter.InvocationAdapters.MAX;
 import static org.duckapter.adapter.InvocationAdapters.MIN;
 import static org.duckapter.adapter.InvocationAdapters.safe;
 import static org.duckapter.checker.Checkers.collectCheckers;
+import static org.duckapter.checker.Checkers.getMinPriorityToFail;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -21,6 +22,7 @@ import org.duckapter.AdaptedClass;
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.MethodAdapter;
+import org.duckapter.checker.Checkers;
 
 final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		AdaptedClass<O, D> {
@@ -72,10 +74,14 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	private InvocationAdapter checkDuckMethod(Method duckMethod) {
 		Map<Checker<Annotation>, Annotation> methodCheckers = collectCheckers(duckMethod);
 		InvocationAdapter ret = initialForDuckMethod(duckMethod);
+		int minToPass = Checkers.getMinPriorityToPass(methodCheckers);
 		for (AnnotatedElement element : getRelevantElements(getOriginalClass())) {
 			final InvocationAdapter adapter = resolveAdapter(element,
 					duckMethod, methodCheckers);
 			ret = mergeAdaptersFromElements(ret, adapter);
+			if (ret.getPriority() >= minToPass) {
+				return ret;
+			}
 		}
 		return ret;
 	}
@@ -101,6 +107,7 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 			AnnotatedElement duck,
 			Map<Checker<Annotation>, Annotation> checkersMap) {
 		Map<Checker<Annotation>, Annotation> checkers = copy(checkersMap);
+		int minPriority = getMinPriorityToFail(checkers);
 		InvocationAdapter ret = initialForElement(duck);
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
 			final Checker<Annotation> ch = entry.getKey();
@@ -109,10 +116,15 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 				final InvocationAdapter adapter = ch.adapt(anno, original,
 						duck, getOriginalClass());
 				ret = mergeAdaptersFromCheckers(ret, adapter);
+				if (ret.getPriority() <= minPriority) {
+					return ret;
+				}
 			}
 		}
 		return ret;
 	}
+
+
 
 	private InvocationAdapter initialForElement(AnnotatedElement duck) {
 		return safe(adapters.get(duck), MAX);

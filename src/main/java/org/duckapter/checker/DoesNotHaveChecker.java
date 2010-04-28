@@ -1,11 +1,13 @@
 package org.duckapter.checker;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.DoesNotHaveAdapter;
 import org.duckapter.adapter.InvocationAdapters;
+import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.annotation.DoesNotHave;
 
 /**
@@ -23,6 +25,11 @@ public class DoesNotHaveChecker extends AbstractChecker<DoesNotHave> {
 			return new DoesNotHaveAdapter(duckMethod.getReturnType());
 		}
 		return InvocationAdapters.NULL;
+	}
+	
+	@Override
+	public int getMinAdapterPriorityToPass(Annotation anno) {
+		return InvocationAdaptersPriorities.MAX;
 	}
 	
 }

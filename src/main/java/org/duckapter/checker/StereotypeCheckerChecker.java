@@ -26,7 +26,15 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 		return getStereotypeType(anno).adapt(anno, original, duck,
 				classOfOriginal, getCheckers(anno));
 	}
-
+	
+	public int getMinAdapterPriorityToFail(Annotation anno) {
+		return Checkers.getMinPriorityToFail(getCheckers(anno));
+	}
+	
+	public int getMinAdapterPriorityToPass(Annotation anno) {
+		return Checkers.getMinPriorityToPass(getCheckers(anno));
+	}
+	
 	public boolean canAdapt(Annotation anno, AnnotatedElement element,
 			Class<?> classOfOriginal) {
 		return getStereotypeType(anno).canAdapt(anno, element, classOfOriginal,

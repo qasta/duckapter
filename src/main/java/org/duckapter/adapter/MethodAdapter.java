@@ -17,6 +17,7 @@ import org.duckapter.InvocationAdapter;
 public class MethodAdapter extends AbstractInvocationAdapter implements
 		InvocationAdapter {
 
+	private final boolean isStatic;
 	private final Method method;
 
 	/**
@@ -26,19 +27,33 @@ public class MethodAdapter extends AbstractInvocationAdapter implements
 	 *            the method to be adapted
 	 */
 	public MethodAdapter(Method duckMethod, Method method) {
-		super(duckMethod.getReturnType());
+		super(duckMethod);
+		this.isStatic = Modifier.isStatic(method.getModifiers());
 		this.method = method;
 		method.setAccessible(true);
+	}
+
+	protected ObjectHandler initReturnTypeHandler() {
+		return ObjectHandlersFactory.getHandler(method.getReturnType(),
+				getDuckMethod().getReturnType());
+	}
+
+	protected ObjectHandler[] initArgumentsHandlers() {
+		ObjectHandler[] handlers = new ObjectHandler[getDuckMethod()
+				.getParameterTypes().length];
+		if (getDuckMethod().getParameterTypes().length == method
+				.getParameterTypes().length) {
+			for (int i = 0; i < getDuckMethod().getParameterTypes().length; i++) {
+				handlers[i] = ObjectHandlersFactory.getHandler(getDuckMethod()
+						.getParameterTypes()[i], method.getParameterTypes()[i]);
+			}
+		}
+		return handlers;
 	}
 
 	@Override
 	public Object doInvoke(Object obj, Object[] args) throws Throwable {
 		return method.invoke(obj, args);
-	}
-
-	@Override
-	protected Class<?>[] getParameterTypes() {
-		return method.getParameterTypes();
 	}
 
 	public int getPriority() {
@@ -72,7 +87,7 @@ public class MethodAdapter extends AbstractInvocationAdapter implements
 
 	@Override
 	public boolean isInvocableOnClass() {
-		return Modifier.isStatic(method.getModifiers());
+		return isStatic;
 	}
 
 	@Override

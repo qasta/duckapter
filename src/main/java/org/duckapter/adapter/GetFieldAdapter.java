@@ -25,19 +25,23 @@ public class GetFieldAdapter extends AbstractInvocationAdapter implements
 	 *            the field to be adapted
 	 */
 	public GetFieldAdapter(Method duckMethod, final Field field) {
-		super(duckMethod.getReturnType());
+		super(duckMethod);
 		this.field = field;
 		field.setAccessible(true);
+	}
+
+	protected ObjectHandler[] initArgumentsHandlers() {
+		return new ObjectHandler[0];
+	}
+
+	protected ObjectHandler initReturnTypeHandler() {
+		return ObjectHandlersFactory.getHandler(field.getType(),
+				getDuckMethod().getReturnType());
 	}
 
 	@Override
 	public Object doInvoke(Object obj, Object[] args) throws Throwable {
 		return field.get(obj);
-	}
-
-	@Override
-	protected Class<?>[] getParameterTypes() {
-		return new Class<?>[0];
 	}
 
 	public int getPriority() {
@@ -73,5 +77,4 @@ public class GetFieldAdapter extends AbstractInvocationAdapter implements
 	public boolean isInvocableOnClass() {
 		return Modifier.isStatic(field.getModifiers());
 	}
-
 }

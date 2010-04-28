@@ -25,20 +25,25 @@ public class SetFieldAdapter extends AbstractInvocationAdapter implements
 	 *            the field to be adapted
 	 */
 	public SetFieldAdapter(Method duckMethod, Field field) {
-		super(duckMethod.getReturnType());
+		super(duckMethod);
 		this.field = field;
 		field.setAccessible(true);
+	}
+
+	protected ObjectHandler[] initArgumentsHandlers() {
+		return new ObjectHandler[] { ObjectHandlersFactory.getHandler(
+				getDuckMethod().getParameterTypes()[0], field.getType()) };
+	}
+
+	protected ObjectHandler initReturnTypeHandler() {
+		return ObjectHandlersFactory.getHandler(void.class, getDuckMethod()
+				.getReturnType());
 	}
 
 	@Override
 	public Object doInvoke(Object obj, Object[] args) throws Throwable {
 		field.set(obj, args[0]);
 		return null;
-	}
-
-	@Override
-	protected Class<?>[] getParameterTypes() {
-		return new Class<?>[] { field.getType() };
 	}
 
 	public int getPriority() {

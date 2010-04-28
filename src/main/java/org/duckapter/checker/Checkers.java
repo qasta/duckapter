@@ -298,6 +298,35 @@ public final class Checkers {
 	}
 
 	/**
+	 * TODO
+	 * @param checkers
+	 * @return
+	 */
+	public static int getMinPriorityToFail(
+			Map<Checker<Annotation>, Annotation> checkers) {
+		int ret = Integer.MAX_VALUE;
+		for (Entry<Checker<Annotation>, Annotation> e : checkers.entrySet()) {
+			final int min = e.getKey().getMinAdapterPriorityToFail(e.getValue());
+			if (min < ret) {
+				ret = min;
+			}
+		}
+		return ret;
+	}
+	
+	public static int getMinPriorityToPass(
+			Map<Checker<Annotation>, Annotation> checkers) {
+		int ret = Integer.MIN_VALUE;
+		for (Entry<Checker<Annotation>, Annotation> e : checkers.entrySet()) {
+			final int max = e.getKey().getMinAdapterPriorityToPass(e.getValue());
+			if (max > ret) {
+				ret = max;
+			}
+		}
+		return ret;
+	}
+	
+	/**
 	 * Return hash code for the checker based on common convention.
 	 * 
 	 * @param ch the checker 
