@@ -11,11 +11,11 @@ final class EmptyAdapted<O,D> extends AbstractAdapted<O,D> implements Adapted<O,
 	}
 	
 	public D adaptClass() {
-		throw new AdaptationException(this);
+		throw new AdaptationException(getAdaptedClass());
 	}
 	
 	public D adaptInstance() {
-		throw new AdaptationException(this);
+		throw new AdaptationException(getAdaptedClass());
 	}
 
 }

@@ -18,7 +18,7 @@ public final class AdaptationException extends RuntimeException {
 	/**
 	 * Adapted which caused this exception to be thrown.
 	 */
-	private final Adapted<?, ?> adapted;
+	private final AdaptedClass<?, ?> adapted;
 
 	/**
 	 * Creates new instance of this exception with specified adapted as its
@@ -27,27 +27,27 @@ public final class AdaptationException extends RuntimeException {
 	 * @param theAdapted
 	 *            adapted which caused this exception to be thrown
 	 */
-	public AdaptationException(final Adapted<?, ?> theAdapted) {
+	public AdaptationException(final AdaptedClass<?, ?> theAdapted) {
 		this.adapted = theAdapted;
 	}
 
 	/**
 	 * @return adapted which causes this exception to be thrown
 	 */
-	public Adapted<?, ?> getAdapted() {
+	public AdaptedClass<?, ?> getAdapted() {
 		return adapted;
 	}
 
 	@Override
 	public String getMessage() {
 		return "Adaptation fail! (Original class: "
-				+ adapted.getAdaptedClass().getOriginalClass()
+				+ adapted.getOriginalClass()
 				+ ", duck interface: "
-				+ adapted.getAdaptedClass().getDuckInterface()
+				+ adapted.getDuckInterface()
 				+ ")Unimplemented class methods: "
-				+ adapted.getAdaptedClass().getUnimplementedForClass()
+				+ adapted.getUnimplementedForClass()
 				+ ", Unimplemented methods for instance: "
-				+ adapted.getAdaptedClass().getUnimplementedForInstance();
+				+ adapted.getUnimplementedForInstance();
 	}
 
 }
