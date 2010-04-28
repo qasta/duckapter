@@ -13,10 +13,9 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,31 +31,35 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 
 	private final Map<Method, InvocationAdapter> adapters = new HashMap<Method, InvocationAdapter>();
 	private D proxy;
+	private AdaptedClass<O, D> detailedClass = null;
+	private final boolean detailed;
 
 	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface) {
+		this(originalClass, duckInterface, false);
+	}
+	
+	
+	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface, boolean detailed) {
 		super(duckInterface, originalClass);
+		this.detailed = detailed;
 		init();
 	}
 
-	public Collection<Method> getUnimplementedForClass() {
-		Collection<Method> methods = new ArrayList<Method>();
-		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
-			if (!entry.getValue().isInvocableOnClass()
-					&& !Object.class.equals(entry.getKey().getDeclaringClass())) {
-				methods.add(entry.getKey());
-			}
+	private AdaptedClass<O, D> getDetailedClass() {
+		if (detailedClass == null) {
+			detailedClass = new AdaptedClassImpl<O, D>(getOriginalClass(),
+					getDuckInterface(), true);
+			AdaptedFactory.updateCacheInstance(detailedClass);
 		}
-		return Collections.unmodifiableCollection(methods);
+		return detailedClass;
+	}
+
+	public Collection<Method> getUnimplementedForClass() {
+		return getDetailedClass().getUnimplementedForClass();
 	}
 
 	public Collection<Method> getUnimplementedForInstance() {
-		Collection<Method> methods = new ArrayList<Method>();
-		for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
-			if (!entry.getValue().isInvocableOnInstance()) {
-				methods.add(entry.getKey());
-			}
-		}
-		return Collections.unmodifiableCollection(methods);
+		return getDetailedClass().getUnimplementedForClass();
 	}
 
 	public Object invoke(Object originalInstance, Method duckMethod,
@@ -95,6 +98,9 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	private void addObjectMethods() {
+		if (cannotBeAdaptedAnyway()) {
+			return;
+		}
 		for (Method m : Object.class.getMethods()) {
 			if (!adapters.containsKey(m)) {
 				adapters.put(m, new MethodAdapter(m, m));
@@ -104,7 +110,7 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 
 	private Map<Checker<Annotation>, Annotation> copy(
 			Map<Checker<Annotation>, Annotation> checkersMap) {
-		return new HashMap<Checker<Annotation>, Annotation>(checkersMap);
+		return new LinkedHashMap<Checker<Annotation>, Annotation>(checkersMap);
 	}
 
 	private final InvocationAdapter resolveAdapter(AnnotatedElement original,
@@ -137,11 +143,22 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	private void checkDuckMethods() {
+		if (cannotBeAdaptedAnyway()) {
+			return;
+		}
 		for (Method duckMethod : getDuckMethods()) {
 			InvocationAdapter adapter = checkDuckMethod(duckMethod);
 			updateCanAdapt(adapter);
 			adapters.put(duckMethod, adapter);
+			if (cannotBeAdaptedAnyway()) {
+				return;
+			}
 		}
+	}
+
+
+	private boolean cannotBeAdaptedAnyway() {
+		return detailed && (!canAdaptClass && !canAdaptInstance);
 	}
 
 	private void updateCanAdapt(InvocationAdapter adapter) {

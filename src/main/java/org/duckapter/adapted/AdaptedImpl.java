@@ -15,26 +15,7 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		final Class<?> declaringClass = method.getDeclaringClass();
-		if (Adapted.class.equals(declaringClass)) {
-			return method.invoke(this, args);
-		}
-		if (AdaptedClass.class.equals(declaringClass)) {
-			return method.invoke(getAdaptedClass(), args);
-		}
-		if (declaringClass.isAssignableFrom(getAdaptedClass()
-				.getDuckInterface())) {
-			return getAdaptedClass()
-					.invoke(getOriginalInstance(), method, args);
-		}
-		if (declaringClass.isAssignableFrom(getAdaptedClass()
-				.getOriginalClass())) {
-			return method.invoke(getOriginalInstance(), args);
-		}
-		throw new UnsupportedOperationException("Operation not supported: "
-				+ method);
+		return getAdaptedClass().invoke(getOriginalInstance(), method, args);
 	}
-	
-	
 
 }

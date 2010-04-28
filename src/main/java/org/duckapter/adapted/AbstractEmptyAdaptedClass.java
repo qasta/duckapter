@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.duckapter.AdaptationException;
+
 abstract class AbstractEmptyAdaptedClass<O, D> extends
 		AbstractAdaptedClass<O, D> {
 
@@ -35,13 +37,11 @@ abstract class AbstractEmptyAdaptedClass<O, D> extends
 	}
 
 	public D adaptClass() {
-		throw new UnsupportedOperationException(
-				"Cannot adapt empty adapted class!");
+		throw new AdaptationException(this);
 	}
 
 	public D adaptInstance(Object o) {
-		throw new UnsupportedOperationException(
-				"Cannot adapt empty adapted class!");
+		throw new AdaptationException(this);
 	}
 
 }

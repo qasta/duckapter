@@ -66,7 +66,8 @@ public final class AdaptedFactory {
 
 	private static <O, D> String getCacheKey(final Class<O> originalClass,
 			final Class<D> duckInterface) {
-		return originalClass.getName() + duckInterface.getName();
+		return new StringBuilder(originalClass.getName()).append(":").append(
+				duckInterface.getName()).toString();
 	}
 
 	/**
@@ -118,6 +119,11 @@ public final class AdaptedFactory {
 	@SuppressWarnings("unchecked")
 	private static <O, D> AdaptedClass<O, D> getFromCache(String s) {
 		return (AdaptedClass<O, D>) cache.get(s);
+	}
+
+	static <O, D> void updateCacheInstance(AdaptedClass<O, D> replacement) {
+		cache.put(getCacheKey(replacement.getOriginalClass(), replacement
+				.getDuckInterface()), replacement);
 	}
 
 }
