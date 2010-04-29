@@ -1,3 +1,5 @@
+#summary Migration from the version 0.0.1 to the 0.7.0
+
 There was a lot of work and API changes from the first release 0.0.1 to 0.7.0. This is also the reason why the version number rose so much. If you were using previous release you need to change your code this way:
 
 All annotations from previous release are still there besides the @Original which was considered as too dangerous. All checker annotations now reside in org.duckapter.annotation package.
