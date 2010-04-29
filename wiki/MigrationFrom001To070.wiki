@@ -4,7 +4,7 @@ All annotations from previous release are still there besides the @Original whic
 
 The base duck testing and typing methods from Duckapter facade class were changed to the ones found in org.duckapter.Duck class.
 
-|| Old method || New method ||
+|| *Old method* || *New method* ||
 || eu.ebdit.duckapter.Duckapter.canAdaptInstance(Object, Class) || org.duckapter.Duck.test(Object, Class)||
 || eu.ebdit.duckapter.Duckapter.canAdaptClass(Class, Class) || org.duckapter.Duck.test(Class, Class)||
 || eu.ebdit.duckapter.Duckapter.adaptInstance(Object, Class) || org.duckapter.Duck.type(Object, Class)||
