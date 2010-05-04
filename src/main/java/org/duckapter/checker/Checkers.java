@@ -6,6 +6,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +24,8 @@ import org.duckapter.Checker;
 import org.duckapter.CheckerAnnotation;
 import org.duckapter.Duck;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * Utility class for checkers.
  * 
@@ -36,7 +39,18 @@ public final class Checkers {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static final Collection defaultCheckers = new ArrayList();
+	private static final Collection defaultCheckers = 
+		ImmutableList.of(
+				new AnnotationsChecker<Annotation>(),
+				new ExceptionsChecker<Annotation>(),
+				new NameChecker<Annotation>(),
+				new MethodsOnlyChecker(),
+				new PublicOnlyChecker(),
+				new ConcreteMethodsChecker<Annotation>(),
+				new ParametersChecker<Annotation>(),
+				new ReturnTypeChecker<Annotation>()
+		);
+		
 
 	/**
 	 * Return the collection of the default checkers which are always used until
@@ -61,21 +75,6 @@ public final class Checkers {
 		return defaultCheckers;
 	}
 
-	static {
-		fillDefaultCheckers();
-	}
-
-	@SuppressWarnings("unchecked")
-	private static void fillDefaultCheckers() {
-		defaultCheckers.add(new AnnotationsChecker<Annotation>());
-		defaultCheckers.add(new ExceptionsChecker<Annotation>());
-		defaultCheckers.add(new NameChecker<Annotation>());
-		defaultCheckers.add(new MethodsOnlyChecker());
-		defaultCheckers.add(new PublicOnlyChecker());
-		defaultCheckers.add(new ConcreteMethodsChecker<Annotation>());
-		defaultCheckers.add(new ParametersChecker<Annotation>());
-		defaultCheckers.add(new ReturnTypeChecker<Annotation>());
-	}
 
 	private static Map<Class<?>, Checker<?>> checkerClassToInstanceMap = new HashMap<Class<?>, Checker<?>>();
 
@@ -95,11 +94,19 @@ public final class Checkers {
 				.get(theClass);
 		if (checker == null) {
 			try {
-				checker = (Checker<A>) theClass.newInstance();
+				checker = (Checker<A>) theClass.getConstructor().newInstance();
 				checkerClassToInstanceMap.put(theClass, checker);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
 			}
 		}
