@@ -74,7 +74,7 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 		}
 		if (ret instanceof ObjectWrapper) {
 			ObjectWrapper objectWrapper = (ObjectWrapper) ret;
-			if (duckType.isAssignableFrom(objectWrapper.getAdaptedClass()
+			if (duckType.isAssignableFrom(objectWrapper.getClassWrapper()
 					.getOriginalClass())) {
 				return objectWrapper.getOriginalInstance();
 			}

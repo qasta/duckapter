@@ -41,13 +41,13 @@ public final class WrappingException extends RuntimeException {
 	@Override
 	public String getMessage() {
 		return "Adaptation fail! (Original class: "
-				+ objectWrapper.getAdaptedClass().getOriginalClass()
+				+ objectWrapper.getClassWrapper().getOriginalClass()
 				+ ", duck interface: "
-				+ objectWrapper.getAdaptedClass().getDuckInterface()
+				+ objectWrapper.getClassWrapper().getDuckInterface()
 				+ ")Unimplemented class methods: "
-				+ objectWrapper.getAdaptedClass().getUnimplementedForClass()
+				+ objectWrapper.getClassWrapper().getUnimplementedForClass()
 				+ ", Unimplemented methods for instance: "
-				+ objectWrapper.getAdaptedClass().getUnimplementedForInstance();
+				+ objectWrapper.getClassWrapper().getUnimplementedForInstance();
 	}
 
 }

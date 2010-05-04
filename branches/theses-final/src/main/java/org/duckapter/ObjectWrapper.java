@@ -19,9 +19,9 @@ public interface ObjectWrapper<O, D> {
 	O getOriginalInstance();
 
 	/**
-	 * @return the adapted class describing the adaptation
+	 * @return the class wrapper describing the adaptation
 	 */
-	ClassWrapper<O, D> getAdaptedClass();
+	ClassWrapper<O, D> getClassWrapper();
 
 	/**
 	 * Tries to adapt the original instance to the desired interface. Interface
