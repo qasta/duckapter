@@ -50,12 +50,12 @@ class AdaptedClassHelper {
 		return ret;
 	}
 
-	static Collection<Constructor<?>> getRelevantConstructors(
+	private static Collection<Constructor<?>> getRelevantConstructors(
 			Class<?> original) {
 		return Arrays.asList(original.getDeclaredConstructors());
 	}
 
-	static Collection<Field> getRelevantFields(Class<?> original) {
+	private static Collection<Field> getRelevantFields(Class<?> original) {
 		Map<String, Field> fields = new LinkedHashMap<String, Field>();
 		for (Class<?> c : getSuperClasses(original)) {
 			fields.putAll(getFields(c, true));
@@ -66,7 +66,7 @@ class AdaptedClassHelper {
 		return fields.values();
 	}
 
-	static Collection<Method> getRelevantMethods(Class<?> original) {
+	private static Collection<Method> getRelevantMethods(Class<?> original) {
 		Map<MethodSignature, Method> methods = new LinkedHashMap<MethodSignature, Method>();
 		for (Class<?> c : getSuperClasses(original)) {
 			methods.putAll(getMethods(c, true));

@@ -12,10 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.AllAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.annotation.All;
 
 /**
@@ -117,11 +117,6 @@ public class AllChecker extends AbstractChecker<All> {
 	public Collection<Class<? extends LogicalCheckerBase>> suppressCheckers(
 			All anno, AnnotatedElement duckMethod) {
 		return SUPPRESSED;
-	}
-	
-	@Override
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return InvocationAdaptersPriorities.MAX;
 	}
 
 }

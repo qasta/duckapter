@@ -71,16 +71,4 @@ public interface Checker<T extends Annotation> {
 	 */
 	<A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> 
 		suppressCheckers(T anno, AnnotatedElement element);
-	
-	/**
-	 * @param anno TODO
-	 * @return the minimal adapter's priority to fail
-	 */
-	int getMinAdapterPriorityToFail(Annotation anno);
-
-	/**
-	 * @param anno TODO
-	 * @return
-	 */
-	int getMinAdapterPriorityToPass(Annotation anno);
 }

@@ -1,12 +1,10 @@
 package org.duckapter.checker;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.List;
 
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.annotation.WithAnyParams;
 
 /**
@@ -31,9 +29,4 @@ public class WithAnyParamsChecker extends AbstractChecker<WithAnyParams> {
 		return Arrays.asList(ParametersChecker.class);
 	}
 
-	@Override
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return InvocationAdaptersPriorities.WITH_ANY_PARAMS;
-	}
-	
 }

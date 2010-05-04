@@ -1,6 +1,5 @@
 package org.duckapter.checker;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -9,7 +8,6 @@ import java.util.List;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.ConstructorAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.annotation.Constructor;
 
 /**
@@ -44,9 +42,4 @@ public class ConstructorChecker extends AbstractChecker<Constructor> {
 		return Arrays.asList(MethodsOnlyChecker.class, NameChecker.class);
 	}
 
-	@Override
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return InvocationAdaptersPriorities.CONSTRUCTOR;
-	}
-	
 }

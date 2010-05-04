@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.duckapter.AdaptationException;
 
-abstract class AbstractEmptyAdaptedClass<O, D> extends
-		AbstractAdaptedClass<O, D> {
+abstract class AbstractEmptyAdaptedClass<O,D> extends AbstractAdaptedClass<O,D> {
 
 	protected final Collection<Method> unimplMethods = new ArrayList<Method>();
 
-	AbstractEmptyAdaptedClass(Class<D> duckInterface, Class<O> originalClass,
-			boolean canAdapt) {
+	AbstractEmptyAdaptedClass(Class<D> duckInterface,
+			Class<O> originalClass, boolean canAdapt) {
 		super(duckInterface, originalClass);
 		canAdaptClass = canAdapt;
 		canAdaptInstance = canAdapt;
@@ -34,14 +32,6 @@ abstract class AbstractEmptyAdaptedClass<O, D> extends
 
 	public Collection<Method> getUnimplementedForInstance() {
 		return Collections.unmodifiableCollection(unimplMethods);
-	}
-
-	public D adaptClass() {
-		throw new AdaptationException(this);
-	}
-
-	public D adaptInstance(Object o) {
-		throw new AdaptationException(this);
 	}
 
 }

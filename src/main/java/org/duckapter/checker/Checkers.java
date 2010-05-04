@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -239,14 +238,14 @@ public final class Checkers {
 	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> Map<Checker<T>, T> collectCheckers(
 			AnnotatedElement m) {
-		Map methodCheckers = new LinkedHashMap();
+		Map methodCheckers = new HashMap();
+		for (Checker ch : getDefaultCheckers()) {
+			methodCheckers.put(ch, null);
+		}
 		for (Annotation anno : m.getAnnotations()) {
 			if (isCheckerAnnotation(anno)) {
 				methodCheckers.put(getChecker(anno), anno);
 			}
-		}
-		for (Checker ch : getDefaultCheckers()) {
-			methodCheckers.put(ch, null);
 		}
 		Set<Entry<Checker<Annotation>, Annotation>> entries = (Set<Entry<Checker<Annotation>, Annotation>>) methodCheckers
 				.entrySet();
@@ -298,35 +297,6 @@ public final class Checkers {
 		return ch.hashCode() == obj.hashCode();
 	}
 
-	/**
-	 * TODO
-	 * @param checkers
-	 * @return
-	 */
-	public static int getMinPriorityToFail(
-			Map<Checker<Annotation>, Annotation> checkers) {
-		int ret = Integer.MAX_VALUE;
-		for (Entry<Checker<Annotation>, Annotation> e : checkers.entrySet()) {
-			final int min = e.getKey().getMinAdapterPriorityToFail(e.getValue());
-			if (min < ret) {
-				ret = min;
-			}
-		}
-		return ret;
-	}
-	
-	public static int getMinPriorityToPass(
-			Map<Checker<Annotation>, Annotation> checkers) {
-		int ret = Integer.MIN_VALUE;
-		for (Entry<Checker<Annotation>, Annotation> e : checkers.entrySet()) {
-			final int max = e.getKey().getMinAdapterPriorityToPass(e.getValue());
-			if (max > ret) {
-				ret = max;
-			}
-		}
-		return ret;
-	}
-	
 	/**
 	 * Return hash code for the checker based on common convention.
 	 * 

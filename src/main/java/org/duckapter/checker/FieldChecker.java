@@ -1,6 +1,5 @@
 package org.duckapter.checker;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -12,7 +11,6 @@ import java.util.List;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.GetFieldAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.adapter.SetFieldAdapter;
 import org.duckapter.annotation.Field;
 
@@ -58,9 +56,4 @@ public class FieldChecker extends AbstractChecker<Field> {
 		return Arrays.asList(MethodsOnlyChecker.class);
 	}
 
-	@Override
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return InvocationAdaptersPriorities.FIELD;
-	}
-	
 }

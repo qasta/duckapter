@@ -17,10 +17,11 @@ import org.duckapter.AdaptedClass;
  */
 public final class AdaptedFactory {
 
-	private static ThreadLocal<Set<String>> pending = new ThreadLocal<Set<String>>() {
+	@SuppressWarnings("unchecked")
+	private static ThreadLocal<Set<Pair>> pending = new ThreadLocal<Set<Pair>>() {
 		@Override
-		protected Set<String> initialValue() {
-			return new HashSet<String>();
+		protected Set<Pair> initialValue() {
+			return new HashSet<Pair>();
 		}
 	};
 
@@ -57,17 +58,12 @@ public final class AdaptedFactory {
 	public static <O, D> Adapted<O, D> adapt(final O original,
 			final Class<O> originalClass, final Class<D> duckInterface) {
 		if (!duckInterface.isInterface()) {
-			return new EmptyAdapted<O, D>(original, findAdaptedClass(
-					originalClass, duckInterface));
+			return new EmptyAdapted<O, D>(original,
+					findAdaptedClass(new Pair<O, D>(originalClass,
+							duckInterface)));
 		}
-		return new AdaptedImpl<O, D>(original, findAdaptedClass(originalClass,
-				duckInterface));
-	}
-
-	private static <O, D> String getCacheKey(final Class<O> originalClass,
-			final Class<D> duckInterface) {
-		return new StringBuilder(originalClass.getName()).append(":").append(
-				duckInterface.getName()).toString();
+		return new AdaptedImpl<O, D>(original, findAdaptedClass(new Pair<O, D>(
+				originalClass, duckInterface)));
 	}
 
 	/**
@@ -87,43 +83,34 @@ public final class AdaptedFactory {
 	 */
 	public static <O, D> AdaptedClass<O, D> adapt(final Class<O> originalClass,
 			final Class<D> duckInterface) {
-		return findAdaptedClass(originalClass, duckInterface);
+		return findAdaptedClass(new Pair<O, D>(originalClass, duckInterface));
 	}
 
-	private static <O, D> AdaptedClass<O, D> findAdaptedClass(
-			Class<O> originalClass, Class<D> duckInterface) {
-		final String cacheKey = getCacheKey(originalClass, duckInterface);
-		AdaptedClass<O, D> ac = getFromCache(cacheKey);
+	private static <O, D> AdaptedClass<O, D> findAdaptedClass(final Pair<O, D> p) {
+		AdaptedClass<O, D> ac = getFromCache(p);
 		if (ac == null) {
-			if (pending.get().contains(cacheKey)) {
-				ac = new PendingAdaptedClass<O, D>(originalClass, duckInterface);
+			if (pending.get().contains(p)) {
+				ac = new PendingAdaptedClass<O, D>(p.original, p.duck);
 			} else {
-				pending.get().add(cacheKey);
-				if (duckInterface.isInterface()) {
-					ac = new AdaptedClassImpl<O, D>(originalClass,
-							duckInterface);
+				pending.get().add(p);
+				if (p.duck.isInterface()) {
+					ac = new AdaptedClassImpl<O, D>(p.original, p.duck);
 				} else {
-					ac = new EmptyAdaptedClass<O, D>(originalClass,
-							duckInterface);
+					ac = new EmptyAdaptedClass<O, D>(p.original, p.duck);
 				}
-				cache.put(cacheKey, ac);
-				pending.get().remove(cacheKey);
+				cache.put(p, ac);
+				pending.get().remove(p);
 			}
 		}
 		return ac;
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<String, AdaptedClass> cache = new HashMap<String, AdaptedClass>();
+	private static Map<Pair, AdaptedClass> cache = new HashMap<Pair, AdaptedClass>();
 
 	@SuppressWarnings("unchecked")
-	private static <O, D> AdaptedClass<O, D> getFromCache(String s) {
-		return (AdaptedClass<O, D>) cache.get(s);
-	}
-
-	static <O, D> void updateCacheInstance(AdaptedClass<O, D> replacement) {
-		cache.put(getCacheKey(replacement.getOriginalClass(), replacement
-				.getDuckInterface()), replacement);
+	private static <O, D> AdaptedClass<O, D> getFromCache(Pair<O, D> p) {
+		return (AdaptedClass<O, D>) cache.get(p);
 	}
 
 }

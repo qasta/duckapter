@@ -39,7 +39,7 @@ public interface AdaptedClass<O, D> {
 	 * @throws Throwable
 	 *             on exception during invocation
 	 */
-	Object invoke(Object object, Method duckMethod, Object[] args) throws Throwable;
+	Object invoke(O object, Method duckMethod, Object[] args) throws Throwable;
 
 	/**
 	 * @return the original class
@@ -80,32 +80,5 @@ public interface AdaptedClass<O, D> {
 	 *         specified pair original class - duck interface
 	 */
 	Collection<Method> getUnimplementedForClass();
-	
-	/**
-	 * Tries to adapt the original instance to the desired interface. Interface
-	 * can contain instance and class level (static) methods.
-	 * 
-	 * @param o the object to be adapted
-	 * @return adapted instance if possible
-	 * @throws AdaptationException
-	 * @see Duck#test(Object, Class)
-	 * @see Duck#type(Object, Class)
-	 * @see AdaptedClass#canAdaptInstance()
-	 */
-	D adaptInstance(O o);
-
-	/**
-	 * Tries to adapt the original class to the desired interface. Interface can
-	 * contain class level (static) methods but not instance level methods. The
-	 * {@link #getOriginalInstance() original instance} is usually
-	 * <code>null</code> when this method succeed.
-	 * 
-	 * @return adapted instance if possible
-	 * @throws AdaptationException
-	 * @see Duck#test(Class, Class)
-	 * @see Duck#type(Class, Class)
-	 * @see AdaptedClass#canAdaptClass()
-	 */
-	D adaptClass();
 
 }
