@@ -1,11 +1,11 @@
 package org.duckapter;
 
-import org.duckapter.adapted.AdaptedFactory;
+import org.duckapter.wrapper.WrapperFactory;
 
 /**
  * The {@link Duck} class is facade for the Duckapter framework. It provides the
- * core methods {@link #type(Class, Class)}, {@link #type(Object, Class)},
- * {@link #test(Class, Class)} and {@link #type(Object, Class)} which can users
+ * core methods {@link #wrap(Class, Class)}, {@link #wrap(Object, Class)},
+ * {@link #isWrappable(Class, Class)} and {@link #wrap(Object, Class)} which can users
  * use for duck testing and duck typing. 
  * 
  * @author Vladimir Orany
@@ -21,12 +21,12 @@ public final class Duck {
 
 	/**
 	 * Adapts original object to the duck interface. The method
-	 * {@link #test(Object, Class)} must return <code>true</code> for the same
-	 * pair of parameters otherwise {@link AdaptationException} will be thrown.
-	 * Adapted object can access instance and class (static) level elements of
+	 * {@link #isWrappable(Object, Class)} must return <code>true</code> for the same
+	 * pair of parameters otherwise {@link WrappingException} will be thrown.
+	 * ObjectWrapper object can access instance and class (static) level elements of
 	 * original instance.
 	 * 
-	 * @see #test(Object, Class)
+	 * @see #isWrappable(Object, Class)
 	 * 
 	 * @param <O>
 	 *            the type of original object
@@ -37,23 +37,23 @@ public final class Duck {
 	 * @param duck
 	 *            the desired interface of adapted object
 	 * @return original object adapted to the duck interface if possible
-	 * @throws AdaptationException
+	 * @throws WrappingException
 	 */
-	public static <O, D> D type(final O original, final Class<D> duck) {
+	public static <O, D> D wrap(final O original, final Class<D> duck) {
 		@SuppressWarnings("unchecked")
 		final Class<O> originalClass = (Class<O>) original.getClass();
-		return AdaptedFactory.adapt(original, originalClass, duck)
+		return WrapperFactory.adapt(original, originalClass, duck)
 				.adaptInstance();
 	}
 
 	/**
 	 * Adapts original class object to the duck interface. The method
-	 * {@link #test(Class, Class)} must return <code>true</code> for the same
-	 * pair of parameters otherwise {@link AdaptationException} will be thrown.
-	 * Adapted object can access only class level (static) elements.
+	 * {@link #isWrappable(Class, Class)} must return <code>true</code> for the same
+	 * pair of parameters otherwise {@link WrappingException} will be thrown.
+	 * ObjectWrapper object can access only class level (static) elements.
 	 * Constructors are considered static elements too.
 	 * 
-	 * @see #test(Class, Class)
+	 * @see #isWrappable(Class, Class)
 	 * 
 	 * @param <O>
 	 *            the original class
@@ -64,10 +64,10 @@ public final class Duck {
 	 * @param duck
 	 *            the desired interface of adapted object
 	 * @return original class object adapted to the duck interface
-	 * @throws AdaptationException
+	 * @throws WrappingException
 	 */
-	public static <O, D> D type(final Class<O> original, final Class<D> duck) {
-		return AdaptedFactory.adapt(null, original, duck).adaptClass();
+	public static <O, D> D wrap(final Class<O> original, final Class<D> duck) {
+		return WrapperFactory.adapt(null, original, duck).adaptClass();
 	}
 
 	/**
@@ -98,9 +98,9 @@ public final class Duck {
 	 * @return whether the original class can be adapted to the desired
 	 *         interface
 	 */
-	public static <O, D> boolean test(final Class<O> original,
+	public static <O, D> boolean isWrappable(final Class<O> original,
 			final Class<D> duck) {
-		return AdaptedFactory.adapt(original, duck).canAdaptClass();
+		return WrapperFactory.adapt(original, duck).canAdaptClass();
 	}
 
 	/**
@@ -127,8 +127,8 @@ public final class Duck {
 	 * @return whether the original object can be adapted to the desired
 	 *         interface
 	 */
-	public static <O, D> boolean test(final O original, final Class<D> duck) {
-		return AdaptedFactory.adapt(original.getClass(), duck)
+	public static <O, D> boolean isWrappable(final O original, final Class<D> duck) {
+		return WrapperFactory.adapt(original.getClass(), duck)
 				.canAdaptInstance();
 	}
 

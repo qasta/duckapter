@@ -17,13 +17,13 @@ public class InterfaceTest {
 
 	@Test
 	public void testAdaptClass() {
-		Assert.assertFalse(Duck.test(TheInterface.class,
+		Assert.assertFalse(Duck.isWrappable(TheInterface.class,
 				TheClass.class));
 	}
 
 	@Test
 	public void testAdaptInterface() {
-		Assert.assertFalse(Duck.test(TheInterface.class,
+		Assert.assertFalse(Duck.isWrappable(TheInterface.class,
 				TheClass.class));
 	}
 	

@@ -55,7 +55,7 @@ public class FieldTest {
 				WithField.class, WithMethods.class);
 		DuckTestHelper.assertCanAdaptInstance(FieldInterface.class,
 				WithField.class, WithFinalField.class);
-		FieldInterface field = Duck.type(new WithField(),
+		FieldInterface field = Duck.wrap(new WithField(),
 				FieldInterface.class);
 		Assert.assertEquals("field", field.getField());
 		field.setField("newValue");
@@ -66,7 +66,7 @@ public class FieldTest {
 	public void testField2() {
 		DuckTestHelper.assertCanAdaptInstance(FieldInterface2.class,
 				WithField.class, WithMethods2.class);
-		FieldInterface2 field = Duck.type(new WithField(),
+		FieldInterface2 field = Duck.wrap(new WithField(),
 				FieldInterface2.class);
 		Assert.assertEquals("field", field.field());
 		field.field("newValue");

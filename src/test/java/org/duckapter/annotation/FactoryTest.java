@@ -60,7 +60,7 @@ public class FactoryTest {
 				WithoutAnyFactoryMethod.class);
 		assertCanAdaptInstance(FactoryInterface.class, WithField.class,
 				WithoutAnyFactoryMethod.class);
-		final Object instance = Duck.type(WithField.class,
+		final Object instance = Duck.wrap(WithField.class,
 				FactoryInterface.class).getInstance();
 		Assert.assertNotNull(instance);
 		Assert.assertEquals(WithField.class, instance.getClass());

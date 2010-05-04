@@ -4,8 +4,8 @@ import static org.duckapter.DuckTestHelper.assertCanAdaptClass;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 import static org.junit.Assert.assertTrue;
 
-import org.duckapter.adapted.AdaptedFactory;
 import org.duckapter.checker.Visibility;
+import org.duckapter.wrapper.WrapperFactory;
 import org.junit.Test;
 
 public class VisibilityTest {
@@ -115,13 +115,13 @@ public class VisibilityTest {
 		assertCanAdaptInstance(WithPublicMethodInterface.class,
 				WithPublicMethodClass.class, WithPrivateMethodClass.class);
 
-		assertTrue(AdaptedFactory.adapt(WithProtectedMethodClass.class, WithPublicMethodInterfaceAtMost.class)
+		assertTrue(WrapperFactory.adapt(WithProtectedMethodClass.class, WithPublicMethodInterfaceAtMost.class)
 		.canAdaptInstance());
-		assertTrue(AdaptedFactory.adapt(WithPackageMethodClass.class, WithPublicMethodInterfaceAtMost.class)
+		assertTrue(WrapperFactory.adapt(WithPackageMethodClass.class, WithPublicMethodInterfaceAtMost.class)
 		.canAdaptInstance());
-		assertTrue(AdaptedFactory.adapt(WithPublicMethodClass.class, WithPublicMethodInterfaceAtMost.class)
+		assertTrue(WrapperFactory.adapt(WithPublicMethodClass.class, WithPublicMethodInterfaceAtMost.class)
 		.canAdaptInstance());
-		assertTrue(AdaptedFactory.adapt(WithPrivateMethodClass.class, WithPublicMethodInterfaceAtMost.class)
+		assertTrue(WrapperFactory.adapt(WithPrivateMethodClass.class, WithPublicMethodInterfaceAtMost.class)
 		.canAdaptInstance());
 
 		assertCanAdaptInstance(WithPublicMethodInterfaceAtLeast.class,
@@ -241,13 +241,13 @@ public class VisibilityTest {
 		assertCanAdaptInstance(WithPrivateMethodInterfaceAtMost.class,
 				WithPrivateMethodClass.class, WithPackageMethodClass.class);
 
-		assertTrue(AdaptedFactory.adapt(WithPrivateMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
+		assertTrue(WrapperFactory.adapt(WithPrivateMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
 		.canAdaptInstance());
-		assertTrue(AdaptedFactory.adapt(WithProtectedMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
+		assertTrue(WrapperFactory.adapt(WithProtectedMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
 		.canAdaptInstance());
-		assertTrue(AdaptedFactory.adapt(WithPackageMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
+		assertTrue(WrapperFactory.adapt(WithPackageMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
 		.canAdaptInstance());
-		assertTrue(AdaptedFactory.adapt(WithPublicMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
+		assertTrue(WrapperFactory.adapt(WithPublicMethodClass.class, WithPrivateMethodInterfaceAtLeast.class)
 		.canAdaptInstance());
 	}
 }

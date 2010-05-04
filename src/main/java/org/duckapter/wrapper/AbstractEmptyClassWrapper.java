@@ -1,4 +1,4 @@
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-abstract class AbstractEmptyAdaptedClass<O,D> extends AbstractAdaptedClass<O,D> {
+abstract class AbstractEmptyClassWrapper<O,D> extends AbstractClassWrapper<O,D> {
 
 	protected final Collection<Method> unimplMethods = new ArrayList<Method>();
 
-	AbstractEmptyAdaptedClass(Class<D> duckInterface,
+	AbstractEmptyClassWrapper(Class<D> duckInterface,
 			Class<O> originalClass, boolean canAdapt) {
 		super(duckInterface, originalClass);
 		canAdaptClass = canAdapt;

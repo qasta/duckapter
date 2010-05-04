@@ -26,6 +26,6 @@ public class StaticFieldTest {
 	public void test() {
 		assertCanAdaptClass(SFI.class, SFC.class, SFCF.class);
 		assertCanAdaptInstance(SFI.class, SFC.class, SFCF.class);
-		Assert.assertEquals("bla", Duck.type(SFC.class, SFI.class).text());
+		Assert.assertEquals("bla", Duck.wrap(SFC.class, SFI.class).text());
 	}
 }

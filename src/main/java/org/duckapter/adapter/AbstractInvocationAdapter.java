@@ -1,9 +1,9 @@
 package org.duckapter.adapter;
 
-import static org.duckapter.Duck.type;
-import static org.duckapter.Duck.test;
+import static org.duckapter.Duck.wrap;
+import static org.duckapter.Duck.isWrappable;
 
-import org.duckapter.Adapted;
+import org.duckapter.ObjectWrapper;
 import org.duckapter.InvocationAdapter;
 
 /**
@@ -72,19 +72,19 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 		if (ret == null) {
 			return null;
 		}
-		if (ret instanceof Adapted) {
-			Adapted adapted = (Adapted) ret;
-			if (duckType.isAssignableFrom(adapted.getAdaptedClass()
+		if (ret instanceof ObjectWrapper) {
+			ObjectWrapper objectWrapper = (ObjectWrapper) ret;
+			if (duckType.isAssignableFrom(objectWrapper.getAdaptedClass()
 					.getOriginalClass())) {
-				return adapted.getOriginalInstance();
+				return objectWrapper.getOriginalInstance();
 			}
 
 		}
 		if (duckType.isAssignableFrom(ret.getClass())) {
 			return ret;
 		}
-		if (test(ret, duckType)) {
-			return type(ret, duckType);
+		if (isWrappable(ret, duckType)) {
+			return wrap(ret, duckType);
 		}
 		if (duckType.isPrimitive()) {
 			return handlePrimitive(ret, duckType);

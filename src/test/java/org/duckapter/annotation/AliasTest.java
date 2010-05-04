@@ -1,6 +1,6 @@
 package org.duckapter.annotation;
 
-import static org.duckapter.Duck.type;
+import static org.duckapter.Duck.wrap;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 import junit.framework.Assert;
 
@@ -50,9 +50,9 @@ public class AliasTest {
 				WithAliasedMethod.class, WithoutAnyMethod.class);
 		assertCanAdaptInstance(WithAliasInterface.class, WithBothMethods.class,
 				WithoutAnyMethod.class);
-		Assert.assertEquals("doIt", type(new WithOriginalMethod(),
+		Assert.assertEquals("doIt", wrap(new WithOriginalMethod(),
 				WithAliasInterface.class).doIt());
-		Assert.assertEquals("doItNow", type(new WithAliasedMethod(),
+		Assert.assertEquals("doItNow", wrap(new WithAliasedMethod(),
 				WithAliasInterface.class).doIt());
 
 	}
@@ -60,7 +60,7 @@ public class AliasTest {
 	@Test
 	@Ignore
 	public void testRightOrder() {
-		Assert.assertEquals("doIt", type(new WithBothMethods(),
+		Assert.assertEquals("doIt", wrap(new WithBothMethods(),
 				WithAliasInterface.class).doIt());
 	}
 

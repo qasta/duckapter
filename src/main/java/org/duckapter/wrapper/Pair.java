@@ -1,5 +1,5 @@
 
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 final class Pair<O,D> {
 	final Class<O> original;

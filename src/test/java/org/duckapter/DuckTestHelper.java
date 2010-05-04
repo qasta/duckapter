@@ -2,7 +2,7 @@ package org.duckapter;
 
 import static org.junit.Assert.assertFalse;
 
-import org.duckapter.adapted.AdaptedFactory;
+import org.duckapter.wrapper.WrapperFactory;
 import org.junit.Assert;
 
 public final class DuckTestHelper {
@@ -23,7 +23,7 @@ public final class DuckTestHelper {
 	 */
 	public static final void assertCanAdaptInstance(Class<?> testedInterface,
 			Class<?> toPass, Class<?> toFail) {
-		AdaptedFactory.clearCache();
+		WrapperFactory.clearCache();
 		Assert.assertNotNull(testedInterface);
 		Assert.assertTrue(testedInterface.isInterface());
 		Assert.assertNotNull(toPass);
@@ -31,12 +31,12 @@ public final class DuckTestHelper {
 
 		try {
 			try {
-				Duck.type(toFail.newInstance(), testedInterface);
+				Duck.wrap(toFail.newInstance(), testedInterface);
 				Assert.fail();
-			} catch (AdaptationException e) {
+			} catch (WrappingException e) {
 				// ok
 			}
-			assertFalse(Duck.test(toFail.newInstance(),
+			assertFalse(Duck.isWrappable(toFail.newInstance(),
 					testedInterface));
 		} catch (InstantiationException e) {
 			// ok
@@ -46,9 +46,9 @@ public final class DuckTestHelper {
 
 		try {
 			try {
-				Duck.type(toPass.newInstance(), testedInterface);
+				Duck.wrap(toPass.newInstance(), testedInterface);
 				// ok
-			} catch (AdaptationException e) {
+			} catch (WrappingException e) {
 				Assert.fail(e.getMessage());
 			}
 		} catch (InstantiationException e) {
@@ -72,7 +72,7 @@ public final class DuckTestHelper {
 	 */
 	public static final void assertCanAdaptClass(Class<?> testedInterface,
 			Class<?> toPass, Class<?> toFail) {
-		assertFalse(Duck.test(toFail, testedInterface));
+		assertFalse(Duck.isWrappable(toFail, testedInterface));
 
 		Assert.assertNotNull(testedInterface);
 		Assert.assertTrue(testedInterface.isInterface());
@@ -80,16 +80,16 @@ public final class DuckTestHelper {
 		Assert.assertNotNull(toFail);
 
 		try {
-			Duck.type(toFail, testedInterface);
+			Duck.wrap(toFail, testedInterface);
 			Assert.fail();
-		} catch (AdaptationException e) {
+		} catch (WrappingException e) {
 			// ok
 		}
 
 		try {
-			Duck.type(toPass, testedInterface);
+			Duck.wrap(toPass, testedInterface);
 
-		} catch (AdaptationException e) {
+		} catch (WrappingException e) {
 			Assert.fail(e.getMessage());
 		}
 

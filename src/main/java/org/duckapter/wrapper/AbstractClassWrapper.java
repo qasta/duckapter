@@ -1,8 +1,8 @@
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
-import org.duckapter.AdaptedClass;
+import org.duckapter.ClassWrapper;
 
-abstract class AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
+abstract class AbstractClassWrapper<O,D> implements ClassWrapper<O,D> {
 
 	protected boolean canAdaptClass = true;
 	protected boolean canAdaptInstance = true;
@@ -11,7 +11,7 @@ abstract class AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
 
 
 
-	public AbstractAdaptedClass(final Class<D> duckInterface, final Class<O> originalClass) {
+	public AbstractClassWrapper(final Class<D> duckInterface, final Class<O> originalClass) {
 		this.duckInterface = duckInterface;
 		this.originalClass = originalClass;
 	}

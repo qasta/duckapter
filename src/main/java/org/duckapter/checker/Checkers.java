@@ -185,8 +185,8 @@ public final class Checkers {
 	}
 
 	private static int getAnnoPriority(Annotation toReturn) {
-		if (Duck.test(toReturn, CheckerWithPriority.class)) {
-			return Duck.type(toReturn, CheckerWithPriority.class)
+		if (Duck.isWrappable(toReturn, CheckerWithPriority.class)) {
+			return Duck.wrap(toReturn, CheckerWithPriority.class)
 					.checkerPriority();
 		}
 		return Integer.MIN_VALUE;

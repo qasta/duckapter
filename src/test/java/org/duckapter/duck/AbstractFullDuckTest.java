@@ -18,26 +18,26 @@ public abstract class AbstractFullDuckTest extends AbstractSimpleDuckTest {
 
 	@Test
 	public void canDuckClass() throws Exception {
-		assertTrue(Duck.test(fixure, IDuckClass.class));
-		assertFalse(Duck.test(fixure, IDuck.class));
+		assertTrue(Duck.isWrappable(fixure, IDuckClass.class));
+		assertFalse(Duck.isWrappable(fixure, IDuck.class));
 	}
 
 	@Test
 	public void newInstance() throws Exception {
-		IDuckClass duck = Duck.type(fixure, IDuckClass.class);
+		IDuckClass duck = Duck.wrap(fixure, IDuckClass.class);
 		assertEquals("Donald", duck.newDuck().getName());
 	}
 
 	@Test
 	public void newInstanceString() throws Exception {
-		IDuck duck = Duck.type(fixure, IDuckClass.class).newDuck(
+		IDuck duck = Duck.wrap(fixure, IDuckClass.class).newDuck(
 				"Other");
 		assertEquals("Other", duck.getName());
 	}
 
 	@Test
 	public void testMethodsWorks() throws Exception {
-		IDuck duck = Duck.type(fixure, IDuckClass.class).newDuck(
+		IDuck duck = Duck.wrap(fixure, IDuckClass.class).newDuck(
 				"Other");
 		assertEquals("Other", duck.getName());
 		duck.dive();
@@ -46,7 +46,7 @@ public abstract class AbstractFullDuckTest extends AbstractSimpleDuckTest {
 
 	@Test
 	public void staticMethodWorks() throws Exception {
-		IDuckClass duckClass = Duck.type(fixure, IDuckClass.class);
+		IDuckClass duckClass = Duck.wrap(fixure, IDuckClass.class);
 		duckClass.getCount();
 	}
 

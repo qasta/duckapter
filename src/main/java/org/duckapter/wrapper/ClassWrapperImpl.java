@@ -1,11 +1,11 @@
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 import static java.util.Arrays.asList;
-import static org.duckapter.adapted.AdaptedClassHelper.getRelevantElements;
 import static org.duckapter.adapter.InvocationAdapters.MAX;
 import static org.duckapter.adapter.InvocationAdapters.MIN;
 import static org.duckapter.adapter.InvocationAdapters.safe;
 import static org.duckapter.checker.Checkers.collectCheckers;
+import static org.duckapter.wrapper.ClassWrapperHelper.getRelevantElements;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -17,17 +17,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.duckapter.AdaptedClass;
+import org.duckapter.ClassWrapper;
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.MethodAdapter;
 
-final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
-		AdaptedClass<O, D> {
+final class ClassWrapperImpl<O, D> extends AbstractClassWrapper<O, D> implements
+		ClassWrapper<O, D> {
 
 	private final Map<Method, InvocationAdapter> adapters = new HashMap<Method, InvocationAdapter>();
 
-	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface) {
+	ClassWrapperImpl(Class<O> originalClass, Class<D> duckInterface) {
 		super(duckInterface, originalClass);
 		init();
 	}

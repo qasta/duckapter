@@ -42,9 +42,9 @@ public class AliasTest {
 
 	@Test
 	public void testAlias() throws Exception {
-		assertTrue(Duck.test(AliasClass.class, IAlias.class));
+		assertTrue(Duck.isWrappable(AliasClass.class, IAlias.class));
 		try {
-			Duck.type(AliasClass.class, IAlias.class);
+			Duck.wrap(AliasClass.class, IAlias.class);
 		} catch (Exception e) {
 			fail();
 		}

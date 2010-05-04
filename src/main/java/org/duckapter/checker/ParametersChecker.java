@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.duckapter.adapted.AdaptedFactory;
+import org.duckapter.wrapper.WrapperFactory;
 
 /**
  * The default checker which checks whether the target element's parameters are
@@ -88,6 +88,6 @@ public class ParametersChecker<T extends Annotation> extends
 		if (desired.isAssignableFrom(actual)) {
 			return true;
 		}
-		return AdaptedFactory.adapt(actual, desired).canAdaptInstance();
+		return WrapperFactory.adapt(actual, desired).canAdaptInstance();
 	};
 }
