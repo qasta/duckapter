@@ -21,15 +21,15 @@ final class ObjectWrapperImpl<O, D> extends AbstractObjectWrapper<O, D> implemen
 			return method.invoke(this, args);
 		}
 		if (ClassWrapper.class.equals(method.getDeclaringClass())) {
-			return method.invoke(getAdaptedClass(), args);
+			return method.invoke(getClassWrapper(), args);
 		}
 		if (method.getDeclaringClass().isAssignableFrom(
-				getAdaptedClass().getDuckInterface())) {
-			return getAdaptedClass()
+				getClassWrapper().getDuckInterface())) {
+			return getClassWrapper()
 					.invoke(getOriginalInstance(), method, args);
 		}
 		if (method.getDeclaringClass().isAssignableFrom(
-				getAdaptedClass().getOriginalClass())) {
+				getClassWrapper().getOriginalClass())) {
 			return method.invoke(getOriginalInstance(), args);
 		}
 		throw new UnsupportedOperationException("Operation not supported: "
@@ -37,7 +37,7 @@ final class ObjectWrapperImpl<O, D> extends AbstractObjectWrapper<O, D> implemen
 	}
 
 	public D adaptInstance() {
-		if (!getAdaptedClass().canAdaptInstance()) {
+		if (!getClassWrapper().canAdaptInstance()) {
 			throw new WrappingException(this);
 		}
 		return createProxy();
@@ -45,16 +45,16 @@ final class ObjectWrapperImpl<O, D> extends AbstractObjectWrapper<O, D> implemen
 
 	
 	public D adaptClass() {
-		if (!getAdaptedClass().canAdaptClass()) {
+		if (!getClassWrapper().canAdaptClass()) {
 			throw new WrappingException(this);
 		}
 		return createProxy();
 	}
 
 	private D createProxy() {
-		return getAdaptedClass().getDuckInterface().cast(
+		return getClassWrapper().getDuckInterface().cast(
 				Proxy.newProxyInstance(getClass().getClassLoader(),
-						new Class[] { getAdaptedClass().getDuckInterface(),
+						new Class[] { getClassWrapper().getDuckInterface(),
 								ObjectWrapper.class, ClassWrapper.class }, this));
 	}
 

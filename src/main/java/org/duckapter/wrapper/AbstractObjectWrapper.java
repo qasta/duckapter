@@ -13,7 +13,7 @@ abstract class AbstractObjectWrapper<O,D> implements ObjectWrapper<O,D> {
 		this.classWrapper = adaptedClass;
 	}
 
-	public ClassWrapper<O,D> getAdaptedClass() {
+	public ClassWrapper<O,D> getClassWrapper() {
 		return classWrapper;
 	}
 
