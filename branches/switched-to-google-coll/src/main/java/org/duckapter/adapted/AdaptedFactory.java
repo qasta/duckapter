@@ -1,12 +1,14 @@
 package org.duckapter.adapted;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 import org.duckapter.Adapted;
 import org.duckapter.AdaptedClass;
+
+import com.google.common.collect.MapMaker;
 
 /**
  * The class {@link AdaptedFactory} is factory class for instances of
@@ -90,13 +92,14 @@ public final class AdaptedFactory {
 		return findAdaptedClass(originalClass, duckInterface);
 	}
 
+	@SuppressWarnings("unchecked")
 	private static <O, D> AdaptedClass<O, D> findAdaptedClass(
 			Class<O> originalClass, Class<D> duckInterface) {
 		final String cacheKey = getCacheKey(originalClass, duckInterface);
 		AdaptedClass<O, D> ac = getFromCache(cacheKey);
 		if (ac == null) {
 			if (pending.get().contains(cacheKey)) {
-				ac = new PendingAdaptedClass<O, D>(originalClass, duckInterface);
+				return (AdaptedClass<O, D>) PendingAdaptedClass.NULL_INSTANCE;
 			} else {
 				pending.get().add(cacheKey);
 				if (duckInterface.isInterface()) {
@@ -114,7 +117,8 @@ public final class AdaptedFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<String, AdaptedClass> cache = new HashMap<String, AdaptedClass>();
+	private static ConcurrentMap<String, AdaptedClass> cache = new MapMaker().expiration(
+			30, TimeUnit.MINUTES).makeMap();
 
 	@SuppressWarnings("unchecked")
 	private static <O, D> AdaptedClass<O, D> getFromCache(String s) {
@@ -122,7 +126,7 @@ public final class AdaptedFactory {
 	}
 
 	static <O, D> void updateCacheInstance(AdaptedClass<O, D> replacement) {
-		cache.put(getCacheKey(replacement.getOriginalClass(), replacement
+		cache.putIfAbsent(getCacheKey(replacement.getOriginalClass(), replacement
 				.getDuckInterface()), replacement);
 	}
 

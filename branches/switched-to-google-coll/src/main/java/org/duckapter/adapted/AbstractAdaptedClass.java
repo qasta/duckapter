@@ -32,4 +32,5 @@ abstract class AbstractAdaptedClass<O,D> implements AdaptedClass<O,D> {
 		return originalClass;
 	}
 
+
 }
