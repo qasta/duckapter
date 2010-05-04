@@ -1,4 +1,4 @@
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
@@ -12,9 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-class AdaptedClassHelper {
+class ClassWrapperHelper {
 	
-	private AdaptedClassHelper() {
+	private ClassWrapperHelper() {
 		// prevents instance creation and subtyping
 	}
 	

@@ -23,9 +23,9 @@ public class FinalPropTest {
 	@Test
 	public void testSetFinal() throws Exception {
 		try {
-			Duck.type(FinalProp.class, FinalSetPropClass.class);
+			Duck.wrap(FinalProp.class, FinalSetPropClass.class);
 			fail();
-		} catch (AdaptationException e) {
+		} catch (WrappingException e) {
 			// ok
 		}
 	}

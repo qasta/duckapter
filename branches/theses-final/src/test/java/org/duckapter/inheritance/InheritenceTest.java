@@ -40,16 +40,16 @@ public class InheritenceTest {
 	}
 	
 	@Test public void testInheritance0(){
-		Duck.type(new Inheritance(), InheritanceClass.class);
+		Duck.wrap(new Inheritance(), InheritanceClass.class);
 	}
 	
 	@Test public void testInheritance1(){
-		Duck.type(new Inheritance(), InheritanceInstance.class);
+		Duck.wrap(new Inheritance(), InheritanceInstance.class);
 	}
 	
 	@Test
 	public void testInheritance() throws Exception {
-		InheritanceClass iclass = Duck.type(Inheritance.class,
+		InheritanceClass iclass = Duck.wrap(Inheritance.class,
 				InheritanceClass.class);
 		iclass.testStatic();
 		InheritanceInstance iinstance = iclass.instance();
@@ -59,16 +59,16 @@ public class InheritenceTest {
 	}
 	
 	@Test public void testInheritance2(){
-		Duck.type(new Inheritence2(), InheritanceClass.class);
+		Duck.wrap(new Inheritence2(), InheritanceClass.class);
 	}
 	
 	@Test public void testInheritance3(){
-		Duck.type(new Inheritence2(), InheritanceInstance.class);
+		Duck.wrap(new Inheritence2(), InheritanceInstance.class);
 	}
 	
 	@Test
 	public void testSuper() throws Exception {
-		InheritanceClass iclass = Duck.type(Inheritence2.class,
+		InheritanceClass iclass = Duck.wrap(Inheritence2.class,
 				InheritanceClass.class);
 		iclass.testStatic();
 		InheritanceInstance iinstance = iclass.instance();

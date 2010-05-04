@@ -51,11 +51,11 @@ public class VisibilityChecker extends AbstractChecker<Annotation> {
 	}
 
 	protected Visibility getVisibility(Annotation anno) {
-		if (!Duck.test(anno, VisibilityAnno.class)) {
+		if (!Duck.isWrappable(anno, VisibilityAnno.class)) {
 			throw new IllegalArgumentException("Cannot adapt annotation: "
 					+ anno);
 		}
-		return Duck.type(anno, VisibilityAnno.class).value();
+		return Duck.wrap(anno, VisibilityAnno.class).value();
 	}
 
 	@SuppressWarnings("unchecked")

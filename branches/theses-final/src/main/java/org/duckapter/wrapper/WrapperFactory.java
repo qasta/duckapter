@@ -1,21 +1,21 @@
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.duckapter.Adapted;
-import org.duckapter.AdaptedClass;
+import org.duckapter.ObjectWrapper;
+import org.duckapter.ClassWrapper;
 
 /**
- * The class {@link AdaptedFactory} is factory class for instances of
- * {@link Adapted} and {@link AdaptedClass} interfaces.
+ * The class {@link WrapperFactory} is factory class for instances of
+ * {@link ObjectWrapper} and {@link ClassWrapper} interfaces.
  * 
  * @author Vladimir Orany
  * 
  */
-public final class AdaptedFactory {
+public final class WrapperFactory {
 
 	@SuppressWarnings("unchecked")
 	private static ThreadLocal<Set<Pair>> pending = new ThreadLocal<Set<Pair>>() {
@@ -25,7 +25,7 @@ public final class AdaptedFactory {
 		}
 	};
 
-	private AdaptedFactory() {
+	private WrapperFactory() {
 		// prevents instance creation and subtyping
 	}
 
@@ -35,11 +35,11 @@ public final class AdaptedFactory {
 	 * methods.
 	 */
 	public static void clearCache() {
-		cache.clear();
+		wrapperPool.clear();
 	}
 
 	/**
-	 * Creates an {@link Adapted} for selected parameters. The duck interface
+	 * Creates an {@link ObjectWrapper} for selected parameters. The duck interface
 	 * need not to be an interface but in that case returned instance will not
 	 * be able of adaptation.
 	 * 
@@ -53,21 +53,21 @@ public final class AdaptedFactory {
 	 *            the class of original object
 	 * @param duckInterface
 	 *            the duck interface
-	 * @return {@link Adapted} for selected parameters
+	 * @return {@link ObjectWrapper} for selected parameters
 	 */
-	public static <O, D> Adapted<O, D> adapt(final O original,
+	public static <O, D> ObjectWrapper<O, D> adapt(final O original,
 			final Class<O> originalClass, final Class<D> duckInterface) {
 		if (!duckInterface.isInterface()) {
-			return new EmptyAdapted<O, D>(original,
+			return new EmptyObjectWrapper<O, D>(original,
 					findAdaptedClass(new Pair<O, D>(originalClass,
 							duckInterface)));
 		}
-		return new AdaptedImpl<O, D>(original, findAdaptedClass(new Pair<O, D>(
+		return new ObjectWrapperImpl<O, D>(original, findAdaptedClass(new Pair<O, D>(
 				originalClass, duckInterface)));
 	}
 
 	/**
-	 * Creates an {@link AdaptedClass} for selected parameters or use one from
+	 * Creates an {@link ClassWrapper} for selected parameters or use one from
 	 * the pool. The duck interface need not to be an interface but in that case
 	 * returned instance will not be able of adaptation.
 	 * 
@@ -79,26 +79,26 @@ public final class AdaptedFactory {
 	 *            the class of original object
 	 * @param duckInterface
 	 *            the duck interface
-	 * @return {@link Adapted} for selected parameters
+	 * @return {@link ObjectWrapper} for selected parameters
 	 */
-	public static <O, D> AdaptedClass<O, D> adapt(final Class<O> originalClass,
+	public static <O, D> ClassWrapper<O, D> adapt(final Class<O> originalClass,
 			final Class<D> duckInterface) {
 		return findAdaptedClass(new Pair<O, D>(originalClass, duckInterface));
 	}
 
-	private static <O, D> AdaptedClass<O, D> findAdaptedClass(final Pair<O, D> p) {
-		AdaptedClass<O, D> ac = getFromCache(p);
+	private static <O, D> ClassWrapper<O, D> findAdaptedClass(final Pair<O, D> p) {
+		ClassWrapper<O, D> ac = getFromCache(p);
 		if (ac == null) {
 			if (pending.get().contains(p)) {
-				ac = new PendingAdaptedClass<O, D>(p.original, p.duck);
+				ac = new PendingClassWrapper<O, D>(p.original, p.duck);
 			} else {
 				pending.get().add(p);
 				if (p.duck.isInterface()) {
-					ac = new AdaptedClassImpl<O, D>(p.original, p.duck);
+					ac = new ClassWrapperImpl<O, D>(p.original, p.duck);
 				} else {
-					ac = new EmptyAdaptedClass<O, D>(p.original, p.duck);
+					ac = new EmptyClassWrapper<O, D>(p.original, p.duck);
 				}
-				cache.put(p, ac);
+				wrapperPool.put(p, ac);
 				pending.get().remove(p);
 			}
 		}
@@ -106,11 +106,11 @@ public final class AdaptedFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<Pair, AdaptedClass> cache = new HashMap<Pair, AdaptedClass>();
+	private static Map<Pair, ClassWrapper> wrapperPool = new HashMap<Pair, ClassWrapper>();
 
 	@SuppressWarnings("unchecked")
-	private static <O, D> AdaptedClass<O, D> getFromCache(Pair<O, D> p) {
-		return (AdaptedClass<O, D>) cache.get(p);
+	private static <O, D> ClassWrapper<O, D> getFromCache(Pair<O, D> p) {
+		return (ClassWrapper<O, D>) wrapperPool.get(p);
 	}
 
 }

@@ -9,14 +9,14 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.duckapter.Duck;
-import org.duckapter.adapted.AdaptedFactory;
+import org.duckapter.wrapper.WrapperFactory;
 
 /**
  * Default checker which checks whether the target element's return type is
  * compatible with the return type of the duck method. The target element's
  * return type is compatible if is assignable to the return type of the duck
- * method or can be adapted using {@link Duck#type(Class, Class)} or
- * {@link Duck#type(Object, Class)} methods.
+ * method or can be adapted using {@link Duck#wrap(Class, Class)} or
+ * {@link Duck#wrap(Object, Class)} methods.
  * 
  * @author Vladimir Orany
  * 
@@ -54,7 +54,7 @@ public class ReturnTypeChecker<T extends Annotation> extends
 		if (!duckMethod.getReturnType().isInterface()) {
 			return false;
 		}
-		return AdaptedFactory.adapt(returnType, duckMethod.getReturnType())
+		return WrapperFactory.adapt(returnType, duckMethod.getReturnType())
 				.canAdaptInstance();
 	};
 

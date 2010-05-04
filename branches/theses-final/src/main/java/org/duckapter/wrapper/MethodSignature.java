@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 import java.util.Arrays;
 

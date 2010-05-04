@@ -45,7 +45,7 @@ public class PropertyTest {
 
 	@Test
 	public void testMethodProps() {
-		assertProps(Duck.type(new WithMethodProperty(),
+		assertProps(Duck.wrap(new WithMethodProperty(),
 				PropertyInterface.class));
 	}
 
@@ -57,7 +57,7 @@ public class PropertyTest {
 
 	@Test
 	public void testFieldProps() {
-		assertProps(Duck.type(new WithFieldProperty(),
+		assertProps(Duck.wrap(new WithFieldProperty(),
 				PropertyInterface.class));
 	}
 

@@ -21,13 +21,13 @@ public abstract class AbstractSimpleDuckTest {
 
 	@Test
 	public void canDuckTrue() throws Exception {
-		assertTrue(Duck.test(Duck.type(fixure,
+		assertTrue(Duck.isWrappable(Duck.wrap(fixure,
 				IDuckClass.class).newDuck(), IDuck.class));
 	}
 	
 	@Test
 	public void canDuckFalse() throws Exception {
-		assertFalse(Duck.test((Object)fixure, IDuckClass.class));
+		assertFalse(Duck.isWrappable((Object)fixure, IDuckClass.class));
 	}
 
 }

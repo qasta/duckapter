@@ -40,7 +40,7 @@ public class ParametersTest {
 		assertCanAdaptInstance(ParametersInterface.class, SameParameters.class,
 				HelperClass.class);
 
-		ParametersInterface pi = Duck.type(new SameParameters(),
+		ParametersInterface pi = Duck.wrap(new SameParameters(),
 				ParametersInterface.class);
 		assertEquals("good8doIt", pi.doIt("good", 8, new HelperClass()));
 	}
@@ -50,7 +50,7 @@ public class ParametersTest {
 		assertCanAdaptInstance(ParametersInterface.class,
 				NearlySameParameters.class, HelperClass.class);
 
-		ParametersInterface pi2 = Duck.type(
+		ParametersInterface pi2 = Duck.wrap(
 				new NearlySameParameters(), ParametersInterface.class);
 		assertEquals("good8doIt", pi2.doIt("good", 8, new HelperClass()));
 	}

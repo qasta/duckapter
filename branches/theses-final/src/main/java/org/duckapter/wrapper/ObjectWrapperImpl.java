@@ -1,26 +1,26 @@
-package org.duckapter.adapted;
+package org.duckapter.wrapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.duckapter.AdaptationException;
-import org.duckapter.Adapted;
-import org.duckapter.AdaptedClass;
+import org.duckapter.WrappingException;
+import org.duckapter.ObjectWrapper;
+import org.duckapter.ClassWrapper;
 
-final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
-		Adapted<O, D>, InvocationHandler {
+final class ObjectWrapperImpl<O, D> extends AbstractObjectWrapper<O, D> implements
+		ObjectWrapper<O, D>, InvocationHandler {
 
-	AdaptedImpl(O originalInstance, AdaptedClass<O, D> adaptedClass) {
+	ObjectWrapperImpl(O originalInstance, ClassWrapper<O, D> adaptedClass) {
 		super(originalInstance, adaptedClass);
 	}
 
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		if (Adapted.class.equals(method.getDeclaringClass())) {
+		if (ObjectWrapper.class.equals(method.getDeclaringClass())) {
 			return method.invoke(this, args);
 		}
-		if (AdaptedClass.class.equals(method.getDeclaringClass())) {
+		if (ClassWrapper.class.equals(method.getDeclaringClass())) {
 			return method.invoke(getAdaptedClass(), args);
 		}
 		if (method.getDeclaringClass().isAssignableFrom(
@@ -38,7 +38,7 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 
 	public D adaptInstance() {
 		if (!getAdaptedClass().canAdaptInstance()) {
-			throw new AdaptationException(this);
+			throw new WrappingException(this);
 		}
 		return createProxy();
 	}
@@ -46,7 +46,7 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 	
 	public D adaptClass() {
 		if (!getAdaptedClass().canAdaptClass()) {
-			throw new AdaptationException(this);
+			throw new WrappingException(this);
 		}
 		return createProxy();
 	}
@@ -55,7 +55,7 @@ final class AdaptedImpl<O, D> extends AbstractAdapted<O, D> implements
 		return getAdaptedClass().getDuckInterface().cast(
 				Proxy.newProxyInstance(getClass().getClassLoader(),
 						new Class[] { getAdaptedClass().getDuckInterface(),
-								Adapted.class, AdaptedClass.class }, this));
+								ObjectWrapper.class, ClassWrapper.class }, this));
 	}
 
 }

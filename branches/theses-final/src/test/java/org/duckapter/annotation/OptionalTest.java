@@ -36,7 +36,7 @@ public class OptionalTest {
 
 	@Test
 	public void testMethodCalls() {
-		OptionalInterface opt = Duck.type(new OptionalClass(), OptionalInterface.class);
+		OptionalInterface opt = Duck.wrap(new OptionalClass(), OptionalInterface.class);
 		Assert.assertNull(opt.doItOptional());
 		Assert.assertEquals(0, opt.doItOptionalInt());
 		Assert.assertEquals(0, opt.doItOptionalDouble(), 0.1);
