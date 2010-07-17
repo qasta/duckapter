@@ -92,14 +92,13 @@ public final class AdaptedFactory {
 		return findAdaptedClass(originalClass, duckInterface);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <O, D> AdaptedClass<O, D> findAdaptedClass(
 			Class<O> originalClass, Class<D> duckInterface) {
 		final String cacheKey = getCacheKey(originalClass, duckInterface);
 		AdaptedClass<O, D> ac = getFromCache(cacheKey);
 		if (ac == null) {
 			if (pending.get().contains(cacheKey)) {
-				return (AdaptedClass<O, D>) PendingAdaptedClass.NULL_INSTANCE;
+				return PendingAdaptedClass.nullInstance();
 			} else {
 				pending.get().add(cacheKey);
 				if (duckInterface.isInterface()) {
@@ -116,8 +115,7 @@ public final class AdaptedFactory {
 		return ac;
 	}
 
-	@SuppressWarnings("unchecked")
-	private static ConcurrentMap<String, AdaptedClass> cache = new MapMaker().expiration(
+	private static ConcurrentMap<String, AdaptedClass<?,?>> cache = new MapMaker().expiration(
 			30, TimeUnit.MINUTES).makeMap();
 
 	@SuppressWarnings("unchecked")

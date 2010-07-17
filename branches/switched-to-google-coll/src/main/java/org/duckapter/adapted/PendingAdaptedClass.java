@@ -10,6 +10,11 @@ final class PendingAdaptedClass<O,D> implements
 
 	static final AdaptedClass<?,?> NULL_INSTANCE = new PendingAdaptedClass<Object, Object>();
 
+	@SuppressWarnings("unchecked")
+	static final <O,D> AdaptedClass<O, D> nullInstance(){
+		return (AdaptedClass<O, D>) NULL_INSTANCE;
+	}
+	
 	public D adaptClass() {
 		throw new UnsupportedOperationException("Operation not supported on the pending class");
 	}

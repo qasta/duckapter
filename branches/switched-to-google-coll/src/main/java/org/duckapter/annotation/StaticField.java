@@ -18,6 +18,7 @@ import java.lang.annotation.Target;
 @StereotypeChecker
 @Static @Field
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
+@CanCheck({ ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD })
 public @interface StaticField {
 }

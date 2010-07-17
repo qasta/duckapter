@@ -16,44 +16,44 @@ public class AllTest {
 	}
 
 	public static interface TestCase {
-		@Before
+		@AnnotatedWith @Before
 		void setUp() throws Exception;
 
-		@All @Test
+		@All @AnnotatedWith @Test
 		TestMethod[] testMethods();
 
-		@After
+		@AnnotatedWith @After
 		void tearDown() throws Exception;
 	}
 
 	public static class TestCaseImpl {
-		@Before
+		@AnnotatedWith @Before
 		public void setUp() {
 		}
 
-		@Test
+		@AnnotatedWith @Test
 		public void test1() {
 		}
 
-		@Test
+		@AnnotatedWith @Test
 		public void test2() {
 		}
 
-		@Test
+		@AnnotatedWith @Test
 		public void test3() {
 		}
 
-		@After
+		@AnnotatedWith @After
 		public void tearDown() {
 		}
 	}
 	
 	public static class EmptyTestCase {
-		@Before
+		@AnnotatedWith @Before
 		public void setUp() {
 		}
 
-		@After
+		@AnnotatedWith @After
 		public void tearDown() {
 		}
 	}

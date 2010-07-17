@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
+import org.duckapter.adapter.InvocationAdaptersPriorities;
+import org.duckapter.checker.ParametersChecker;
 import org.duckapter.checker.WithAnyParamsChecker;
 
 /**
@@ -20,8 +22,10 @@ import org.duckapter.checker.WithAnyParamsChecker;
 @Documented
 @CheckerAnnotation(WithAnyParamsChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR })
+@CanCheck({ ElementType.METHOD,	ElementType.CONSTRUCTOR })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@SuppressChecker(ParametersChecker.class)
+@MinToPass(InvocationAdaptersPriorities.WITH_ANY_PARAMS)
 public @interface WithAnyParams {
 
 }

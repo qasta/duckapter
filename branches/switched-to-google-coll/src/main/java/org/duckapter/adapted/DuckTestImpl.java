@@ -206,7 +206,7 @@ class DuckTestImpl {
 		for (Entry<Checker<Annotation>, Annotation> entry : theCheckers.entrySet()) {
 			final Checker<Annotation> ch = entry.getKey();
 			final Annotation anno = entry.getValue();
-			if (ch.canAdapt(anno, theClass, theClass)) {
+			if (Checkers.canAdapt(anno, theClass)) {
 				final InvocationAdapter adapter = ch.adapt(anno, theClass,
 						duck, theClass);
 				ret = mergeAdaptersFromCheckers(ret, adapter);
@@ -223,7 +223,7 @@ class DuckTestImpl {
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
 			final Checker<Annotation> ch = entry.getKey();
 			final Annotation anno = entry.getValue();
-			if (ch.canAdapt(anno, original, theClass)) {
+			if (Checkers.canAdapt(anno, original)) {
 				final InvocationAdapter adapter = ch.adapt(anno, original,
 						duck, theClass);
 				ret = mergeAdaptersFromCheckers(ret, adapter);

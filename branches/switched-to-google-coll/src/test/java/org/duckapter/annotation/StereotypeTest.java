@@ -6,12 +6,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.duckapter.checker.StereotypeType.AND;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
-import org.duckapter.Duck;
 import org.duckapter.DuckTestHelper;
+import org.duckapter.checker.MethodsOnlyChecker;
+import org.duckapter.checker.PublicOnlyChecker;
 import org.duckapter.checker.StereotypeCheckerChecker;
 import org.duckapter.checker.Visibility;
 import org.junit.Test;
@@ -71,6 +73,9 @@ public class StereotypeTest {
 	@Static
 	@Final
 	@Field
+	
+	@CanCheck(ElementType.FIELD)
+	@SuppressChecker({MethodsOnlyChecker.class, PublicOnlyChecker.class})
 	public static @interface AtMostPackageConst {
 	}
 
@@ -93,6 +98,7 @@ public class StereotypeTest {
 				AMCPClassPass.class, AMCPClassFail.class);
 	}
 
+	@SuppressWarnings("unused")
 	@StereotypeChecker
 	private static @interface TEST {
 	}

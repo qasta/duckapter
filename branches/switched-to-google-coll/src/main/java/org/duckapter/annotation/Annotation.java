@@ -15,6 +15,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
+@CanCheck({ ElementType.TYPE })
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
 @AssignableTo(Annotation.class)
 public @interface Annotation {

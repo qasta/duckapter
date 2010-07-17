@@ -3,7 +3,6 @@ package org.duckapter.annotation;
 import static org.duckapter.DuckTestHelper.assertCanAdaptClass;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class FinalTest {
@@ -66,9 +65,9 @@ public class FinalTest {
 				WithFinalMethod.class, WithoutFinalMethod.class);
 	}
 
-	public interface WithFinalParameterInterface {
-		void doIt(@Final String str);
-	}
+//	public interface WithFinalParameterInterface {
+//		void doIt(@Final String str);
+//	}
 
 	public class WithFinalParameter {
 		public void doIt(final String str) {
@@ -79,12 +78,12 @@ public class FinalTest {
 		public void doIt(String str) {
 		}
 	}
-
-	@Test
-	@Ignore
-	public void testFinalParameter() {
-		assertCanAdaptInstance(WithFinalParameterInterface.class,
-				WithFinalParameter.class, WithoutFinalParameter.class);
-	}
+//
+//	@Test
+//	@Ignore
+//	public void testFinalParameter() {
+//		assertCanAdaptInstance(WithFinalParameterInterface.class,
+//				WithFinalParameter.class, WithoutFinalParameter.class);
+//	}
 
 }

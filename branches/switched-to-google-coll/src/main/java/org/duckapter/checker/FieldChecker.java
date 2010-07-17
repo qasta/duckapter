@@ -1,18 +1,12 @@
 package org.duckapter.checker;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.GetFieldAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.adapter.SetFieldAdapter;
 import org.duckapter.annotation.Field;
 
@@ -42,25 +36,4 @@ public class FieldChecker extends AbstractChecker<Field> {
 		return InvocationAdapters.NULL;
 	}
 
-	@Override
-	protected Collection<ElementType> getTargetElements(Field anno) {
-		if (anno != null) {
-			return super.getTargetElements(anno);
-		}
-		return Arrays.asList(new ElementType[] { ElementType.METHOD,
-				ElementType.CONSTRUCTOR, ElementType.FIELD });
-	};
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Class<MethodsOnlyChecker>> suppressCheckers(Field anno,
-			AnnotatedElement duckMethod) {
-		return Arrays.asList(MethodsOnlyChecker.class);
-	}
-
-	@Override
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return InvocationAdaptersPriorities.FIELD;
-	}
-	
 }

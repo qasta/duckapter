@@ -16,6 +16,7 @@ import java.lang.reflect.Modifier;
 @Documented
 @ModifierChecker(Modifier.STRICT)
 @Retention(RetentionPolicy.RUNTIME)
+@CanCheck({ElementType.METHOD, ElementType.TYPE })
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.TYPE })
 public @interface StrictFloatingPoint {
 

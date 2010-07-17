@@ -7,6 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
+import org.duckapter.checker.PublicOnlyChecker;
 import org.duckapter.checker.Visibility;
 import org.duckapter.checker.VisibilityChecker;
 
@@ -19,8 +20,12 @@ import org.duckapter.checker.VisibilityChecker;
  * @author Vladimir Orany
  * 
  */
-@Documented
 @CheckerAnnotation(VisibilityChecker.class)
+@CanCheck({ ElementType.METHOD, ElementType.TYPE, ElementType.FIELD, ElementType.CONSTRUCTOR})
+@SuppressChecker(PublicOnlyChecker.class)
+
+
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface Public {

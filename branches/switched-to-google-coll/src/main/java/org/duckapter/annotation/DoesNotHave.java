@@ -7,6 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
+import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.checker.DoesNotHaveChecker;
 
 /**
@@ -20,9 +21,10 @@ import org.duckapter.checker.DoesNotHaveChecker;
  */
 @Documented
 @CheckerAnnotation(DoesNotHaveChecker.class)
-@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR, ElementType.FIELD })
+@CanCheck( { ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })
+@Target( { ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
+@MinToPass(InvocationAdaptersPriorities.MAX)
 public @interface DoesNotHave {
 
 }

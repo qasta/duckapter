@@ -6,23 +6,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.duckapter.CheckerAnnotation;
+import org.duckapter.checker.AnnotatedWithChecker;
 import org.duckapter.checker.NameChecker;
 
-/**
- * Denotes that the target element can have any name. Can be only used on the
- * duck method.
- * 
- * @author Vladimir Orany
- * 
- */
-@StereotypeChecker
-@Matching(".*")
-@CanCheck({ ElementType.METHOD,	ElementType.CONSTRUCTOR, ElementType.FIELD })
+@CheckerAnnotation(AnnotatedWithChecker.class)
 @SuppressChecker(NameChecker.class)
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE})
-public @interface Any {
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.TYPE})
+public @interface AnnotatedWith {
 
 }

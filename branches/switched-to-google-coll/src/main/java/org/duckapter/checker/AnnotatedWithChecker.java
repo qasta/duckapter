@@ -5,11 +5,10 @@ import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
-import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
+import org.duckapter.annotation.AnnotatedWith;
 
 /**
  * The default checker which checks that the duck and target elements have the
@@ -20,15 +19,18 @@ import org.duckapter.adapter.InvocationAdapters;
  *
  * @param <T> any checker annotation type
  */
-public class AnnotationsChecker<T extends Annotation> extends
-		AbstractChecker<T> {
+public class AnnotatedWithChecker extends
+		AbstractChecker<AnnotatedWith> {
 
-	protected Collection<ElementType> getTargetElements(T anno) {
+	protected Collection<ElementType> getTargetElements(AnnotatedWith anno) {
 		return ALL_TARGETS;
 	}
 
-	public InvocationAdapter adapt(T anno, AnnotatedElement original,
+	public InvocationAdapter adapt(AnnotatedWith anno, AnnotatedElement original,
 			AnnotatedElement duck, Class<?> classOfOriginal) {
+		if (!hasRelevantAnnotations(duck)) {
+			return InvocationAdapters.OK;
+		}
 		Collection<Annotation> fromDuck = collectAnnotations(duck);
 		Collection<Annotation> fromOriginal = collectAnnotations(original);
 		if (fromDuck.equals(fromOriginal)) {
@@ -45,26 +47,6 @@ public class AnnotationsChecker<T extends Annotation> extends
 			}
 		}
 		return fromDuck;
-	};
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
-			T anno, AnnotatedElement element) {
-		if (hasRelevantAnnotations(element)) {
-			return (Collection<Class<Ch>>)SUPPRESSED;
-		}
-		return Collections.emptyList();
-	}
-
-	@SuppressWarnings("unchecked")
-	private static final Collection SUPPRESSED = getSuppressed();
-	
-	@SuppressWarnings("unchecked")
-	private static <Ch> Collection<Class<Ch>> getSuppressed() {
-		Collection<Class<Ch>> col = new ArrayList<Class<Ch>>();
-		col.add((Class<Ch>) NameChecker.class);
-		return Collections.unmodifiableCollection(col);
 	};
 
 	private boolean hasRelevantAnnotations(AnnotatedElement element) {

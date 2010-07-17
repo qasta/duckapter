@@ -1,21 +1,17 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.AllAdapter;
 import org.duckapter.adapter.InvocationAdapters;
-import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.annotation.All;
 
 /**
@@ -28,19 +24,17 @@ import org.duckapter.annotation.All;
 public class AllChecker extends AbstractChecker<All> {
 
 	@SuppressWarnings("unchecked")
-	private static final List<Class<? extends LogicalCheckerBase>> SUPPRESSED = Arrays
+	private static final List<Class<? extends LogicalCheckerBase>> METHOD_CHECKERS_CLASSES = Arrays
 			.asList(ReturnTypeChecker.class, ParametersChecker.class,
 					ExceptionsChecker.class);
 	@SuppressWarnings("unchecked")
-	private static final Collection<LogicalCheckerBase> SUPPRESSED_CHECKERS;
-
-	private static final Collection<ElementType> TARGETS;
+	private static final Collection<LogicalCheckerBase> METHOD_CHECKERS;
 
 	static {
 		@SuppressWarnings("unchecked")
 		Collection<LogicalCheckerBase> checkers = new ArrayList<LogicalCheckerBase>();
 		for (@SuppressWarnings("unchecked")
-		Class<? extends LogicalCheckerBase> checkerClass : SUPPRESSED) {
+		Class<? extends LogicalCheckerBase> checkerClass : METHOD_CHECKERS_CLASSES) {
 			try {
 				checkers.add(checkerClass.newInstance());
 			} catch (InstantiationException e) {
@@ -49,13 +43,8 @@ public class AllChecker extends AbstractChecker<All> {
 				e.printStackTrace();
 			}
 		}
-		SUPPRESSED_CHECKERS = Collections.unmodifiableCollection(checkers);
+		METHOD_CHECKERS = Collections.unmodifiableCollection(checkers);
 
-		Set<ElementType> targets = new HashSet<ElementType>();
-		for (AbstractChecker<?> ac : SUPPRESSED_CHECKERS) {
-			targets.addAll(ac.getTargetElements(null));
-		}
-		TARGETS = Collections.unmodifiableCollection(targets);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,31 +86,14 @@ public class AllChecker extends AbstractChecker<All> {
 	private InvocationAdapter checkMethodInterface(All anno,
 			AnnotatedElement original, Class<?> classOfOriginal,
 			final Method returnTypeOnlyMethod) {
-		for (LogicalCheckerBase<Annotation> ch : SUPPRESSED_CHECKERS) {
-			if (ch.canAdapt(anno, original, classOfOriginal)
+		for (LogicalCheckerBase<Annotation> ch : METHOD_CHECKERS) {
+			if (Checkers.canAdapt(anno, original)
 					&& InvocationAdapters.isNull(ch.adapt(anno, original,
 							returnTypeOnlyMethod, classOfOriginal))) {
 				return InvocationAdapters.NULL;
 			}
 		}
 		return new AllAdapter(original, returnTypeOnlyMethod);
-	}
-
-	@Override
-	protected Collection<ElementType> getTargetElements(All anno) {
-		return TARGETS;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Collection<Class<? extends LogicalCheckerBase>> suppressCheckers(
-			All anno, AnnotatedElement duckMethod) {
-		return SUPPRESSED;
-	}
-	
-	@Override
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return InvocationAdaptersPriorities.MAX;
 	}
 
 }

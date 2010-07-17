@@ -7,7 +7,7 @@ import org.junit.Test;
 public class AnnotationsTest {
 
 	public static interface AnnotatedInterface {
-		@Test
+		@AnnotatedWith @Test
 		void testMethod();
 	}
 
