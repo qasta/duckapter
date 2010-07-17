@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
 import org.duckapter.checker.MatchingChecker;
+import org.duckapter.checker.NameChecker;
 
 /**
  * The annotation suppress default name check and provide matching based on the
@@ -18,11 +19,13 @@ import org.duckapter.checker.MatchingChecker;
  * @author Vladimir Orany
  * 
  */
+@CheckerAnnotation(MatchingChecker.class)
+@CanCheck({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
+@SuppressChecker(NameChecker.class)
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE })
-@CheckerAnnotation(MatchingChecker.class)
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.TYPE })
 public @interface Matching {
 	/**
 	 * The regular expression for matching target elements' name.

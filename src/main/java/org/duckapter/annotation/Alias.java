@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
 import org.duckapter.checker.AliasChecker;
+import org.duckapter.checker.NameChecker;
 
 /**
  * Allows the target element to have more alternative potential names. Can be
@@ -19,9 +20,11 @@ import org.duckapter.checker.AliasChecker;
  */
 @Documented
 @CheckerAnnotation(AliasChecker.class)
+@CanCheck({ ElementType.METHOD,	/*ElementType.CONSTRUCTOR,*/ ElementType.FIELD })
+@SuppressChecker(NameChecker.class)
+
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR, ElementType.FIELD })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 public @interface Alias {
 
 	/**

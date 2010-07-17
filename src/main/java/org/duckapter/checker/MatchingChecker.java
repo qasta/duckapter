@@ -1,11 +1,8 @@
 package org.duckapter.checker;
 
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.duckapter.annotation.Matching;
@@ -78,13 +75,6 @@ public class MatchingChecker extends LogicalCheckerBase<Matching> {
 				"${className}", className);
 
 		return Pattern.compile(value, flag);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Class<NameChecker>> suppressCheckers(Matching anno,
-			AnnotatedElement element) {
-		return Arrays.asList(NameChecker.class);
 	}
 
 }

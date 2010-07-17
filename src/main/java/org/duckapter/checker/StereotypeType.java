@@ -56,8 +56,7 @@ public enum StereotypeType {
 			Class<?> classOfOriginal, Map<Checker<T>, T> checkers) {
 		InvocationAdapter adapter = defaultAdapter();
 		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
-			if (!entry.getKey().canAdapt(entry.getValue(), original,
-					classOfOriginal)) {
+			if (!Checkers.canAdapt(entry.getValue(), original)) {
 				continue;
 			}
 			InvocationAdapter other = entry.getKey().adapt(entry.getValue(),
@@ -80,8 +79,7 @@ public enum StereotypeType {
 		boolean canAdapt = false;
 		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
 			canAdapt = canAdapt
-					|| entry.getKey().canAdapt(entry.getValue(), original,
-							classOfOriginal);
+					|| Checkers.canAdapt(entry.getValue(), original);
 		}
 		return canAdapt;
 	}

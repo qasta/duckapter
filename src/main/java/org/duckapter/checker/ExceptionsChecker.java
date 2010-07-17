@@ -1,11 +1,8 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * The default checker which checks whether the target elements' declared
@@ -21,6 +18,14 @@ public class ExceptionsChecker<T extends Annotation> extends
 		return checkExes(method.getExceptionTypes(), duckMethod
 				.getExceptionTypes());
 	}
+	
+	protected boolean checkClass(T anno, java.lang.Class<?> clazz, java.lang.Class<?> duckInterface) {
+		return true;
+	};
+	
+	protected boolean checkField(T anno, java.lang.reflect.Field field, Method duckMethod, java.lang.Class<?> classOfOriginal) {
+		return true;
+	};
 
 	private boolean checkExes(final Class<?>[] originalExs,
 			final Class<?>[] duckExs) {
@@ -48,13 +53,13 @@ public class ExceptionsChecker<T extends Annotation> extends
 				.getExceptionTypes());
 	};
 
-	@Override
-	protected Collection<ElementType> getTargetElements(T anno) {
-		if (anno != null) {
-			return super.getTargetElements(anno);
-		}
-		return Arrays.asList(new ElementType[] { ElementType.METHOD,
-				ElementType.CONSTRUCTOR });
-	};
+//	@Override
+//	protected Collection<ElementType> getTargetElements(T anno) {
+//		if (anno != null) {
+//			return super.getTargetElements(anno);
+//		}
+//		return Arrays.asList(new ElementType[] { ElementType.METHOD,
+//				ElementType.CONSTRUCTOR });
+//	};
 
 }

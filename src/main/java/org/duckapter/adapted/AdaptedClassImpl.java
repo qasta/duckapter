@@ -6,7 +6,6 @@ import static org.duckapter.adapter.InvocationAdapters.MAX;
 import static org.duckapter.adapter.InvocationAdapters.MIN;
 import static org.duckapter.adapter.InvocationAdapters.safe;
 import static org.duckapter.checker.Checkers.collectCheckers;
-import static org.duckapter.checker.Checkers.getMinPriorityToFail;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -16,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -54,6 +54,9 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	private AdaptedClass<O, D> getDetailedClass() {
+		if (detailed == true) {
+			return this;
+		}
 		if (detailedClass == null) {
 			detailedClass = new AdaptedClassImpl<O, D>(getOriginalClass(),
 					getDuckInterface(), true);
@@ -63,10 +66,18 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	public Collection<Method> getUnimplementedForClass() {
+		if (detailed) {
+			// FIX ME
+			return Collections.emptyList();
+		}
 		return getDetailedClass().getUnimplementedForClass();
 	}
 
 	public Collection<Method> getUnimplementedForInstance() {
+		if (detailed) {
+			// FIX ME
+			return Collections.emptyList();
+		}
 		return getDetailedClass().getUnimplementedForClass();
 	}
 
@@ -126,12 +137,12 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 			Map<Checker<Annotation>, Annotation> checkersMap,
 			Map<Method, InvocationAdapter> builder) {
 		Map<Checker<Annotation>, Annotation> checkers = copy(checkersMap);
-		int minPriority = getMinPriorityToFail(checkers);
+		int minPriority = Checkers.getMinPriorityToFail(checkers);
 		InvocationAdapter ret = initialForElement(duck, builder);
 		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
 			final Checker<Annotation> ch = entry.getKey();
 			final Annotation anno = entry.getValue();
-			if (ch.canAdapt(anno, original, getOriginalClass())) {
+			if (Checkers.canAdapt(anno, original)) {
 				final InvocationAdapter adapter = ch.adapt(anno, original,
 						duck, getOriginalClass());
 				ret = mergeAdaptersFromCheckers(ret, adapter);

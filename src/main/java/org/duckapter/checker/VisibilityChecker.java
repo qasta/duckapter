@@ -3,11 +3,7 @@ package org.duckapter.checker;
 import static org.duckapter.checker.Checkers.getModifiers;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import org.duckapter.Duck;
 import org.duckapter.InvocationAdapter;
@@ -30,17 +26,8 @@ import org.duckapter.adapter.InvocationAdapters;
  */
 public class VisibilityChecker extends AbstractChecker<Annotation> {
 
-	@SuppressWarnings("unchecked")
-	private static final List<Class<PublicOnlyChecker>> SUPPRESSED = Arrays
-			.asList(PublicOnlyChecker.class);
-
 	private static interface VisibilityAnno {
 		Visibility value();
-	}
-
-	@Override
-	protected Collection<ElementType> getTargetElements(Annotation anno) {
-		return ALL_TARGETS;
 	}
 
 	public final InvocationAdapter adapt(Annotation anno,
@@ -56,13 +43,6 @@ public class VisibilityChecker extends AbstractChecker<Annotation> {
 					+ anno);
 		}
 		return Duck.type(anno, VisibilityAnno.class).value();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Class<PublicOnlyChecker>> suppressCheckers(Annotation anno,
-			AnnotatedElement duckMethod) {
-		return SUPPRESSED;
 	}
 
 }

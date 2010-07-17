@@ -1,10 +1,7 @@
 package org.duckapter.checker;
 
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 import org.duckapter.annotation.Alias;
 
@@ -42,13 +39,6 @@ public class AliasChecker extends NameChecker<Alias> {
 			}
 		}
 		return false;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Class<NameChecker>> suppressCheckers(Alias anno,
-			AnnotatedElement duckMethod) {
-		return Arrays.asList(NameChecker.class);
 	}
 
 }

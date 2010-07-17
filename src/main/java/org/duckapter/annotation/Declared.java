@@ -18,7 +18,8 @@ import org.duckapter.checker.DeclaredChecker;
  */
 @Documented
 @CheckerAnnotation(DeclaredChecker.class)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.FIELD })
+@CanCheck({ElementType.METHOD, ElementType.FIELD})
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Declared {
 
