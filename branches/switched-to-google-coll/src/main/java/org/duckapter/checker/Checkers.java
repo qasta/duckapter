@@ -1,30 +1,17 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import org.duckapter.Checker;
-import org.duckapter.CheckerAnnotation;
-import org.duckapter.Duck;
-import org.duckapter.annotation.CanCheck;
 
 import com.google.common.collect.ImmutableList;
 
@@ -72,81 +59,11 @@ public final class Checkers {
 	}
 
 
-	@SuppressWarnings("unchecked")
-	private static CheckerAnnotation getCheckerAnnotation(Annotation anno) {
-		return getCheckerAnno(anno.annotationType(), Target.class,
-				Retention.class, Documented.class, Inherited.class);
-	}
 
-	private static CheckerAnnotation getCheckerAnno(
-			Class<? extends Annotation> anno,
-			Class<? extends Annotation>... exclude) {
-		if (anno.isAnnotationPresent(CheckerAnnotation.class)) {
-			return anno.getAnnotation(CheckerAnnotation.class);
-		}
-		Collection<Class<? extends Annotation>> toTest = new ArrayList<Class<? extends Annotation>>();
-		final List<Class<? extends Annotation>> excludeList = Arrays
-				.asList(exclude);
-		final List<Annotation> withCheckerAnnotation = new ArrayList<Annotation>();
-		for (Annotation a : anno.getAnnotations()) {
-			if (excludeList.contains(a)) {
-				continue;
-			}
-			if (a.annotationType().isAnnotationPresent(CheckerAnnotation.class)) {
-				withCheckerAnnotation.add(a);
-			} else {
-				for (Annotation annoToTest : a.annotationType()
-						.getAnnotations()) {
-					toTest.add(annoToTest.annotationType());
-				}
-				toTest.remove(a);
-			}
-		}
-		if (!withCheckerAnnotation.isEmpty()) {
-			return getWithHighestPriority(withCheckerAnnotation);
-		}
-		toTest.remove(anno);
-		toTest.removeAll(excludeList);
-		return testForCheckerAnno(toTest, excludeList);
-	}
 
-	@SuppressWarnings("unchecked")
-	private static CheckerAnnotation testForCheckerAnno(
-			Collection<Class<? extends Annotation>> toTest,
-			final List<Class<? extends Annotation>> excludeList) {
-		for (Class<? extends Annotation> a : toTest) {
-			CheckerAnnotation dann = getCheckerAnno(a, (Class[]) excludeList
-					.toArray(new Class[excludeList.size()]));
-			if (dann != null) {
-				return dann;
-			}
-		}
-		return null;
-	}
 
-	private static CheckerAnnotation getWithHighestPriority(
-			final List<Annotation> withCheckerAnnotation) {
-		Annotation toReturn = withCheckerAnnotation.get(0);
-		for (int i = 1; i < withCheckerAnnotation.size(); i++) {
-			if (getAnnoPriority(toReturn) < getAnnoPriority(withCheckerAnnotation
-					.get(i))) {
-				toReturn = withCheckerAnnotation.get(i);
-			}
-		}
-		return toReturn.annotationType().getAnnotation(CheckerAnnotation.class);
-	}
 
-	private static interface CheckerWithPriority {
-		int checkerPriority();
-	}
 
-	private static int getAnnoPriority(Annotation toReturn) {
-		if (Duck.test(toReturn, CheckerWithPriority.class)) {
-			return Duck.type(toReturn, CheckerWithPriority.class)
-					.checkerPriority();
-		}
-		return Integer.MIN_VALUE;
-	}
 
 	/**
 	 * Collect instances of checkers using annotation placed on the element and
@@ -290,18 +207,6 @@ public final class Checkers {
 	
 	public static boolean canAdapt(Annotation anno, AnnotatedElement element) {
 		return CheckerDescriptor.getDescriptor(anno).canAdapt(element);
-	}
-	
-	/**
-	 * Get desired target elements. The default implementation reads them from
-	 * the {@link CanCheck} annotation on the {@link Checker checker}
-	 * annotation.
-	 * 
-	 * @param anno
-	 * @return
-	 */
-	private static Collection<ElementType> getTargetElements(Annotation anno) {
-		return CheckerDescriptor.getDescriptor(anno).getCanAdapt();
 	}
 
 }
