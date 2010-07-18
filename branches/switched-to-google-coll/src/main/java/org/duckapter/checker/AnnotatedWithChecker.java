@@ -42,7 +42,7 @@ public class AnnotatedWithChecker extends
 	private Collection<Annotation> collectAnnotations(AnnotatedElement duck) {
 		Collection<Annotation> fromDuck = new ArrayList<Annotation>();
 		for (Annotation a : duck.getAnnotations()) {
-			if (!Checkers.isCheckerAnnotation(a)) {
+			if (!CheckerDescriptor.getDescriptor(a).isValid()) {
 				fromDuck.add(a);
 			}
 		}
@@ -51,7 +51,7 @@ public class AnnotatedWithChecker extends
 
 	private boolean hasRelevantAnnotations(AnnotatedElement element) {
 		for (Annotation anno : element.getAnnotations()) {
-			if (!Checkers.isCheckerAnnotation(anno)) {
+			if (!CheckerDescriptor.getDescriptor(anno).isValid()) {
 				return true;
 			}
 		}

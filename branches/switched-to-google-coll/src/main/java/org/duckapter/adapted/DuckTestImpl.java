@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.InvocationAdapters;
+import org.duckapter.checker.CheckerDescriptor;
 import org.duckapter.checker.Checkers;
 
 class DuckTestImpl {
@@ -179,7 +180,7 @@ class DuckTestImpl {
 		if (ElementType.METHOD == elementType) {
 			return true;
 		}
-		if (!Checkers.isCheckerAnnotation(anno)) {
+		if (!CheckerDescriptor.getDescriptor(anno).isValid()) {
 			return true;
 		}
 		Class<? extends Annotation> aType = anno.annotationType();
