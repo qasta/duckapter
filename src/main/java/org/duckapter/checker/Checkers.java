@@ -1,10 +1,13 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,8 +15,10 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.duckapter.Checker;
+import org.duckapter.annotation.CanCheck;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 
 /**
  * Utility class for checkers.
@@ -59,48 +64,6 @@ public final class Checkers {
 	}
 
 
-
-
-
-
-
-
-	/**
-	 * Collect instances of checkers using annotation placed on the element and
-	 * the defualt checkers.
-	 * 
-	 * @param <T>
-	 *            the common annotation type
-	 * @param m
-	 *            the annotated element
-	 * @return the collection of checkers for specified element
-	 */
-	@SuppressWarnings("unchecked")
-	public static Map<Checker<Annotation>, Annotation> collectCheckers(
-			AnnotatedElement m) {
-		Map<Checker<Annotation>, Annotation> methodCheckers = new LinkedHashMap<Checker<Annotation>, Annotation>();
-		for (Annotation anno : m.getAnnotations()) {
-			CheckerDescriptor desc = CheckerDescriptor.getDescriptor(anno);
-			if (desc.isValid()) {
-				methodCheckers.put(desc.getChecker(), anno);
-			}
-		}
-		for (Checker<Annotation> ch : getDefaultCheckers()) {
-			methodCheckers.put(ch, null);
-		}
-		Set<Entry<Checker<Annotation>, Annotation>> entries = (Set<Entry<Checker<Annotation>, Annotation>>) methodCheckers
-				.entrySet();
-		Set<Checker<Annotation>> suppressedMethodChecker = new HashSet<Checker<Annotation>>();
-		for (Entry<Checker<Annotation>, Annotation> e : entries) {
-			for (Class<? extends Checker> clazz : suppressCheckers(e.getValue())) {
-				CheckerDescriptor descriptor = CheckerDescriptor.getDescriptor(clazz);
-				suppressedMethodChecker.add(descriptor.getChecker());
-			}
-		}
-		methodCheckers.keySet().removeAll(suppressedMethodChecker);
-		return Collections.unmodifiableMap(methodCheckers);
-	}
-
 	/**
 	 * Returns modifiers for specified element.
 	 * 
@@ -136,37 +99,6 @@ public final class Checkers {
 		}
 		return ch.hashCode() == obj.hashCode();
 	}
-	
-
-	/**
-	 * TODO
-	 * 
-	 * @param checkers
-	 * @return
-	 */
-	public static int getMinPriorityToFail(
-			Map<Checker<Annotation>, Annotation> checkers) {
-		int ret = Integer.MAX_VALUE;
-		for (Entry<Checker<Annotation>, Annotation> e : checkers.entrySet()) {
-			final int min = getMinAdapterPriorityToFail(e.getValue());
-			if (min < ret) {
-				ret = min;
-			}
-		}
-		return ret;
-	}
-
-	public static int getMinPriorityToPass(
-			Map<Checker<Annotation>, Annotation> checkers) {
-		int ret = Integer.MIN_VALUE;
-		for (Entry<Checker<Annotation>, Annotation> e : checkers.entrySet()) {
-			final int max = getMinAdapterPriorityToPass(e.getValue());
-			if (max > ret) {
-				ret = max;
-			}
-		}
-		return ret;
-	}
 
 
 	
@@ -191,22 +123,48 @@ public final class Checkers {
 		return 37 + 37 * ch.getClass().getName().hashCode();
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Collection<Class<? extends Checker>> suppressCheckers(
-			Annotation anno) {
-		return CheckerDescriptor.getDescriptor(anno).getSuppressed();
+
+	public static EnumMap<ElementType, Map<Checker, Annotation>> initCheckers(){
+		EnumMap<ElementType, Map<Checker, Annotation>> checkers = Maps.newEnumMap(ElementType.class);
+		for (ElementType el : CanCheck.DEFAULTS) {
+			checkers.put(el, new HashMap<Checker, Annotation>());
+		}
+		return checkers;
 	}
 
-	public static int getMinAdapterPriorityToFail(Annotation anno) {
-		return CheckerDescriptor.getDescriptor(anno).getMinToFail();
-	}
-	
-	public static int getMinAdapterPriorityToPass(Annotation anno) {
-		return CheckerDescriptor.getDescriptor(anno).getMinToPass();
-	}
-	
-	public static boolean canAdapt(Annotation anno, AnnotatedElement element) {
-		return CheckerDescriptor.getDescriptor(anno).canAdapt(element);
+
+	public static Map<ElementType, Map<Checker, Annotation>> collectCheckers(AnnotatedElement element) {
+		Map<ElementType, Map<Checker, Annotation>> checkers = initCheckers();
+		for (Annotation anno : element.getAnnotations()) {
+			CheckerDescriptor desc = CheckerDescriptor.getDescriptor(anno);
+			if (desc.isValid()) {
+				for (ElementType elType : desc.getCanAdapt()) {
+					checkers.get(elType).put(desc.getChecker(), anno);
+				}
+			}
+		}
+		for (Checker<?> ch : getDefaultCheckers()) {
+			for (ElementType elType : CanCheck.DEFAULTS) {
+				checkers.get(elType).put(ch, null);
+			}
+		}
+		Set<Entry<Checker, Annotation>> entries = new HashSet<Entry<Checker,Annotation>>();
+		for (ElementType elType : CanCheck.DEFAULTS) {
+			entries.addAll(checkers.get(elType).entrySet());
+		}
+		Set<CheckerDescriptor> suppressedMethodChecker = new HashSet<CheckerDescriptor>();
+		for (Entry<Checker, Annotation> e : entries) {
+			for (Class<? extends Checker> clazz : CheckerDescriptor.getDescriptor(e.getValue()).getSuppressed()) {
+				CheckerDescriptor descriptor = CheckerDescriptor.getDescriptor(clazz);
+				suppressedMethodChecker.add(descriptor);
+			}
+		}
+		for (CheckerDescriptor checkerDescriptor : suppressedMethodChecker) {
+			for (ElementType elType : checkerDescriptor.getCanAdapt()) {
+				checkers.get(elType).remove(checkerDescriptor.getChecker());
+			}
+		}
+		return checkers;
 	}
 
 }

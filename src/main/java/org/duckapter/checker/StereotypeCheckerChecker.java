@@ -29,14 +29,16 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 				getCheckers(anno));
 	}
 
-	private static final Map<Annotation, Map<Checker<Annotation>, Annotation>> checkersCache = new HashMap<Annotation, Map<Checker<Annotation>, Annotation>>();
+	private static final Map<Annotation, Map<Checker, Annotation>> checkersCache = new HashMap<Annotation, Map<Checker, Annotation>>();
 
-	private Map<Checker<Annotation>, Annotation> getCheckers(Annotation anno) {
+	private Map<Checker, Annotation> getCheckers(Annotation anno) {
 		if (checkersCache.containsKey(anno)) {
 			return checkersCache.get(anno);
 		}
-		final Map<Checker<Annotation>, Annotation> checkers = new HashMap<Checker<Annotation>, Annotation>(
-				Checkers.collectCheckers(anno.annotationType()));
+		final Map<Checker, Annotation> checkers = new HashMap<Checker, Annotation>();
+		for (Map<Checker, Annotation> map : Checkers.collectCheckers(anno.annotationType()).values()) {
+			checkers.putAll(map);
+		}
 		checkers.keySet().removeAll(Checkers.getDefaultCheckers());
 		checkersCache.put(anno, checkers);
 		return checkers;

@@ -87,7 +87,7 @@ public class AllChecker extends AbstractChecker<All> {
 			AnnotatedElement original, Class<?> classOfOriginal,
 			final Method returnTypeOnlyMethod) {
 		for (LogicalCheckerBase<Annotation> ch : METHOD_CHECKERS) {
-			if (Checkers.canAdapt(anno, original)
+			if (CheckerDescriptor.getDescriptor(anno).canAdapt(original)
 					&& InvocationAdapters.isNull(ch.adapt(anno, original,
 							returnTypeOnlyMethod, classOfOriginal))) {
 				return InvocationAdapters.NULL;

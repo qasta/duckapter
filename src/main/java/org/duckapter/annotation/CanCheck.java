@@ -10,8 +10,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
 public @interface CanCheck {
-	
-	ElementType[] DEFAULTS = ElementType.values();
-	
+
+	ElementType[] DEFAULTS = new ElementType[] { 
+			ElementType.TYPE,
+			ElementType.FIELD, 
+			ElementType.METHOD,
+			ElementType.CONSTRUCTOR 
+	};
+
 	ElementType[] value();
 }
