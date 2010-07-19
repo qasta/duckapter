@@ -1,14 +1,5 @@
 package org.duckapter.adapted;
 
-import static java.util.Arrays.asList;
-import static org.duckapter.adapted.AdaptedClassHelper.getRelevantElements;
-import static org.duckapter.adapter.InvocationAdapters.MAX;
-import static org.duckapter.adapter.InvocationAdapters.MIN;
-import static org.duckapter.adapter.InvocationAdapters.safe;
-
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -20,11 +11,8 @@ import java.util.Map.Entry;
 
 import org.duckapter.AdaptationException;
 import org.duckapter.AdaptedClass;
-import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.MethodAdapter;
-import org.duckapter.annotation.CanCheck;
-import org.duckapter.checker.CheckerDescriptor;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -105,7 +93,7 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	private void checkClass(Map<Method, InvocationAdapter> builder) {
-		updateCanAdapt(interfaceWrapper.getTypeWrapper().resolveAdapter(getOriginalClass(), builder, ElementType.TYPE, getOriginalClass()));
+		updateCanAdapt(interfaceWrapper.getTypeWrapper().resolveAdapter(builder, getOriginalClass()));
 	}
 
 	private void addObjectMethods(Map<Method, InvocationAdapter> builder) {

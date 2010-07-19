@@ -28,6 +28,7 @@ class AdaptedClassHelper {
 		return elements;
 	}
 	
+	@SuppressWarnings("unchecked")
 	static Collection<? extends AnnotatedElement> getRelevantElements(ElementType elType, Class<?> clazz) {
 		switch (elType) {
 		case CONSTRUCTOR:
@@ -36,6 +37,8 @@ class AdaptedClassHelper {
 			return getRelevantFields(clazz);
 		case METHOD:
 			return getRelevantMethods(clazz);
+		case TYPE:
+			return Arrays.asList(clazz);
 		default:
 			return Collections.emptyList();
 		}
