@@ -2,8 +2,11 @@ package org.duckapter.adapted;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 import org.duckapter.AdaptedClass;
+import org.duckapter.InvocationAdapter;
 
 final class PendingAdaptedClass<O,D> implements
 		AdaptedClass<O,D> {
@@ -53,4 +56,7 @@ final class PendingAdaptedClass<O,D> implements
 	}
 	
 
+	public Map<Method, InvocationAdapter> getAdapters() {
+		return Collections.emptyMap();
+	}
 }
