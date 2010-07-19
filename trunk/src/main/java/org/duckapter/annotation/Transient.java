@@ -17,7 +17,8 @@ import java.lang.reflect.Modifier;
 @Documented
 @ModifierChecker(Modifier.TRANSIENT)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
+@CanCheck({ ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.ANNOTATION_TYPE,  ElementType.METHOD })
 public @interface Transient {
 
 }

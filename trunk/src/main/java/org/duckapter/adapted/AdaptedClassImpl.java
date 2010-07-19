@@ -1,51 +1,50 @@
 package org.duckapter.adapted;
 
-import static java.util.Arrays.asList;
-import static org.duckapter.adapted.AdaptedClassHelper.getRelevantElements;
-import static org.duckapter.adapter.InvocationAdapters.MAX;
-import static org.duckapter.adapter.InvocationAdapters.MIN;
-import static org.duckapter.adapter.InvocationAdapters.safe;
-import static org.duckapter.checker.Checkers.collectCheckers;
-import static org.duckapter.checker.Checkers.getMinPriorityToFail;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.duckapter.AdaptationException;
 import org.duckapter.AdaptedClass;
-import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
 import org.duckapter.adapter.MethodAdapter;
-import org.duckapter.checker.Checkers;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		AdaptedClass<O, D>, InvocationHandler {
 
-	private final Map<Method, InvocationAdapter> adapters = new HashMap<Method, InvocationAdapter>();
+	private final Map<Method, InvocationAdapter> adapters;
 	private D proxy;
+	private Constructor<?> proxyClassConstructor;
 	private AdaptedClass<O, D> detailedClass = null;
 	private final boolean detailed;
+
+	private final DuckInterfaceWrapper<D> interfaceWrapper;
 
 	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface) {
 		this(originalClass, duckInterface, false);
 	}
-	
-	
-	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface, boolean detailed) {
+
+	AdaptedClassImpl(Class<O> originalClass, Class<D> duckInterface,
+			boolean detailed) {
 		super(duckInterface, originalClass);
 		this.detailed = detailed;
-		init();
+		this.interfaceWrapper = DuckInterfaceWrapper.wrap(duckInterface);
+		adapters = ImmutableMap.copyOf(collectInvocations());
 	}
 
 	private AdaptedClass<O, D> getDetailedClass() {
+		if (detailed == true) {
+			return this;
+		}
 		if (detailedClass == null) {
 			detailedClass = new AdaptedClassImpl<O, D>(getOriginalClass(),
 					getDuckInterface(), true);
@@ -55,10 +54,28 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	public Collection<Method> getUnimplementedForClass() {
+		if (detailed) {
+			Collection<Method> methods = Lists.newArrayList();
+			for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
+				if (!entry.getValue().isInvocableOnClass()) {
+					methods.add(entry.getKey());
+				}
+			}
+			return methods;
+		}
 		return getDetailedClass().getUnimplementedForClass();
 	}
 
 	public Collection<Method> getUnimplementedForInstance() {
+		if (detailed) {
+			Collection<Method> methods = Lists.newArrayList();
+			for (Entry<Method, InvocationAdapter> entry : adapters.entrySet()) {
+				if (!entry.getValue().isInvocableOnInstance()) {
+					methods.add(entry.getKey());
+				}
+			}
+			return methods;
+		}
 		return getDetailedClass().getUnimplementedForClass();
 	}
 
@@ -67,95 +84,40 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		return adapters.get(duckMethod).invoke(originalInstance, args);
 	}
 
-	private void init() {
-		checkClass();
-		checkDuckMethods();
-		addObjectMethods();
+	private Map<Method, InvocationAdapter> collectInvocations() {
+		Map<Method, InvocationAdapter> builder = Maps.newHashMapWithExpectedSize(getDuckInterface().getMethods().length);
+		checkClass(builder);
+		checkDuckMethods(builder);
+		addObjectMethods(builder);
+		return builder;
 	}
 
-	private void checkClass() {
-		updateCanAdapt(resolveAdapter(getOriginalClass(), getDuckInterface(),
-				collectCheckers(getDuckInterface())));
+	private void checkClass(Map<Method, InvocationAdapter> builder) {
+		updateCanAdapt(interfaceWrapper.getTypeWrapper().resolveAdapter(builder, getOriginalClass()));
 	}
 
-	private InvocationAdapter checkDuckMethod(Method duckMethod) {
-		Map<Checker<Annotation>, Annotation> methodCheckers = collectCheckers(duckMethod);
-		InvocationAdapter ret = initialForDuckMethod(duckMethod);
-		int minToPass = Checkers.getMinPriorityToPass(methodCheckers);
-		for (AnnotatedElement element : getRelevantElements(getOriginalClass())) {
-			final InvocationAdapter adapter = resolveAdapter(element,
-					duckMethod, methodCheckers);
-			ret = mergeAdaptersFromElements(ret, adapter);
-			if (ret.getPriority() >= minToPass) {
-				return ret;
-			}
-		}
-		return ret;
-	}
-
-	private InvocationAdapter initialForDuckMethod(Method duckMethod) {
-		return safe(adapters.get(duckMethod), MIN);
-	}
-
-	private void addObjectMethods() {
+	private void addObjectMethods(Map<Method, InvocationAdapter> builder) {
 		if (cannotBeAdaptedAnyway()) {
 			return;
 		}
 		for (Method m : Object.class.getMethods()) {
-			if (!adapters.containsKey(m)) {
-				adapters.put(m, new MethodAdapter(m, m));
-			}
+			builder.put(m, new MethodAdapter(m, m));
 		}
 	}
-
-	private Map<Checker<Annotation>, Annotation> copy(
-			Map<Checker<Annotation>, Annotation> checkersMap) {
-		return new LinkedHashMap<Checker<Annotation>, Annotation>(checkersMap);
-	}
-
-	private final InvocationAdapter resolveAdapter(AnnotatedElement original,
-			AnnotatedElement duck,
-			Map<Checker<Annotation>, Annotation> checkersMap) {
-		Map<Checker<Annotation>, Annotation> checkers = copy(checkersMap);
-		int minPriority = getMinPriorityToFail(checkers);
-		InvocationAdapter ret = initialForElement(duck);
-		for (Entry<Checker<Annotation>, Annotation> entry : checkers.entrySet()) {
-			final Checker<Annotation> ch = entry.getKey();
-			final Annotation anno = entry.getValue();
-			if (ch.canAdapt(anno, original, getOriginalClass())) {
-				final InvocationAdapter adapter = ch.adapt(anno, original,
-						duck, getOriginalClass());
-				ret = mergeAdaptersFromCheckers(ret, adapter);
-				if (ret.getPriority() <= minPriority) {
-					return ret;
-				}
-			}
-		}
-		return ret;
-	}
-
-	private InvocationAdapter initialForElement(AnnotatedElement duck) {
-		return safe(adapters.get(duck), MAX);
-	}
-
-	private Iterable<Method> getDuckMethods() {
-		return asList(getDuckInterface().getMethods());
-	}
-
-	private void checkDuckMethods() {
+	
+	private void checkDuckMethods(Map<Method, InvocationAdapter> builder) {
 		if (cannotBeAdaptedAnyway()) {
 			return;
 		}
-		for (Method duckMethod : getDuckMethods()) {
-			InvocationAdapter adapter = checkDuckMethod(duckMethod);
+		for (Entry<Method, DuckElementWrapper> duckMethod : interfaceWrapper.getMethodWrappers().entrySet()) {
+			InvocationAdapter adapter = duckMethod.getValue().resolveAdapter( builder, getOriginalClass());
 			updateCanAdapt(adapter);
-			adapters.put(duckMethod, adapter);
+			builder.put(duckMethod.getKey(), adapter);
 			if (cannotBeAdaptedAnyway()) {
 				return;
 			}
 		}
 	}
-
 
 	private boolean cannotBeAdaptedAnyway() {
 		return detailed && (!canAdaptClass && !canAdaptInstance);
@@ -166,22 +128,10 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		canAdaptInstance = canAdaptInstance && adapter.isInvocableOnInstance();
 	}
 
-	private InvocationAdapter mergeAdaptersFromElements(InvocationAdapter ret,
-			final InvocationAdapter adapter) {
-		if (ret.getPriority() >= adapter.getPriority()) {
-			return ret.orMerge(adapter);
-		}
-		return adapter.orMerge(ret);
+	public Map<Method, InvocationAdapter> getAdapters() {
+		return adapters;
 	}
-
-	private InvocationAdapter mergeAdaptersFromCheckers(InvocationAdapter ret,
-			final InvocationAdapter adapter) {
-		if (ret.getPriority() >= adapter.getPriority()) {
-			return ret.andMerge(adapter);
-		}
-		return adapter.andMerge(ret);
-	}
-
+	
 	public D adaptInstance(O instance) {
 		if (!canAdaptInstance()) {
 			throw new AdaptationException(this);
@@ -204,16 +154,49 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 	}
 
 	private D createProxy() {
-		return getDuckInterface().cast(
-				Proxy.newProxyInstance(getClass().getClassLoader(),
-						new Class[] { getDuckInterface() }, this));
+		return createProxyFor(this);
 	}
 
 	private D createProxy(O instance) {
-		return getDuckInterface().cast(
-				Proxy.newProxyInstance(getClass().getClassLoader(),
-						new Class[] { getDuckInterface() },
-						new AdaptedImpl<O, D>(instance, this)));
+		return createProxyFor(new AdaptedImpl<O, D>(instance, this));
+	}
+
+	@SuppressWarnings("unchecked")
+	private D createProxyFor(InvocationHandler handler) {
+		if (proxyClassConstructor == null) {
+			initProxyConstructor();
+		}
+		try {
+			return (D) proxyClassConstructor.newInstance(handler);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		throw new IllegalStateException("Cannot create proxy!");
+	}
+
+	private void initProxyConstructor() {
+		Class<?> proxyClass = Proxy.getProxyClass(AdaptedClassImpl.class
+				.getClassLoader(), getDuckInterface());
+		try {
+			proxyClassConstructor = proxyClass
+					.getConstructor(InvocationHandler.class);
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

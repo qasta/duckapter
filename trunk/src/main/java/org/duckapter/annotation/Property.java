@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.duckapter.checker.MethodsOnlyChecker;
 import org.duckapter.checker.StereotypeType;
 
 /**
@@ -16,10 +17,12 @@ import org.duckapter.checker.StereotypeType;
  */
 @Documented
 @StereotypeChecker(StereotypeType.OR)
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR, ElementType.FIELD })
+@CanCheck({ ElementType.METHOD, ElementType.FIELD })
 @Method
 @Field
+@SuppressChecker(MethodsOnlyChecker.class)
+
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Property {
 }

@@ -20,8 +20,9 @@ import org.duckapter.checker.OptionalChecker;
 @Documented
 @CheckerAnnotation(OptionalChecker.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR, ElementType.FIELD })
+@CanCheck({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@MinToFail(Integer.MIN_VALUE)
 public @interface Optional {
 
 }

@@ -4,8 +4,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import org.duckapter.AdaptationException;
+import org.duckapter.InvocationAdapter;
+
+import com.google.common.collect.Maps;
 
 abstract class AbstractEmptyAdaptedClass<O, D> extends
 		AbstractAdaptedClass<O, D> {
@@ -42,6 +46,10 @@ abstract class AbstractEmptyAdaptedClass<O, D> extends
 
 	public D adaptInstance(Object o) {
 		throw new AdaptationException(this);
+	}
+	
+	public Map<Method, InvocationAdapter> getAdapters() {
+		return Collections.emptyMap();
 	}
 
 }

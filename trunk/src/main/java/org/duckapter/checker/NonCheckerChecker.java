@@ -28,8 +28,9 @@ public class NonCheckerChecker extends AbstractChecker<Annotation> implements
 			if (Negative.class.equals(a.annotationType())) {
 				continue;
 			}
-			if (Checkers.isCheckerAnnotation(a)) {
-				final Checker<Annotation> checker = Checkers.getChecker(a);
+			CheckerDescriptor descriptor = CheckerDescriptor.getDescriptor(a);
+			if (descriptor.isValid()) {
+				final Checker<Annotation> checker = descriptor.getChecker();
 				if (checker instanceof LogicalChecker) {
 					LogicalChecker logical = (LogicalChecker) checker;
 					return !logical

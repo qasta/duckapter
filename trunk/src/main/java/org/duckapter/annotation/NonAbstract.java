@@ -17,6 +17,7 @@ import java.lang.reflect.Modifier;
 @Negative
 @ModifierChecker(Modifier.ABSTRACT)
 @Retention(RetentionPolicy.RUNTIME)
+@CanCheck({ ElementType.METHOD, ElementType.TYPE })
 @Target({ ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface NonAbstract {
 

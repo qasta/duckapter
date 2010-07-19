@@ -2,6 +2,7 @@ package org.duckapter;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * The {@link AdaptedClass} stores information about the class of original
@@ -107,5 +108,10 @@ public interface AdaptedClass<O, D> {
 	 * @see AdaptedClass#canAdaptClass()
 	 */
 	D adaptClass();
+	
+	/**
+	 * @return method adapters for particular class
+	 */
+	Map<Method, InvocationAdapter> getAdapters();
 
 }

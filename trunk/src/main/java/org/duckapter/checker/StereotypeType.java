@@ -51,13 +51,12 @@ public enum StereotypeType {
 
 	};
 
-	final <T extends Annotation> InvocationAdapter adapt(T anno,
+	final <T extends Annotation> InvocationAdapter adapt(Annotation anno,
 			AnnotatedElement original, AnnotatedElement duck,
-			Class<?> classOfOriginal, Map<Checker<T>, T> checkers) {
+			Class<?> classOfOriginal, Map<Checker, Annotation> map) {
 		InvocationAdapter adapter = defaultAdapter();
-		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
-			if (!entry.getKey().canAdapt(entry.getValue(), original,
-					classOfOriginal)) {
+		for (Entry<Checker, Annotation> entry : map.entrySet()) {
+			if (!CheckerDescriptor.getDescriptor(entry.getValue()).canAdapt(original)) {
 				continue;
 			}
 			InvocationAdapter other = entry.getKey().adapt(entry.getValue(),
@@ -74,14 +73,13 @@ public enum StereotypeType {
 	protected abstract boolean checkPriority(InvocationAdapter adapter,
 			InvocationAdapter other);
 
-	final <T extends Annotation> boolean canAdapt(T anno,
+	final  boolean canAdapt(Annotation anno,
 			AnnotatedElement original, Class<?> classOfOriginal,
-			Map<Checker<T>, T> checkers) {
+			Map<Checker, Annotation> map) {
 		boolean canAdapt = false;
-		for (Entry<Checker<T>, T> entry : checkers.entrySet()) {
+		for (Entry<Checker, Annotation> entry : map.entrySet()) {
 			canAdapt = canAdapt
-					|| entry.getKey().canAdapt(entry.getValue(), original,
-							classOfOriginal);
+					|| CheckerDescriptor.getDescriptor(entry.getValue()).canAdapt(original);
 		}
 		return canAdapt;
 	}

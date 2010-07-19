@@ -1,12 +1,9 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
 
 import org.duckapter.Duck;
 import org.duckapter.adapted.AdaptedFactory;
@@ -57,16 +54,18 @@ public class ReturnTypeChecker<T extends Annotation> extends
 		return AdaptedFactory.adapt(returnType, duckMethod.getReturnType())
 				.canAdaptInstance();
 	};
+//
+//	@Override
+//	protected Collection<ElementType> getTargetElements(T anno) {
+//		if (anno != null) {
+//			return super.getTargetElements(anno);
+//		}
+//		return Arrays.asList(new ElementType[] { ElementType.METHOD,
+//				ElementType.CONSTRUCTOR, ElementType.FIELD });
+//	};
 
-	@Override
-	protected Collection<ElementType> getTargetElements(T anno) {
-		if (anno != null) {
-			return super.getTargetElements(anno);
-		}
-		return Arrays.asList(new ElementType[] { ElementType.METHOD,
-				ElementType.CONSTRUCTOR, ElementType.FIELD });
-	};
-
+	protected boolean checkClass(T anno, java.lang.Class<?> clazz, java.lang.Class<?> duckInterface) { return true;};
+	
 	@Override
 	protected boolean checkField(T anno, Field field, Method duckMethod,
 			Class<?> classOfOriginal) {

@@ -1,11 +1,8 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * The default checkers which checks whether the name of the target element is
@@ -20,6 +17,10 @@ import java.util.Collection;
  */
 public class NameChecker<T extends Annotation> extends LogicalCheckerBase<T> {
 
+	protected boolean checkClass(T anno, java.lang.Class<?> clazz, java.lang.Class<?> duckInterface) {
+		return true;
+	};
+	
 	protected boolean checkConstructor(T anno,
 			java.lang.reflect.Constructor<?> constructor, Method duckMethod,
 			Class<?> classOfOriginal) {
@@ -57,13 +58,13 @@ public class NameChecker<T extends Annotation> extends LogicalCheckerBase<T> {
 		return s.toLowerCase().replace("_", "");
 	}
 
-	@Override
-	protected Collection<ElementType> getTargetElements(T anno) {
-		if (anno != null) {
-			return super.getTargetElements(anno);
-		}
-		return Arrays.asList(new ElementType[] { ElementType.METHOD,
-				ElementType.FIELD, ElementType.CONSTRUCTOR });
-	};
+//	@Override
+//	protected Collection<ElementType> getTargetElements(T anno) {
+//		if (anno != null) {
+//			return super.getTargetElements(anno);
+//		}
+//		return Arrays.asList(new ElementType[] { ElementType.METHOD,
+//				ElementType.FIELD, ElementType.CONSTRUCTOR });
+//	};
 
 }

@@ -17,8 +17,10 @@ import org.duckapter.checker.MethodChecker;
  * @author Vladimir Orany
  * 
  */
-@Documented
 @CheckerAnnotation(MethodChecker.class)
+@CanCheck({ ElementType.METHOD })
+
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 public @interface Method {
