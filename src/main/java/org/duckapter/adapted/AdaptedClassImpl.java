@@ -128,7 +128,10 @@ final class AdaptedClassImpl<O, D> extends AbstractAdaptedClass<O, D> implements
 		canAdaptInstance = canAdaptInstance && adapter.isInvocableOnInstance();
 	}
 
-
+	public Map<Method, InvocationAdapter> getAdapters() {
+		return adapters;
+	}
+	
 	public D adaptInstance(O instance) {
 		if (!canAdaptInstance()) {
 			throw new AdaptationException(this);
