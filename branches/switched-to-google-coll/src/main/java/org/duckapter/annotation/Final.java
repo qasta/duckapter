@@ -18,8 +18,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @ModifierChecker(FINAL)
-@CanCheck({ ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,
-		ElementType.CONSTRUCTOR, ElementType.ANNOTATION_TYPE })
+@CanCheck({ ElementType.METHOD, ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD})
 @Target({ ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface Final {
 

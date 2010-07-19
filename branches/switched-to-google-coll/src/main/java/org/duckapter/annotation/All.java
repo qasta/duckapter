@@ -27,13 +27,12 @@ import org.duckapter.checker.ReturnTypeChecker;
  */
 @CheckerAnnotation(AllChecker.class)
 @CanCheck({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })
-@SuppressChecker({ReturnTypeChecker.class, ParametersChecker.class,
-	ExceptionsChecker.class})
+@SuppressChecker({ReturnTypeChecker.class, ParametersChecker.class,	ExceptionsChecker.class})
+@MinToPass(InvocationAdaptersPriorities.MAX)
 
 @Documented
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@MinToPass(InvocationAdaptersPriorities.MAX)
 public @interface All {
 
 }
