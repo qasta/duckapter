@@ -27,33 +27,33 @@ public class AllTest {
 	}
 
 	public static class TestCaseImpl {
-		@AnnotatedWith @Before
+		@Before
 		public void setUp() {
 		}
 
-		@AnnotatedWith @Test
+		@Test
 		public void test1() {
 		}
 
-		@AnnotatedWith @Test
+		@Test
 		public void test2() {
 		}
 
-		@AnnotatedWith @Test
+		@Test
 		public void test3() {
 		}
 
-		@AnnotatedWith @After
+		@After
 		public void tearDown() {
 		}
 	}
 	
 	public static class EmptyTestCase {
-		@AnnotatedWith @Before
+		@Before
 		public void setUp() {
 		}
 
-		@AnnotatedWith @After
+		@After
 		public void tearDown() {
 		}
 	}
