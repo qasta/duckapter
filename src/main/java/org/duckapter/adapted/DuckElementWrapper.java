@@ -25,17 +25,28 @@ final class DuckElementWrapper {
 	private final Map<ElementType, Map<Checker, Annotation>> checkers;
 	private final int minToPass;
 	private final int minToFail;
+	private final ElementType[] testedElements;
 	
 	public DuckElementWrapper(AnnotatedElement method,
 			Map<ElementType, Map<Checker, Annotation>> checkers, int minToPass,
 			int minToFail) {
-		super();
+		this.testedElements = initTestedElements(method);
 		this.element = method;
 		this.checkers = ImmutableMap.copyOf(checkers);
 		this.minToPass = minToPass;
 		this.minToFail = minToFail;
 	}
 
+	private ElementType[] initTestedElements(AnnotatedElement element){
+		if (element instanceof Class<?>) {
+			return new ElementType[]{ElementType.TYPE};
+		}
+		if (element instanceof Method) {
+			return new ElementType[]{ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.METHOD};
+		}
+		return CanCheck.DEFAULTS;
+	}
+	
 	public AnnotatedElement getElement() {
 		return element;
 	}
@@ -54,7 +65,7 @@ final class DuckElementWrapper {
 
 	public InvocationAdapter resolveAdapter(Map<Method, InvocationAdapter> builder, Class<?> originalClass) {
 		InvocationAdapter ret = initialForDuckMethod(builder);
-		for (ElementType elType : CanCheck.DEFAULTS) {
+		for (ElementType elType : testedElements) {
 			for (AnnotatedElement tested : getRelevantElements(elType,originalClass)) {
 				final InvocationAdapter adapter = resolveAdapter(tested, builder, elType, originalClass);
 				ret = mergeAdaptersFromElements(ret, adapter);
@@ -71,7 +82,7 @@ final class DuckElementWrapper {
 	}
 
 
-	public final InvocationAdapter resolveAdapter(AnnotatedElement original, Map<Method, InvocationAdapter> builder, ElementType curType, Class<?> originalClass) {
+	private final InvocationAdapter resolveAdapter(AnnotatedElement original, Map<Method, InvocationAdapter> builder, ElementType curType, Class<?> originalClass) {
 		InvocationAdapter ret = initialForElement(builder);
 		Map<Checker, Annotation> tested = checkers.get(curType);
 		for (Entry<Checker, Annotation> entry : tested.entrySet()) {
