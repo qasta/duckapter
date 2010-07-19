@@ -16,13 +16,13 @@ public class AllTest {
 	}
 
 	public static interface TestCase {
-		@Before
+		@AnnotatedWith @Before
 		void setUp() throws Exception;
 
-		@All @Test
+		@All @AnnotatedWith @Test
 		TestMethod[] testMethods();
 
-		@After
+		@AnnotatedWith @After
 		void tearDown() throws Exception;
 	}
 

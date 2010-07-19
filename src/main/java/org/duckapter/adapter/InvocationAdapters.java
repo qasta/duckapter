@@ -224,6 +224,9 @@ public enum InvocationAdapters implements InvocationAdapter {
 	 */
 	public static InvocationAdapter andMerge(InvocationAdapter first,
 			InvocationAdapter other) {
+		if (other == null) {
+			return first;
+		}
 		if (other.getPriority() < first.getPriority()) {
 			return other;
 		} else {

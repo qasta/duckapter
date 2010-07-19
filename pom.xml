@@ -4,7 +4,7 @@
 	<groupId>org.duckapter</groupId>
 	<artifactId>duckapter</artifactId>
 	<packaging>jar</packaging>
-	<version>0.7.0-BETA</version>
+	<version>0.7.1-BETA</version>
 	<name>Duckapter</name>
 	<description>Duck typing support for Java</description>
 	<url>http://duckapter.googlecode.com</url>
@@ -53,6 +53,13 @@
 			<artifactId>junit</artifactId>
 			<version>4.5</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<reporting>

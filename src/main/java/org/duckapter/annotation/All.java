@@ -7,7 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.duckapter.CheckerAnnotation;
+import org.duckapter.adapter.InvocationAdaptersPriorities;
 import org.duckapter.checker.AllChecker;
+import org.duckapter.checker.ExceptionsChecker;
+import org.duckapter.checker.ParametersChecker;
+import org.duckapter.checker.ReturnTypeChecker;
 
 /**
  * The duck method annotated with this annotation gathers all targets elements
@@ -21,10 +25,13 @@ import org.duckapter.checker.AllChecker;
  * 
  * @author Vladimir Orany
  */
-@Documented
 @CheckerAnnotation(AllChecker.class)
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE,
-		ElementType.CONSTRUCTOR, ElementType.FIELD })
+@CanCheck({ ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })
+@SuppressChecker({ReturnTypeChecker.class, ParametersChecker.class,	ExceptionsChecker.class})
+@MinToPass(InvocationAdaptersPriorities.MAX)
+
+@Documented
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface All {
 

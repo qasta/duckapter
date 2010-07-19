@@ -17,6 +17,7 @@ import java.lang.reflect.Modifier;
 @Documented
 @ModifierChecker(Modifier.SYNCHRONIZED)
 @Retention(RetentionPolicy.RUNTIME)
+@CanCheck({ ElementType.METHOD })
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD })
 public @interface Synchronized {
 

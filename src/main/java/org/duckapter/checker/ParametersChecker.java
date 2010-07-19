@@ -1,14 +1,10 @@
 package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import org.duckapter.adapted.AdaptedFactory;
 
@@ -31,9 +27,7 @@ import org.duckapter.adapted.AdaptedFactory;
 public class ParametersChecker<T extends Annotation> extends
 		LogicalCheckerBase<T> {
 
-	private static final List<ElementType> TARGETS = Arrays
-			.asList(new ElementType[] { ElementType.METHOD,
-					ElementType.CONSTRUCTOR });
+	protected boolean checkClass(T anno, java.lang.Class<?> clazz, java.lang.Class<?> duckInterface) { return true;};
 
 	protected boolean checkConstructor(T anno, Constructor<?> constructor,
 			Method duckMethod, Class<?> classOfOriginal) {
@@ -56,13 +50,6 @@ public class ParametersChecker<T extends Annotation> extends
 		return false;
 	};
 
-	@Override
-	protected Collection<ElementType> getTargetElements(T anno) {
-		if (anno != null) {
-			return super.getTargetElements(anno);
-		}
-		return TARGETS;
-	};
 
 	@Override
 	protected boolean checkMethod(T anno, Method method, Method duckMethod,

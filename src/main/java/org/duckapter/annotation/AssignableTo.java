@@ -19,6 +19,7 @@ import org.duckapter.checker.AssignableToChecker;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @CheckerAnnotation(AssignableToChecker.class)
+@CanCheck({ ElementType.TYPE})
 @Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 public @interface AssignableTo {
 	/**

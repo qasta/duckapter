@@ -1,5 +1,6 @@
 package org.duckapter.adapted;
 
+import java.lang.annotation.ElementType;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -8,6 +9,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,22 @@ class AdaptedClassHelper {
 		elements.addAll(getRelevantFields(clazz));
 		elements.addAll(getRelevantMethods(clazz));
 		return elements;
+	}
+	
+	@SuppressWarnings("unchecked")
+	static Collection<? extends AnnotatedElement> getRelevantElements(ElementType elType, Class<?> clazz) {
+		switch (elType) {
+		case CONSTRUCTOR:
+			return getRelevantConstructors(clazz);
+		case FIELD:
+			return getRelevantFields(clazz);
+		case METHOD:
+			return getRelevantMethods(clazz);
+		case TYPE:
+			return Arrays.asList(clazz);
+		default:
+			return Collections.emptyList();
+		}
 	}
 
 	private static Map<String, Field> getFields(Class<?> clazz,

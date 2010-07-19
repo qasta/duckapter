@@ -2,12 +2,8 @@ package org.duckapter.checker;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.duckapter.Checker;
 import org.duckapter.InvocationAdapter;
@@ -27,43 +23,25 @@ public class StereotypeCheckerChecker implements Checker<Annotation> {
 				classOfOriginal, getCheckers(anno));
 	}
 	
-	public int getMinAdapterPriorityToFail(Annotation anno) {
-		return Checkers.getMinPriorityToFail(getCheckers(anno));
-	}
-	
-	public int getMinAdapterPriorityToPass(Annotation anno) {
-		return Checkers.getMinPriorityToPass(getCheckers(anno));
-	}
-	
 	public boolean canAdapt(Annotation anno, AnnotatedElement element,
 			Class<?> classOfOriginal) {
 		return getStereotypeType(anno).canAdapt(anno, element, classOfOriginal,
 				getCheckers(anno));
 	}
 
-	private static final Map<Annotation, Map<Checker<Annotation>, Annotation>> checkersCache = new HashMap<Annotation, Map<Checker<Annotation>, Annotation>>();
+	private static final Map<Annotation, Map<Checker, Annotation>> checkersCache = new HashMap<Annotation, Map<Checker, Annotation>>();
 
-	private Map<Checker<Annotation>, Annotation> getCheckers(Annotation anno) {
+	private Map<Checker, Annotation> getCheckers(Annotation anno) {
 		if (checkersCache.containsKey(anno)) {
 			return checkersCache.get(anno);
 		}
-		final Map<Checker<Annotation>, Annotation> checkers = new HashMap<Checker<Annotation>, Annotation>(
-				Checkers.collectCheckers(anno.annotationType()));
+		final Map<Checker, Annotation> checkers = new HashMap<Checker, Annotation>();
+		for (Map<Checker, Annotation> map : Checkers.collectCheckers(anno.annotationType()).values()) {
+			checkers.putAll(map);
+		}
 		checkers.keySet().removeAll(Checkers.getDefaultCheckers());
 		checkersCache.put(anno, checkers);
 		return checkers;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <A extends Annotation, Ch extends Checker<A>> Collection<Class<Ch>> suppressCheckers(
-			Annotation anno, AnnotatedElement element) {
-		Collection ret = new HashSet();
-		for (Entry<Checker<Annotation>, Annotation> entry : getCheckers(anno)
-				.entrySet()) {
-			ret.addAll(entry.getKey().suppressCheckers(entry.getValue(),
-					element));
-		}
-		return Collections.unmodifiableCollection(ret);
 	}
 
 	private StereotypeType getStereotypeType(Annotation anno) {

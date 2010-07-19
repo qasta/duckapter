@@ -6,18 +6,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Denotes that the original class must be enum. Can be only used on the duck
- * method.
- * 
- * @author Vladimir Orany
- * 
- */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@CanCheck({ ElementType.TYPE })
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
-@AssignableTo(Enum.class)
-public @interface Enum {
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface CanCheck {
 
+	ElementType[] DEFAULTS = new ElementType[] { 
+			ElementType.TYPE,
+			ElementType.FIELD, 
+			ElementType.METHOD,
+			ElementType.CONSTRUCTOR 
+	};
+
+	ElementType[] value();
 }
