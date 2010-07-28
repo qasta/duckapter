@@ -1,6 +1,8 @@
 package org.duckapter;
 
 import org.duckapter.adapted.AdaptedFactory;
+import org.duckapter.annotation.Static;
+import org.duckapter.checker.Checkers;
 
 /**
  * The {@link Duck} class is facade for the Duckapter framework. It provides the

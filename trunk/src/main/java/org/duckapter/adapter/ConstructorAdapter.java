@@ -5,6 +5,8 @@ import static org.duckapter.adapter.ObjectHandlersFactory.getHandler;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.duckapter.InvocationAdapter;
+
 /**
  * The adapter for the constructors. Wraps constructor call to be invokable
  * using {@link InvocationAdapter} interface. The adapter is always invokable

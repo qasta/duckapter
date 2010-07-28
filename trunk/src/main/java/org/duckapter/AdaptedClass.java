@@ -108,10 +108,5 @@ public interface AdaptedClass<O, D> {
 	 * @see AdaptedClass#canAdaptClass()
 	 */
 	D adaptClass();
-	
-	/**
-	 * @return method adapters for particular class
-	 */
-	Map<Method, InvocationAdapter> getAdapters();
 
 }

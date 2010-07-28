@@ -1,6 +1,8 @@
 package org.duckapter.adapter;
 
 import org.duckapter.InvocationAdapter;
+import org.duckapter.annotation.DoesNotHave;
+import org.duckapter.checker.DoesNotHaveChecker;
 
 /**
  * The adapter for {@link DoesNotHave} annotation and {@link DoesNotHaveChecker}
