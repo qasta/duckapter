@@ -9,8 +9,6 @@ import java.util.Map;
 import org.duckapter.AdaptationException;
 import org.duckapter.InvocationAdapter;
 
-import com.google.common.collect.Maps;
-
 abstract class AbstractEmptyAdaptedClass<O, D> extends
 		AbstractAdaptedClass<O, D> {
 

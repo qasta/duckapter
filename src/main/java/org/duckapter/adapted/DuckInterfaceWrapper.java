@@ -13,7 +13,7 @@ import org.duckapter.checker.Checkers;
 
 import com.google.common.collect.Maps;
 
-public final class DuckInterfaceWrapper<D>{
+final class DuckInterfaceWrapper<D>{
 
 	private static final Map<Class<?>, DuckInterfaceWrapper<?>> cache = Maps.newHashMap();
 	

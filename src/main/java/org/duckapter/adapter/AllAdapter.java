@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.duckapter.InvocationAdapter;
+import org.duckapter.annotation.All;
+import org.duckapter.checker.AllChecker;
 
 /**
  * The adapter for {@link All} annotation and {@link AllChecker}. Collects the
