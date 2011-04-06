@@ -1,5 +1,7 @@
 package org.duckapter.adapter;
 
+import java.lang.reflect.Method;
+
 import org.duckapter.InvocationAdapter;
 
 /**
@@ -87,6 +89,14 @@ public abstract class EmptyAdapter implements InvocationAdapter {
 		} else if (!returnType.equals(other.returnType))
 			return false;
 		return true;
+	}
+	
+	public Method getDuckMethod() {
+		return Default.METHOD;
+	}
+	
+	public void setDuckMethod(Method method) {
+		
 	}
 
 }

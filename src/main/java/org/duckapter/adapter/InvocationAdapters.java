@@ -1,5 +1,7 @@
 package org.duckapter.adapter;
 
+import java.lang.reflect.Method;
+
 import org.duckapter.InvocationAdapter;
 
 /**
@@ -256,6 +258,14 @@ public enum InvocationAdapters implements InvocationAdapter {
 
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		return andMerge(this, other);
+	}
+	
+	public Method getDuckMethod() {
+		return Default.METHOD;
+	}
+	
+	public void setDuckMethod(Method method) {
+		// does nothing
 	}
 
 }

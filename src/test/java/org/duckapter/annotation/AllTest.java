@@ -2,7 +2,9 @@ package org.duckapter.annotation;
 
 import static org.duckapter.Duck.type;
 import static org.duckapter.DuckTestHelper.assertCanAdaptInstance;
+import static org.junit.Assert.*;
 
+import org.duckapter.Duck;
 import org.duckapter.adapted.AdaptedFactory;
 import org.junit.After;
 import org.junit.Assert;
@@ -59,8 +61,44 @@ public class AllTest {
 	}
 
 	public static class FailClass {
-
 	}
+	
+	public static interface Internable {
+		Object intern();
+	}
+	
+	public static interface PrivateField {
+		Internable getValue();
+	}
+	
+	public static interface Fields {
+		@All @Any @Private @Field PrivateField[] getFields();
+		
+		void initFields();
+	}
+	
+	public static class SpringFields {
+		private String one;
+		private String two;
+		
+		public void initFields(){
+			one = "One";
+			two = "Two";
+		}
+	}
+	
+	@Test
+	public void testProperRead() throws Exception {
+		Fields fields = Duck.type(new SpringFields(), Fields.class);
+		for (PrivateField field : fields.getFields()) {
+			assertNull(field.getValue());
+		}
+		fields.initFields();
+		for (PrivateField field : fields.getFields()) {
+			assertNotNull(field.getValue());
+		}
+	}
+	
 
 	@Test
 	public void testTestCaseImpl() {

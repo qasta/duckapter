@@ -1,5 +1,8 @@
 package org.duckapter;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
 import org.duckapter.adapted.AdaptedFactory;
 import org.duckapter.annotation.Static;
 import org.duckapter.checker.Checkers;
@@ -42,10 +45,32 @@ public final class Duck {
 	 * @throws AdaptationException
 	 */
 	public static <O, D> D type(final O original, final Class<D> duck) {
-		@SuppressWarnings("unchecked")
-		final Class<O> originalClass = (Class<O>) original.getClass();
+		if (original == null) {
+			return null;
+		}
+		Class<O> originalClass = getOriginalClass(original);
 		return AdaptedFactory.adapt(originalClass, duck)
 				.adaptInstance(original);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <O> Class<O> getOriginalClass(final O original) {
+		if (original == null) {
+			return null;
+		}
+		Class<O> originalClass = (Class<O>) original.getClass();
+		if(Proxy.isProxyClass(originalClass)){
+			InvocationHandler hander = Proxy.getInvocationHandler(original);
+			if (hander instanceof Adapted) {
+				Adapted<O,?> adapted = (Adapted<O,?>) hander;
+				originalClass = adapted.getAdaptedClass().getOriginalClass();
+			} else if (hander instanceof AdaptedClass) {
+				AdaptedClass<O,?> adaptedClass = (AdaptedClass<O,?>) hander;
+				originalClass = adaptedClass.getOriginalClass();
+				
+			}
+		}
+		return originalClass;
 	}
 
 	/**
@@ -130,7 +155,10 @@ public final class Duck {
 	 *         interface
 	 */
 	public static <O, D> boolean test(final O original, final Class<D> duck) {
-		return AdaptedFactory.adapt(original.getClass(), duck)
+		if (original == null) {
+			return true;
+		}
+		return AdaptedFactory.adapt(getOriginalClass(original), duck)
 				.canAdaptInstance();
 	}
 

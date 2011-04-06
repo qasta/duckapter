@@ -23,7 +23,7 @@ import org.duckapter.checker.AllChecker;
  */
 public class AllAdapter implements InvocationAdapter {
 
-	private final Method returnsTypeMethod;
+	private Method returnsTypeMethod;
 
 	private InvocationAdapter adapter = InvocationAdapters.MAX;
 	private AllAdapter previous = null;
@@ -44,6 +44,7 @@ public class AllAdapter implements InvocationAdapter {
 
 	public InvocationAdapter andMerge(InvocationAdapter other) {
 		adapter = InvocationAdapters.andMerge(adapter, other);
+		adapter.setDuckMethod(returnsTypeMethod);
 		return this;
 	}
 
@@ -113,6 +114,14 @@ public class AllAdapter implements InvocationAdapter {
 
 	public boolean isInvocableOnInstance() {
 		return true;
+	}
+
+	public Method getDuckMethod() {
+		return returnsTypeMethod;
+	}
+
+	public void setDuckMethod(Method method) {
+		this.returnsTypeMethod = method;
 	}
 
 }
