@@ -1,5 +1,7 @@
 package org.duckapter;
 
+import java.lang.reflect.Method;
+
 /**
  * Interface {@link InvocationAdapter} describes adapters which adapt particular
  * element from original class (method, constructor or field) to the method from
@@ -58,5 +60,31 @@ public interface InvocationAdapter {
 	 * @return whether the invocation can be performed on the class level
 	 */
 	boolean isInvocableOnClass();
+	
+	/**
+	 * @return duck method adapted by this adapter
+	 */
+	Method getDuckMethod();
+	
+	/**
+	 * sets different method to be adapted by this adapter
+	 * @param method
+	 */
+	void setDuckMethod(Method method);
+	
+	public static class Default {
+		public static final Method METHOD;
+		static {
+			Method method = null;
+			try {
+				method = InvocationAdapter.class.getDeclaredMethod("getDuckMethod", new Class[0]);
+			} catch (Exception e) {
+				throw new IllegalStateException("Missing method getDuckMethod!");
+			}
+			METHOD = method;
+		}
+	}
+	
+	
 
 }

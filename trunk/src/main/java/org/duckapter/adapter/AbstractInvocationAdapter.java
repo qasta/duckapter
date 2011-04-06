@@ -19,7 +19,7 @@ import org.duckapter.InvocationAdapter;
 public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 
 
-	private final Method duckMethod;
+	private Method duckMethod;
 	private ObjectHandler returnTypeHandler = null;
 	private ObjectHandler[] argumentsHandlers = null;
 
@@ -99,6 +99,12 @@ public abstract class AbstractInvocationAdapter implements InvocationAdapter {
 
 	public Method getDuckMethod() {
 		return duckMethod;
+	}
+	
+	public void setDuckMethod(Method method) {
+		this.duckMethod = method;
+		this.returnTypeHandler = null;
+		this.argumentsHandlers = null;
 	}
 
 }
